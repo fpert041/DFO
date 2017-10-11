@@ -22,4 +22,4 @@ The algorithm was first proposed by Mohammad Majid al-Rifaie, a computing lectur
 
 ## Technical Notes
 
-The algorithm is being showcased within an openFrameworks project to better visualise its action. The algorithm itself is not dependent on the framework and its cpp and header files can be used in any program. However, the xCode project that I included here and needs to be run within openframeworks (just place it inside apps/myApps or any folder 3 levels down from the root folder of OF). Tested with of_v0.9.8_osx_release.
+The algorithm is being showcased within an openFrameworks project to better visualise its action. The algorithm itself is not dependent on the framework and its cpp and header files can be used in any program. However, the xCode project that I included here, that is the program contained in this repo in general, needs to be run within openframeworks (just place it inside apps/myApps or any folder 3 levels down from the root folder of OF). You can [download openFrameworks on their website](http://openframeworks.cc/download/). Tested with of_v0.9.8_osx_release.
