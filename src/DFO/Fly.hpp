@@ -1,8 +1,10 @@
 //
 //  Fly.hpp
-//  wk2_DFO
 //
 //  Created by Francesco Perticarari on 10/10/2017.
+//
+//  THIS CLASS PROVIDES A TEMPLATE FOR CONSTRUCTING FLY/AGENT OBJECTS
+//  These objects are the units (indivisuals) that make up the Swarm in DFO (Dispersive Fly Optimisation)
 //
 
 #ifndef Fly_hpp
@@ -14,6 +16,8 @@
 #include <exception>
 #include <cmath>
 
+#include "Settings.hpp"
+
 class Fly{
 private:
     std::vector<double>pos; // fly position (in an N-Dimentional problem/search space)
@@ -22,25 +26,35 @@ private:
     int posDimensions; // variable holding the dimensions of the problem's space
     
 public:
+    
+    Fly* pLeftNeighbour = nullptr;
+    Fly* pRightNeighbour = nullptr; // you can use these smart pointer to locally keep a reference to neighbour flies
+    int leftNindex, rightNindex; // these two values store locally the index position of the left and right neighbours in the global swarm-vector
+    // Note: the above parameters are not necessary in all situations as sometimes flies are considered neighbours based merely on their index position (using ring topology)
+    
+    // =============== Interface Methods =================
+    
     Fly(std::vector<double> inPos) { // CONSTRUCTOR
         pos = inPos; // set the position of the fly
         posDimensions = inPos.size(); // set the value that holds the number of dimensions of the space where the fly lives
     }
     
-    std::vector<double> getPos() { // get the vector ("of coordinates") of the fly's position (in the search space)
+    ~Fly(); // DESTRUCTOR
+    
+    const std::vector<double> getPos() { // get the vector ("of coordinates") of the fly's position (in the search space)
         return pos;
     }
     
-    double getPos(int n) { //overloaded function to get the value of a single dimension from the fly's position
+    const double getPos(int n) { //overloaded function to get the value of a single dimension from the fly's position
         return pos[n];
     }
     
-    std::vector<double> getExPos() { // get the vector of the previous position ("coordinates")
+    const std::vector<double> getExPos() { // get the vector of the previous position ("coordinates")
         return exPos;
     }
     
     
-    double getExPos(int n) { //overloaded function to get the value of a single dimension from the fly's old position
+    const double getExPos(int n) { //overloaded function to get the value of a single dimension from the fly's old position
         return exPos[n];
     }
     
@@ -62,21 +76,21 @@ public:
         fitness = t;
     }
     
-    double getFitness() { // return fitness value
+    const double getFitness() { // return fitness value
         return fitness;
     }
     
     // take in the reference of a swarm of flies (vector) and an int 'n'
     // then return the distance between
-    double getDistance(std::vector<Fly>& swarmRef, int n) {
+    const double getDistance(int n) {
         double squaredSum = 0;
         for (int d = 0; d < posDimensions - 1; d++) {
-            squaredSum = squaredSum + std::pow(getPos(d) - swarmRef[n].getPos(d), 2);
+            squaredSum = squaredSum + std::pow(getPos(d) - Settings::swarm[n].getPos(d), 2);
         }
         return std::sqrt(squaredSum);
     }
     
-    std::string toString() { // return the vector of the fly's coordinate as a string
+    const std::string toString() { // return the vector of the fly's coordinate as a string
         std::string s = "";
         for (int d = 0; d < posDimensions-1; ++d )
             s.append(std::to_string(pos[d]) ).append(", ");
