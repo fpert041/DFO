@@ -1,0 +1,7 @@
+*.app
+*.o
+/Build
+Build
+/DerivedData
+DerivedData
+

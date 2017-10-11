@@ -16,5 +16,10 @@ The algorithm aims to exploit the emergent adaptive intelligence of the swarm to
 
 The algorithm was first proposed by Mohammad Majid al-Rifaie, a computing lecturer at Goldsmiths, University of London, in his paper published in 2014. For a more detailed description, please see [this blog post](http://francescoperticarari.com/dispersive-flies-optimisation/) on my website.
 
+#### Visualisation of the Algorithm in action:
+
 ![alt text](https://i1.wp.com/upload.wikimedia.org/wikipedia/commons/e/ec/ParticleSwarmArrowsAnimation.gif "Visualisation of the Algorithm in action")
 
+## Technical Notes
+
+The algorithm is being showcased within an openFrameworks project to better visualise its action. The algorithm itself is not dependent on the framework and its cpp and header files can be used in any program. However, the xCode project that I included here is 
