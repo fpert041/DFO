@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C703A4171F8E6F68000EBCE0 /* Settings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C703A4151F8E6D3D000EBCE0 /* Settings.cpp */; };
 		C703A4181F8E6F6B000EBCE0 /* Fly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C703A4161F8E6D3D000EBCE0 /* Fly.cpp */; };
 		C703A41B1F8E72F0000EBCE0 /* Utilis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C703A4191F8E72EF000EBCE0 /* Utilis.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
@@ -47,7 +46,6 @@
 /* Begin PBXFileReference section */
 		C703A4131F8E6D3D000EBCE0 /* Fly.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Fly.hpp; sourceTree = "<group>"; };
 		C703A4141F8E6D3D000EBCE0 /* Settings.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Settings.hpp; sourceTree = "<group>"; };
-		C703A4151F8E6D3D000EBCE0 /* Settings.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Settings.cpp; sourceTree = "<group>"; };
 		C703A4161F8E6D3D000EBCE0 /* Fly.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Fly.cpp; sourceTree = "<group>"; };
 		C703A4191F8E72EF000EBCE0 /* Utilis.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utilis.cpp; sourceTree = "<group>"; };
 		C703A41A1F8E72EF000EBCE0 /* Utilis.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Utilis.hpp; sourceTree = "<group>"; };
@@ -92,10 +90,9 @@
 			children = (
 				C703A41A1F8E72EF000EBCE0 /* Utilis.hpp */,
 				C703A4191F8E72EF000EBCE0 /* Utilis.cpp */,
-				C703A4141F8E6D3D000EBCE0 /* Settings.hpp */,
-				C703A4151F8E6D3D000EBCE0 /* Settings.cpp */,
 				C703A4131F8E6D3D000EBCE0 /* Fly.hpp */,
 				C703A4161F8E6D3D000EBCE0 /* Fly.cpp */,
+				C703A4141F8E6D3D000EBCE0 /* Settings.hpp */,
 			);
 			path = DFO;
 			sourceTree = "<group>";
@@ -231,7 +228,6 @@
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
 				C703A41B1F8E72F0000EBCE0 /* Utilis.cpp in Sources */,
-				C703A4171F8E6F68000EBCE0 /* Settings.cpp in Sources */,
 				C703A4181F8E6F6B000EBCE0 /* Fly.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

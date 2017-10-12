@@ -35,8 +35,10 @@ public:
     
     //--------------------------------------------------------
     
-    static int imgW, imgH;
+    // Variables to hold globally the dimension of the search space of the problem
+    static int searchSpaceWidth, searchSpaceHeight;
     
+    // Constant to set the maximum number of Fly Evaluations allowed to the program
     static const int FE_allowed = 300000;
     
     // This variable stores the index of the best Fly (whose position is the fittest to solve the problem)

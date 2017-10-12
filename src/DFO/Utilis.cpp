@@ -220,6 +220,42 @@ void Utilis::printSummary() {
 }
 
 //------------------------------------------------------------------------------------
+
+/* Generate and output a random Fly's position vector */
+
+vector<double> Utilis::genRandPos() {
+    vector<double> pos = vector<double>(Settings::dim);
+    for (int d = 0; d < Settings::dim; d++)
+        pos[d] = -Settings::searchSpaceWidth / 2 + 2 * Settings::searchSpaceWidth / 2 * dis(gen);
+    //// pos[d] = dis(gen)*Settings::searchSpaceWidth - Settings::searchSpaceWidth/2;
+    
+    return pos;
+}
+
+// Alternative version of the method above
+
+vector<double> Utilis::genRandPos2() {
+    vector<double> pos = vector<double>(Settings::dim);
+    for (int d = 0; d < Settings::dim; d++)
+        pos[d] = -Settings::searchSpaceWidth + Settings::searchSpaceWidth / 2 * dis(gen);
+    //  pos[d] = dis(gen)*Settings::searchSpaceWidth - Settings::searchSpaceWidth/2;
+    
+    return pos;
+}
+
+//------------------------------------------------------------------------------------
+
+/* Given the distribution mean value and its standard deviation (variance),
+   generate and return a Gaussian Random number */
+
+double Utilis::genGaussian(double bellMean, double bellStdDev) {
+    std::default_random_engine generator;
+    std::normal_distribution<double> distribution(bellMean, bellStdDev);
+    
+    return distribution(generator);
+}
+
+//------------------------------------------------------------------------------------
 // PRIVATE METHODS
 //------------------------------------------------------------------------------------
 

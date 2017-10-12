@@ -59,9 +59,11 @@ public:
     
     void printSummary(); // Print to console summary of the findings of the algorithm
     
+    vector<double> genRandPos(); // Generate and return a random Fly's position vector
     
+    vector<double> genRandPos2(); // Alternative version of the method above
     
-    
+    double genGaussian(double bellMean, double bellStdDev); // Given the distribution mean value and its standard deviation (variance), generate and return a Gaussian Random number
     
     
     // TODO: Implement the following evaluation methods -> Schwefel12 Rosenbrock GSchwefel26 Rastrigin Ackley Griewank PenalizedP8 PenalizedP16 // Once you do this, add their calls into the cases of evaluate()
