@@ -16,9 +16,12 @@
 #include <exception>
 #include <cmath>
 
-#include "Settings.hpp"
+#include "GlobalParam.hpp"
 
 class Fly{
+    
+    GlobalParam g;
+    
 private:
     std::vector<double>pos; // fly position (in an N-Dimentional problem/search space)
     std::vector<double>exPos; // old position
@@ -27,23 +30,21 @@ private:
     
 public:
     
-    Fly* pLeftNeighbour = nullptr;
-    Fly* pRightNeighbour = nullptr; // you can use these smart pointer to locally keep a reference to neighbour flies
+    std::shared_ptr<Fly> pLeftNeighbour = nullptr;
+    std::shared_ptr<Fly> pRightNeighbour = nullptr; // you can use these smart pointer to locally keep a reference to neighbour flies
     int leftNindex, rightNindex; // these two values store locally the index position of the left and right neighbours in the global swarm-vector
     // Note: the above parameters are not necessary in all situations as sometimes flies are considered neighbours based merely on their index position (using ring topology)
     
     // =============== Interface Methods =================
     
-    Fly(std::vector<double> inPos) { // CONSTRUCTOR
-        pos = inPos; // set the position of the fly
-        posDimensions = inPos.size(); // set the value that holds the number of dimensions of the space where the fly lives
-    }
+    
+    // Constructors
+    Fly(std::vector<double> inPos);
     
     ~Fly(); // DESTRUCTOR
     
-    const std::vector<double> getPos() { // get the vector ("of coordinates") of the fly's position (in the search space)
-        return pos;
-    }
+    const std::vector<double> getPos(); // get the vector ("of coordinates") of the fly's position (in the search space)
+
     
     const double getPos(int n) { //overloaded function to get the value of a single dimension from the fly's position
         return pos[n];
@@ -82,13 +83,7 @@ public:
     
     // take in the reference of a swarm of flies (vector) and an int 'n'
     // then return the distance between
-    const double getDistance(int n) {
-        double squaredSum = 0;
-        for (int d = 0; d < posDimensions - 1; d++) {
-            squaredSum = squaredSum + std::pow(getPos(d) - Settings::swarm[n].getPos(d), 2);
-        }
-        return std::sqrt(squaredSum);
-    }
+    const double getDistance(int n);
     
     const std::string toString() { // return the vector of the fly's coordinate as a string
         std::string s = "";
@@ -109,6 +104,8 @@ public:
      */
     
 };
+
+
 
 #endif /* Fly_hpp */
 

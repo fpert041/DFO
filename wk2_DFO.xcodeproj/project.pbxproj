@@ -3,12 +3,15 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 47;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		C703A4181F8E6F6B000EBCE0 /* Fly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C703A4161F8E6D3D000EBCE0 /* Fly.cpp */; };
 		C703A41B1F8E72F0000EBCE0 /* Utilis.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C703A4191F8E72EF000EBCE0 /* Utilis.cpp */; };
+		C703A4201F90A3EA000EBCE0 /* DFOvisual.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C703A41E1F90A3EA000EBCE0 /* DFOvisual.cpp */; };
+		C703A4251F922204000EBCE0 /* DFO.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C703A4231F922204000EBCE0 /* DFO.cpp */; };
+		C7F223881F92A79A00E6163D /* GlobalParam.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C7F223871F92A79A00E6163D /* GlobalParam.cpp */; };
 		E4328149138ABC9F0047C5CB /* openFrameworksDebug.a in Frameworks */ = {isa = PBXBuildFile; fileRef = E4328148138ABC890047C5CB /* openFrameworksDebug.a */; };
 		E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1D0A3A1BDC003C02F2 /* main.cpp */; };
 		E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */ = {isa = PBXBuildFile; fileRef = E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */; };
@@ -45,10 +48,16 @@
 
 /* Begin PBXFileReference section */
 		C703A4131F8E6D3D000EBCE0 /* Fly.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Fly.hpp; sourceTree = "<group>"; };
-		C703A4141F8E6D3D000EBCE0 /* Settings.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Settings.hpp; sourceTree = "<group>"; };
 		C703A4161F8E6D3D000EBCE0 /* Fly.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Fly.cpp; sourceTree = "<group>"; };
 		C703A4191F8E72EF000EBCE0 /* Utilis.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Utilis.cpp; sourceTree = "<group>"; };
 		C703A41A1F8E72EF000EBCE0 /* Utilis.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Utilis.hpp; sourceTree = "<group>"; };
+		C703A41E1F90A3EA000EBCE0 /* DFOvisual.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = DFOvisual.cpp; path = src/DFOvisual.cpp; sourceTree = SOURCE_ROOT; };
+		C703A41F1F90A3EA000EBCE0 /* DFOvisual.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = DFOvisual.hpp; path = src/DFOvisual.hpp; sourceTree = SOURCE_ROOT; };
+		C703A4231F922204000EBCE0 /* DFO.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DFO.cpp; sourceTree = "<group>"; };
+		C703A4241F922204000EBCE0 /* DFO.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = DFO.hpp; sourceTree = "<group>"; };
+		C703A4261F9227CA000EBCE0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		C7F223861F92A0E500E6163D /* GlobalParam.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = GlobalParam.hpp; sourceTree = "<group>"; };
+		C7F223871F92A79A00E6163D /* GlobalParam.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = GlobalParam.cpp; sourceTree = "<group>"; };
 		E4328143138ABC890047C5CB /* openFrameworksLib.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = openFrameworksLib.xcodeproj; path = ../../../libs/openFrameworksCompiled/project/osx/openFrameworksLib.xcodeproj; sourceTree = SOURCE_ROOT; };
 		E4B69B5B0A3A1756003C02F2 /* wk2_DFODebug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = wk2_DFODebug.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E4B69E1D0A3A1BDC003C02F2 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 30; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
@@ -88,11 +97,14 @@
 		C703A4121F8E6D3D000EBCE0 /* DFO */ = {
 			isa = PBXGroup;
 			children = (
-				C703A41A1F8E72EF000EBCE0 /* Utilis.hpp */,
+				C703A4231F922204000EBCE0 /* DFO.cpp */,
+				C703A4241F922204000EBCE0 /* DFO.hpp */,
 				C703A4191F8E72EF000EBCE0 /* Utilis.cpp */,
-				C703A4131F8E6D3D000EBCE0 /* Fly.hpp */,
+				C703A41A1F8E72EF000EBCE0 /* Utilis.hpp */,
 				C703A4161F8E6D3D000EBCE0 /* Fly.cpp */,
-				C703A4141F8E6D3D000EBCE0 /* Settings.hpp */,
+				C703A4131F8E6D3D000EBCE0 /* Fly.hpp */,
+				C7F223861F92A0E500E6163D /* GlobalParam.hpp */,
+				C7F223871F92A79A00E6163D /* GlobalParam.cpp */,
 			);
 			path = DFO;
 			sourceTree = "<group>";
@@ -108,6 +120,7 @@
 		E4B69B4A0A3A1720003C02F2 = {
 			isa = PBXGroup;
 			children = (
+				C703A4261F9227CA000EBCE0 /* README.md */,
 				E4B6FCAD0C3E899E008CF71C /* openFrameworks-Info.plist */,
 				E4EB6923138AFD0F00A09F29 /* Project.xcconfig */,
 				E4B69E1C0A3A1BDC003C02F2 /* src */,
@@ -124,6 +137,8 @@
 				E4B69E1D0A3A1BDC003C02F2 /* main.cpp */,
 				E4B69E1E0A3A1BDC003C02F2 /* ofApp.cpp */,
 				E4B69E1F0A3A1BDC003C02F2 /* ofApp.h */,
+				C703A41E1F90A3EA000EBCE0 /* DFOvisual.cpp */,
+				C703A41F1F90A3EA000EBCE0 /* DFOvisual.hpp */,
 				C703A4121F8E6D3D000EBCE0 /* DFO */,
 			);
 			path = src;
@@ -169,7 +184,7 @@
 				LastUpgradeCheck = 0600;
 			};
 			buildConfigurationList = E4B69B4D0A3A1720003C02F2 /* Build configuration list for PBXProject "wk2_DFO" */;
-			compatibilityVersion = "Xcode 3.2";
+			compatibilityVersion = "Xcode 6.3";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -225,9 +240,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C703A4201F90A3EA000EBCE0 /* DFOvisual.cpp in Sources */,
 				E4B69E200A3A1BDC003C02F2 /* main.cpp in Sources */,
 				E4B69E210A3A1BDC003C02F2 /* ofApp.cpp in Sources */,
+				C703A4251F922204000EBCE0 /* DFO.cpp in Sources */,
 				C703A41B1F8E72F0000EBCE0 /* Utilis.cpp in Sources */,
+				C7F223881F92A79A00E6163D /* GlobalParam.cpp in Sources */,
 				C703A4181F8E6F6B000EBCE0 /* Fly.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -262,7 +280,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				ONLY_ACTIVE_ARCH = YES;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
@@ -292,7 +310,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = NO;
 				GCC_WARN_UNUSED_VALUE = NO;
 				GCC_WARN_UNUSED_VARIABLE = NO;
-				MACOSX_DEPLOYMENT_TARGET = 10.8;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				OTHER_CPLUSPLUSFLAGS = (
 					"-D__MACOSX_CORE__",
 					"-mtune=native",
@@ -305,6 +323,11 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
+				"CLANG_CXX_LANGUAGE_STANDARD[arch=i386]" = "c++0x";
+				"CLANG_CXX_LANGUAGE_STANDARD[arch=x86_64]" = "c++0x";
+				CLANG_CXX_LIBRARY = "compiler-default";
+				"CLANG_CXX_LIBRARY[arch=i386]" = "libc++";
+				"CLANG_CXX_LIBRARY[arch=x86_64]" = "libc++";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
@@ -329,6 +352,8 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = E4EB6923138AFD0F00A09F29 /* Project.xcconfig */;
 			buildSettings = {
+				"CLANG_CXX_LANGUAGE_STANDARD[arch=i386]" = "c++0x";
+				"CLANG_CXX_LANGUAGE_STANDARD[arch=x86_64]" = "c++0x";
 				COMBINE_HIDPI_IMAGES = YES;
 				COPY_PHASE_STRIP = YES;
 				FRAMEWORK_SEARCH_PATHS = (

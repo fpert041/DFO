@@ -6,6 +6,7 @@
 //
 
 #include "Utilis.hpp"
+#include <memory>
 
 //------------------------------------------------------------------------------------
 // PUBLIC METHODS
@@ -19,17 +20,33 @@ Utilis::Utilis(){
     dis = std::uniform_real_distribution<>(1, 2); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
     
-    dimensions = Settings::dim; // get the dimensions of the current problem from "Settings"
+    dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
     em = SPHERE; // defaults the evaluation method to SPHERE
+    ntt = RING; // defaults the way neighbours are linked with to RING TOPOLOGY
+}
+
+Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
+    gen = std::mt19937(rd());
+    dis = std::uniform_real_distribution<>(1, 2); // Each call to dis(gen) generates a new random double
+    ran = dis(gen);
+    
+    dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
+    em = CUSTOM; // defaults the evaluation method to CUSTOM
+    eval_custom_fitness_func.operator=(fitness_func); // store provided fitness funciton into a variable
     ntt = RING; // defaults the way neighbours are linked with to RING TOPOLOGY
 }
 
 //------------------------------------------------------------------------------------
 
-/* Evaluare fly with position vector 'flyPos' */
+/* Evaluate fly with position vector 'flyPos' using the DEFAULT fitness function (as indicated by the value of the 'em' varable (enum: EvaluationMethod) */
 
 double Utilis::evaluate(vector<double> flyPos){
     switch (em) {
+        case CUSTOM:
+            GlobalParam::evaluationFunctionName = "Custom Fitness Function";
+            return eval_custom_fitness_func(flyPos);
+            break;
+            
         case SPHERE:
             return std::abs( eval_sphere(flyPos) );
             break;
@@ -38,6 +55,15 @@ double Utilis::evaluate(vector<double> flyPos){
             return std::abs( eval_sphere(flyPos) );
             break;
     }
+}
+
+// Overridden method: Evaluate the fitness of a certain Fly using the PROVIDED fitness function
+
+double Utilis::evaluate(vector<double> flyPos, EvaluationMethod fit_func_id){
+    EvaluationMethod oldEm = em;
+    em = fit_func_id;
+    evaluate(flyPos);
+    em = oldEm;
 }
 
 //------------------------------------------------------------------------------------
@@ -54,28 +80,28 @@ void Utilis::shakeOffset() {
 
 void findClosestNeighbours(int flyIndex) {
     double minDistL = 10E15;
-    for (int i = 0; i < Settings::popSize; i++) {
+    for (int i = 0; i < GlobalParam::popSize; i++) {
         if (i == flyIndex)
             continue;
         
-        double d = Settings::swarm[flyIndex].getDistance(i);
+        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
         if (d < minDistL) {
             minDistL = d;
-            Settings::leftNeighbour = i;
+            GlobalParam::leftNeighbour = i;
         }
     }
     
     double minDistR = 10E15;
-    for (int i = 0; i < Settings::popSize; i++) {
+    for (int i = 0; i < GlobalParam::popSize; i++) {
         if (i == flyIndex)
             continue;
-        if (i == Settings::leftNeighbour)
+        if (i == GlobalParam::leftNeighbour)
             continue;
         
-        double d = Settings::swarm[flyIndex].getDistance(i);
+        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
         if (d < minDistR) {
             minDistR = d;
-            Settings::rightNeighbour = i;
+            GlobalParam::rightNeighbour = i;
         }
     }
 
@@ -85,31 +111,31 @@ void findClosestNeighbours(int flyIndex) {
 
 void findClosestNeighbours(int flyIndex, Fly& flyRef) {
     double minDistL = 10E15;
-    for (int i = 0; i < Settings::popSize; i++) {
+    for (int i = 0; i < GlobalParam::popSize; i++) {
         if (i == flyIndex)
             continue;
         
-        double d = Settings::swarm[flyIndex].getDistance(i);
+        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
         if (d < minDistL) {
             minDistL = d;
-            Settings::leftNeighbour = i;
-            flyRef.pLeftNeighbour = &Settings::swarm[flyIndex];
+            GlobalParam::leftNeighbour = i;
+            flyRef.pLeftNeighbour = GlobalParam::swarm[flyIndex];
             flyRef.leftNindex = i;
         }
     }
     
     double minDistR = 10E15;
-    for (int i = 0; i < Settings::popSize; i++) {
+    for (int i = 0; i < GlobalParam::popSize; i++) {
         if (i == flyIndex)
             continue;
-        if (i == Settings::leftNeighbour)
+        if (i == GlobalParam::leftNeighbour)
             continue;
         
-        double d = Settings::swarm[flyIndex].getDistance(i);
+        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
         if (d < minDistR) {
             minDistR = d;
-            Settings::rightNeighbour = i;
-            flyRef.pRightNeighbour = &Settings::swarm[flyIndex];
+            GlobalParam::rightNeighbour = i;
+            flyRef.pRightNeighbour = GlobalParam::swarm[flyIndex];
             flyRef.rightNindex = i;
         }
     }
@@ -120,74 +146,74 @@ void findClosestNeighbours(int flyIndex, Fly& flyRef) {
 
 /* Set the closest 2 neighbours in the swarm for the fly at location 'curr' using either RING TOPOLOGY or RANDOMNESS */
 
-void Utilis::getRandF_or_RingT_Neighbours(int curr, bool topology) {
+void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType type) {
     
-    if (topology) // RING
+    if (type == RING) // RING
     {
-        Settings::leftNeighbour = curr - 1;
-        Settings::rightNeighbour = curr + 1;
+        GlobalParam::leftNeighbour = curr - 1;
+        GlobalParam::rightNeighbour = curr + 1;
         
         if (curr == 0)
-            Settings::leftNeighbour = Settings::popSize - 1;
-        if (curr == Settings::popSize - 1)
-            Settings::rightNeighbour = 0;
+            GlobalParam::leftNeighbour = GlobalParam::popSize - 1;
+        if (curr == GlobalParam::popSize - 1)
+            GlobalParam::rightNeighbour = 0;
     }
     else // RANDOM
     {
-        Settings::leftNeighbour = int(dis(gen)*Settings::popSize);
-        while (Settings::leftNeighbour == curr){
-            Settings::leftNeighbour = int(dis(gen)*Settings::popSize);
+        GlobalParam::leftNeighbour = int(dis(gen)*GlobalParam::popSize);
+        while (GlobalParam::leftNeighbour == curr){
+            GlobalParam::leftNeighbour = int(dis(gen)*GlobalParam::popSize);
         }
         
-        Settings::rightNeighbour = dis(gen)*Settings::popSize;
-        while ((Settings::rightNeighbour == curr) || (Settings::rightNeighbour == Settings::leftNeighbour))
-            Settings::rightNeighbour = int(dis(gen)*Settings::popSize);
+        GlobalParam::rightNeighbour = dis(gen)*GlobalParam::popSize;
+        while ((GlobalParam::rightNeighbour == curr) || (GlobalParam::rightNeighbour == GlobalParam::leftNeighbour))
+            GlobalParam::rightNeighbour = int(dis(gen)*GlobalParam::popSize);
     }
     
 }
 
 // overloaded funtion to assign neighbours either using ring topology or at random which also stores the information locally into each Fly
 
-void Utilis::getRandF_or_RingT_Neighbours(int curr, bool topology, Fly& flyref){
+void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType type, Fly& flyref){
     
-    if (topology) // RING
+    if (type == RING) // RING
     {
-        Settings::leftNeighbour = curr - 1;
+        GlobalParam::leftNeighbour = curr - 1;
         flyref.leftNindex = curr - 1;
-        flyref.pLeftNeighbour = &Settings::swarm[Settings::popSize - 1];
+        flyref.pLeftNeighbour = GlobalParam::swarm[GlobalParam::popSize - 1];
         
-        Settings::rightNeighbour = curr + 1;
+        GlobalParam::rightNeighbour = curr + 1;
         flyref.rightNindex = curr + 1;
-        flyref.pRightNeighbour = &Settings::swarm[Settings::popSize + 1];
+        flyref.pRightNeighbour = GlobalParam::swarm[GlobalParam::popSize + 1];
         
         if (curr == 0){ // deal with low extreme
-            Settings::leftNeighbour = Settings::popSize - 1;
+            GlobalParam::leftNeighbour = GlobalParam::popSize - 1;
             flyref.leftNindex = curr - 1;
-            flyref.pLeftNeighbour = &Settings::swarm[Settings::popSize - 1];
+            flyref.pLeftNeighbour = GlobalParam::swarm[GlobalParam::popSize - 1];
         }
         
-        if (curr == Settings::popSize - 1){ // deal with high extreme
-            Settings::rightNeighbour = 0;
+        if (curr == GlobalParam::popSize - 1){ // deal with high extreme
+            GlobalParam::rightNeighbour = 0;
             flyref.rightNindex = 0;
-            flyref.pRightNeighbour = &Settings::swarm[0];
+            flyref.pRightNeighbour = GlobalParam::swarm[0];
         }
     }
     else // RANDOM
     {
-        Settings::leftNeighbour = dis(gen)*Settings::popSize;
-        while (Settings::leftNeighbour == curr){
-            int r = int(dis(gen)*Settings::popSize);
-            Settings::leftNeighbour = r;
+        GlobalParam::leftNeighbour = dis(gen)*GlobalParam::popSize;
+        while (GlobalParam::leftNeighbour == curr){
+            int r = int(dis(gen)*GlobalParam::popSize);
+            GlobalParam::leftNeighbour = r;
             flyref.leftNindex = r;
-            flyref.pLeftNeighbour = &Settings::swarm[r];
+            flyref.pLeftNeighbour = GlobalParam::swarm[r];
         }
         
-        Settings::rightNeighbour = dis(gen)*Settings::popSize;
-        while ((Settings::rightNeighbour == curr) || (Settings::rightNeighbour == Settings::leftNeighbour)){
-            int r = int(dis(gen)*Settings::popSize);
-            Settings::rightNeighbour = r;
+        GlobalParam::rightNeighbour = dis(gen)*GlobalParam::popSize;
+        while ((GlobalParam::rightNeighbour == curr) || (GlobalParam::rightNeighbour == GlobalParam::leftNeighbour)){
+            int r = int(dis(gen)*GlobalParam::popSize);
+            GlobalParam::rightNeighbour = r;
             flyref.rightNindex = r;
-            flyref.pRightNeighbour = &Settings::swarm[r];
+            flyref.pRightNeighbour = GlobalParam::swarm[r];
         }
     }
     
@@ -200,10 +226,10 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, bool topology, Fly& flyref){
 void Utilis::findBestFly() {
     double min = 10E10;
     
-    for (int i = 0; i < Settings::popSize; i++) {
-        if (Settings::swarm[i].getFitness() < min) {
-            min = Settings::swarm[i].getFitness();
-            Settings::bestIndex = i;
+    for (int i = 0; i < GlobalParam::popSize; i++) {
+        if (GlobalParam::swarm[i]->getFitness() < min) {
+            min = GlobalParam::swarm[i]->getFitness();
+            GlobalParam::bestIndex = i;
         }
     }
 }
@@ -213,10 +239,10 @@ void Utilis::findBestFly() {
 /* Print to console summary of the findings of the algorithm */
 
 void Utilis::printSummary() {
-    if (Settings::evalCount % 1000 == 0)
-        cout << "\nFE: " + to_string(Settings::evalCount / 1000) + " ===> \n\t"
-        + to_string(Settings::swarm[Settings::bestIndex].getFitness()) + "\t" + to_string(Settings::bestIndex) + "\t"
-                           + Settings::swarm[Settings::bestIndex].toString() << endl;
+    if (GlobalParam::evalCount % 1000 == 0)
+        cout << "\nFE: " + to_string(GlobalParam::evalCount / 1000) + " ===> \n\t"
+        + to_string(GlobalParam::swarm[GlobalParam::bestIndex]->getFitness()) + "\t" + to_string(GlobalParam::bestIndex) + "\t"
+                           + GlobalParam::swarm[GlobalParam::bestIndex]->toString() << endl;
 }
 
 //------------------------------------------------------------------------------------
@@ -224,10 +250,10 @@ void Utilis::printSummary() {
 /* Generate and output a random Fly's position vector */
 
 vector<double> Utilis::genRandPos() {
-    vector<double> pos = vector<double>(Settings::dim);
-    for (int d = 0; d < Settings::dim; d++)
-        pos[d] = -Settings::searchSpaceWidth / 2 + 2 * Settings::searchSpaceWidth / 2 * dis(gen);
-    //// pos[d] = dis(gen)*Settings::searchSpaceWidth - Settings::searchSpaceWidth/2;
+    vector<double> pos = vector<double>(GlobalParam::dim);
+    for (int d = 0; d < GlobalParam::dim; d++)
+        pos[d] = -GlobalParam::searchSpaceWidth / 2 + 2 * GlobalParam::searchSpaceWidth / 2 * dis(gen);
+    //// pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
     
     return pos;
 }
@@ -235,12 +261,27 @@ vector<double> Utilis::genRandPos() {
 // Alternative version of the method above
 
 vector<double> Utilis::genRandPos2() {
-    vector<double> pos = vector<double>(Settings::dim);
-    for (int d = 0; d < Settings::dim; d++)
-        pos[d] = -Settings::searchSpaceWidth + Settings::searchSpaceWidth / 2 * dis(gen);
-    //  pos[d] = dis(gen)*Settings::searchSpaceWidth - Settings::searchSpaceWidth/2;
+    vector<double> pos = vector<double>(GlobalParam::dim);
+    for (int d = 0; d < GlobalParam::dim; d++)
+        pos[d] = -GlobalParam::searchSpaceWidth + GlobalParam::searchSpaceWidth / 2 * dis(gen);
+    //  pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
     
     return pos;
+}
+
+//------------------------------------------------------------------------------------
+
+/* Output random number (normal distribution) between '1st arg' and '2nd arg' (if no 2nd arg is pecified it'll be between 0 and the arg passed in) */
+
+double Utilis::random(double from, double to){
+    double ranN = dis(gen);
+    ranN *= abs(to - from);
+    ranN += from;
+    return ranN;
+}
+
+double Utilis::random(double to){ // overloaded method to allow for 'to' only parameter ot be passed in
+    return random(0, to);
 }
 
 //------------------------------------------------------------------------------------
@@ -259,12 +300,16 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
 // PRIVATE METHODS
 //------------------------------------------------------------------------------------
 
+// FITNESS FUNCTION
+// The below methods will return a double indicating the level of fitness of a given vector
+// Fitness is calcualted as the
+
 double Utilis::eval_sphere(std::vector<double> flyPos){
     double a = 0;
     for (int i = 0; i < dimensions; i++) {
-        a = a + std::pow(flyPos[i] + offset, 2);
+        a += std::pow(flyPos[i] + offset, 2);
     }
-    Settings::evaluationFunctionName = "SPHERE";
+    GlobalParam::evaluationFunctionName = "SPHERE";
     return a;
 }
 

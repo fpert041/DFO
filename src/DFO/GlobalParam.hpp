@@ -14,29 +14,23 @@
 #include <stdio.h>
 #include <array>
 #include <string>
+#include <memory>
 
 class Fly; // forward declare the existance of a class of type Fly
 
-struct Settings {
-    
-public:
-    
+struct GlobalParam {
+
+ 
     // dim: the dimensions of the problem
-    static const int dim = 10;
-    
+    const static int dim = 10;
     // popSize: the size of the population of 'flys'
-    static const int popSize = 20;
+    const static int popSize = 20;
     
     // disturbance threshold
-    static constexpr double dt = 0.001;
+    constexpr const static double dt = 0.001;
     
     // an array of 'empty' fly-objects: it will hold our swarm
-    static std::array<Fly, popSize> swarm;
-    
-    //--------------------------------------------------------
-    
-    // Variables to hold globally the dimension of the search space of the problem
-    static int searchSpaceWidth, searchSpaceHeight;
+    static std::array<std::shared_ptr<Fly>, popSize> swarm;
     
     // Constant to set the maximum number of Fly Evaluations allowed to the program
     static const int FE_allowed = 300000;
@@ -44,14 +38,30 @@ public:
     // This variable stores the index of the best Fly (whose position is the fittest to solve the problem)
     static int bestIndex;
     
-    static const int evalCount = 0;
-    
-    static const int scaleF = 5;
+    // Counter for the evaluations carried out in the program
+    static int evalCount;
     
     // Two variables to store globally the indeces of the left and right neighbour of a Fly currencly being checked
     static int leftNeighbour, rightNeighbour;
     
+    // This varaible stores name of the function used to perform the evaluation of Flies
     static std::string evaluationFunctionName;
+    
+    // is the problem being visualised across a 2d surface space?
+    const static bool mod_2d = true;
+    
+    //--------------------------------------------------------
+    
+    // Variables to hold globally the dimension of the search space of the problem
+    static int searchSpaceWidth, searchSpaceHeight;
+    
+public:
+    GlobalParam(){
+        evaluationFunctionName = "";
+        leftNeighbour, rightNeighbour = -1;
+        evalCount = 0;
+        bestIndex = -1;
+    }
 };
 
 

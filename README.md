@@ -2,7 +2,7 @@
 Dispersive Flies Optimisation implementation in C++
 
 ### Original Algorithm: Copyright (C) 2014 Mohammad Majid al-Rifaie
-#### Present C++ Porting by Francesco Perticarari
+#### Current re-implementation and C++ porting: Copyright (C) 2017 Francesco Perticarari
 
 ### License: This is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License.
 
@@ -23,3 +23,27 @@ The algorithm was first proposed by Mohammad Majid al-Rifaie, a computing lectur
 ## Technical Notes
 
 The algorithm is being showcased within an openFrameworks project to better visualise its action. The algorithm itself is not dependent on the framework and its cpp and header files can be used in any program. However, the xCode project that I included here, that is the program contained in this repo in general, needs to be run within openframeworks (just place it inside apps/myApps or any folder 3 levels down from the root folder of OF). You can [download openFrameworks on their website](http://openframeworks.cc/download/). Tested with of_v0.9.8_osx_release.
+
+## How to use
+
+The algorithm is contained in the DFO folder, which can be extracted and placed into any C++ project. Currently only one running algorithm per project is allowable as its global parameters are static variables and constants, therefore attempting to run several instances of the algorithm would not result in a number of independent swarms BUT IN  AN OVERLAPPING MESS. It is for this reason that I (should) have made sure that the main algorithm wrapper class can be instantiated only ONCE (singleton). In any case don't try to make several DFO objects.
+
+To use the DFO in a different program you need to create an instance of the algorithm. The wrapper class is "DFO", so just link `DFO.h` to your program and make sure the source files are part of the bindings of your program. Once you have done this, you have to create the DFO instance by calling one of its constructors, then you can use:
+
+```
+const generateSwarm();
+```
+
+-- to generate a new swarm and initialise its parameters (you can edit those in `GlobalParam.hpp`)
+
+```
+const updateSwarm();
+```
+
+-- to run a cycle of the algorithm, evaluate the current positions of the flies and update the swarm based on the flies' interactions  (you can edit the settings of the algorithm in `GlobalParam.hpp`)
+
+#### Note: the default DFO() constructor is set up with a test function!
+#### TO HAVE YOUR OWN FITNESS FUNCTION: You must pass in a function (normal, lambda or using a std::function type varibale as an argument)
+
+
+
