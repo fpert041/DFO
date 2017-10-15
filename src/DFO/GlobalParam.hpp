@@ -12,7 +12,7 @@
 #define Settings_hpp
 
 #include <stdio.h>
-#include <array>
+#include <vector>
 #include <string>
 #include <memory>
 
@@ -22,18 +22,18 @@ struct GlobalParam {
 
  
     // dim: the dimensions of the problem
-    const static int dim = 10;
+    static int dim;
     // popSize: the size of the population of 'flys'
-    const static int popSize = 20;
+    static int popSize;
     
     // disturbance threshold
-    constexpr const static double dt = 0.001;
+    static double dt;
     
     // an array of 'empty' fly-objects: it will hold our swarm
-    static std::array<std::shared_ptr<Fly>, popSize> swarm;
+    static std::vector<std::shared_ptr<Fly>> swarm;
     
     // Constant to set the maximum number of Fly Evaluations allowed to the program
-    static const int FE_allowed = 300000;
+    static int FE_allowed;
     
     // This variable stores the index of the best Fly (whose position is the fittest to solve the problem)
     static int bestIndex;

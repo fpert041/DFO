@@ -36,6 +36,21 @@ DFOvisual::DFOvisual(){
 //                      )
 //    );
     
+    /*  EXAMPLE PASSING IN ANOTHER CUSTOM FITNESS FUNCTION () */
+//    GlobalParam::dim = 2;
+//        dfo.reset(
+//                  new DFO(
+//                          [](std::vector<double> p) {
+//                              double x = abs(p[1]);
+//                              double y = abs(p[2]);
+//                              double fitness_function;
+//                              for (int i = 0; i < GlobalParam::dim; i++) {
+//                                  fitness_function = 12/x + 18/y * x * y; // x & y are positive
+//                              }
+//                              return fitness_function;
+//                          }
+//                          )
+//        );
 }
 
 DFOvisual::~DFOvisual(){

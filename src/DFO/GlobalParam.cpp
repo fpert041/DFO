@@ -8,6 +8,15 @@
 #include <stdio.h>
 #include "GlobalParam.hpp"
 
+// dim: the dimensions of the problem
+int GlobalParam::dim = 10;
+// popSize: the size of the population of 'flys'
+int GlobalParam::popSize = 20;
+// disturbance threshold
+double GlobalParam::dt = 0.001;
+// Constant to set the maximum number of Fly Evaluations allowed to the program
+int GlobalParam::FE_allowed = 300000;
+
 int GlobalParam::bestIndex = -1;
 int GlobalParam::searchSpaceWidth = GlobalParam::dim*10;
 int GlobalParam::searchSpaceHeight = searchSpaceWidth+GlobalParam::dim;
@@ -16,7 +25,7 @@ int GlobalParam::leftNeighbour = 0;
 int GlobalParam::rightNeighbour = 0;
 std::string GlobalParam::evaluationFunctionName = "";
 
-std::array<std::shared_ptr<Fly>, GlobalParam::popSize> GlobalParam::swarm;
+std::vector<std::shared_ptr<Fly>> GlobalParam::swarm;
 
 
 

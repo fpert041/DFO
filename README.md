@@ -45,5 +45,16 @@ const updateSwarm();
 #### Note: the default DFO() constructor is set up with a test function!
 #### TO HAVE YOUR OWN FITNESS FUNCTION: You must pass in a function (normal, lambda or using a std::function type varibale as an argument for the constructor)
 
+## Other useful parameters you can set:
 
+* dim: the dimensions of the problem (default = 10)
+ `GlobalParam::dim `
+* popSize: the size of the population of 'flies' (default = 20)
+ `GlobalParam::popSize `
+* disturbance threshold (default to = 0.001)
+ `GlobalParam::dt `
+* Constant to set the maximum number of Fly Evaluations allowed to the program (default to = 300000)
+ `GlobalParam::FE_allowed `
+
+Just re-define them in your caller class, just like this program in one of the examples does (see inside DFOvisual .cpp and .h)
 

@@ -52,8 +52,10 @@ void const DFO::generateSwarm(){
     GlobalParam::searchSpaceHeight = GlobalParam::searchSpaceWidth +  GlobalParam::dim;
     
     // generate swarm
-    for (int i = 0; i < GlobalParam::popSize; i++){
-        GlobalParam::swarm[i].reset(new Fly(pUtilis->genRandPos()));
+    int size = GlobalParam::popSize;
+    GlobalParam::swarm.clear();
+    for (int i = 0; i < size; i++){
+        GlobalParam::swarm.push_back(shared_ptr<Fly>(new Fly(pUtilis->genRandPos()) ) );
     }
     pUtilis->findBestFly();
 }
@@ -145,5 +147,6 @@ void const DFO::updateSwarm(){
             GlobalParam::swarm[i]->setPos(temp);
         }
         // ==== // end of interaction phase // ==== //
+        GlobalParam::evalCount ++;
     }
 }
