@@ -11,19 +11,30 @@
 
 DFOvisual::DFOvisual(){
     
-    dfo.reset(/*
-              new DFO(
-                      [](std::vector<double> p) {
-                          double fitness = 0;
-                          for (int i = 0; i < GlobalParam::dim - 1; i++) {
-                              fitness += pow((1 - p[i]), 2) + 100
-                              * pow((p[i + 1] - pow(p[i], 2)), 2); // Generalised
-                          }
-                          cout << "Rosenbrock" << endl;
-                          return fitness;
-                      }
-                      )*/
-    );
+    // To test different how the program visualises different fitess funtions
+    // Choose which one of these two to comment out
+    
+    /* EXAMPLE USING THE DEFAULT FITNESS FUNCTION (Sphere test func in this case) */
+    dfo.reset( new DFO );
+    
+    
+    /*  EXAMPLE PASSING IN A CUSTOM FITNESS FUNCTION (Ackley test func. in this case) */
+//    dfo.reset(
+//              new DFO(
+//                      [](std::vector<double> p) {
+//                          double a = 0;
+//                          double b = 0;
+//                          for (int i = 0; i < GlobalParam::dim; i++) {
+//                              a = a + pow(p[i], 2);
+//                              b = b + cos(2 * M_PI * p[i]);
+//                          }
+//
+//                          double c = -20 * exp(-0.2 * sqrt(a / GlobalParam::dim))
+//                          - exp(b / GlobalParam::dim) + 20 + M_E;
+//                          return c;
+//                      }
+//                      )
+//    );
     
 }
 
@@ -38,12 +49,11 @@ DFOvisual::~DFOvisual(){
 void DFOvisual::setup(){
     
     // OF window setup
-    ofSetFrameRate(60);
-    GlobalParam::searchSpaceHeight = GlobalParam::searchSpaceWidth +  GlobalParam::dim;
+    ofSetFrameRate(8);
+    
     ofSetWindowShape(GlobalParam::searchSpaceWidth*scaleF, GlobalParam::searchSpaceHeight*scaleF);
     
     dfo->generateSwarm();
-    
 }
 
 //--------------------------------------------------------------
@@ -59,7 +69,7 @@ void DFOvisual::draw(){
             // draw the axis (i.e. X and Y axis)
             if (true) {
                 // in processing it'd be stroke(200, 200, 200, 5);
-                ofSetLineWidth((float) 10.5);
+                ofSetLineWidth((float) 2.5);
                 ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight()); // y
                 if (GlobalParam::mod_2d)
                     ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2); // x

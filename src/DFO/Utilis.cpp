@@ -17,7 +17,7 @@
 Utilis::Utilis(){
     
     gen = std::mt19937(rd());
-    dis = std::uniform_real_distribution<>(1, 2); // Each call to dis(gen) generates a new random double
+    dis = std::uniform_real_distribution<>(0, 1); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
     
     dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
@@ -251,10 +251,12 @@ void Utilis::printSummary() {
 
 vector<double> Utilis::genRandPos() {
     vector<double> pos = vector<double>(GlobalParam::dim);
-    for (int d = 0; d < GlobalParam::dim; d++)
-        pos[d] = -GlobalParam::searchSpaceWidth / 2 + 2 * GlobalParam::searchSpaceWidth / 2 * dis(gen);
+    for (int d = 0; d < GlobalParam::dim; d++){
+        double coordinateLimitL = -GlobalParam::searchSpaceWidth / 2; // deletable for more optimisation //<<<
+        double coordinateLimitR = coordinateLimitL + GlobalParam::searchSpaceWidth;
+        pos[d] = -GlobalParam::searchSpaceWidth / 2  + GlobalParam::searchSpaceWidth * dis(gen);
     //// pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
-    
+    }
     return pos;
 }
 

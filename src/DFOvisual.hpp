@@ -17,7 +17,7 @@ private:
     static const long serialVersionUID = 1L;
     
     // variable that will hold the DFO algorithm components
-    auto_ptr<DFO> dfo;
+    unique_ptr<DFO> dfo;
     
     // draw - sub-methods
     void background();

@@ -103,8 +103,8 @@
 				C703A41A1F8E72EF000EBCE0 /* Utilis.hpp */,
 				C703A4161F8E6D3D000EBCE0 /* Fly.cpp */,
 				C703A4131F8E6D3D000EBCE0 /* Fly.hpp */,
-				C7F223861F92A0E500E6163D /* GlobalParam.hpp */,
 				C7F223871F92A79A00E6163D /* GlobalParam.cpp */,
+				C7F223861F92A0E500E6163D /* GlobalParam.hpp */,
 			);
 			path = DFO;
 			sourceTree = "<group>";

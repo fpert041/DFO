@@ -20,8 +20,6 @@
 
 class Fly{
     
-    GlobalParam g;
-    
 private:
     std::vector<double>pos; // fly position (in an N-Dimentional problem/search space)
     std::vector<double>exPos; // old position

@@ -43,7 +43,7 @@ const updateSwarm();
 -- to run a cycle of the algorithm, evaluate the current positions of the flies and update the swarm based on the flies' interactions  (you can edit the settings of the algorithm in `GlobalParam.hpp`)
 
 #### Note: the default DFO() constructor is set up with a test function!
-#### TO HAVE YOUR OWN FITNESS FUNCTION: You must pass in a function (normal, lambda or using a std::function type varibale as an argument)
+#### TO HAVE YOUR OWN FITNESS FUNCTION: You must pass in a function (normal, lambda or using a std::function type varibale as an argument for the constructor)
 
 
 

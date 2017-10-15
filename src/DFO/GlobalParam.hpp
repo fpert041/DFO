@@ -56,12 +56,17 @@ struct GlobalParam {
     static int searchSpaceWidth, searchSpaceHeight;
     
 public:
-    GlobalParam(){
-        evaluationFunctionName = "";
-        leftNeighbour, rightNeighbour = -1;
-        evalCount = 0;
-        bestIndex = -1;
-    }
+    
+    // ----- this struct cannot be instantiated: -----
+    
+    // C++ 03 way of making sure the below constructors
+    // are unacceptable otherwise you may accidentally get copies of
+    // your singleton appearing.
+    GlobalParam() = delete;
+    GlobalParam(GlobalParam const&) = delete;
+    void operator=(GlobalParam const&) = delete;
+    
+    // Note: In C++ 11 we can use the better ways of deleting the methods
 };
 
 

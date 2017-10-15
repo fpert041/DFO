@@ -10,6 +10,7 @@
 
 Fly::Fly(std::vector<double> inPos){ // CONSTRUCTOR
     pos = inPos; // set the position of the fly
+    exPos = pos; // initially the old position vector is initialised using the same values as the actual position vector
     posDimensions = inPos.size(); // set the value that holds the number of dimensions of the space where the fly lives
 }
 

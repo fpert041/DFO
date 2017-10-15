@@ -15,7 +15,6 @@ void ofApp::update(){
 void ofApp::draw(){
     vis.draw();
     vis.update();
-
 }
 
 //--------------------------------------------------------------

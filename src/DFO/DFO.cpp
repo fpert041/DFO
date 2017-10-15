@@ -44,12 +44,18 @@ DFO::~DFO(){
  *********************************************************************************/
 
 void const DFO::generateSwarm(){
+    
+    // Set up global parameters for the problem space -> this works well for visualising the problem
+    // But I wonder how it would work on other search-spaces //************INVESTIGATE W/ MOHAMMAD IF POSSIBLE ****//<<<
+    
+    GlobalParam::searchSpaceWidth = 100; // at present this is the RANGE of the value of each dimension (search space coordinates)
+    GlobalParam::searchSpaceHeight = GlobalParam::searchSpaceWidth +  GlobalParam::dim;
+    
     // generate swarm
     for (int i = 0; i < GlobalParam::popSize; i++){
-        GlobalParam::swarm[i].reset(new Fly(vector<double>(pUtilis->genRandPos())));
-        
-        pUtilis->findBestFly();
+        GlobalParam::swarm[i].reset(new Fly(pUtilis->genRandPos()));
     }
+    pUtilis->findBestFly();
 }
 
 //--------------------------------------------------------------------------------
@@ -69,7 +75,9 @@ void const DFO::updateSwarm(){
     for (int i = 0; i < GlobalParam::popSize; i++)
     {
         // evaluate the fitness of each Fly in the swarm, then leave a record of the fitness value into each fly
-        GlobalParam::swarm[i]->setFitness(pUtilis->evaluate(GlobalParam::swarm[i]->getPos()));
+        GlobalParam::swarm[i]->setFitness(
+                                              pUtilis->evaluate(GlobalParam::swarm[i]->getPos())
+                                          );
     }
     
     // now that each fly knows its fitness, we can check and record which one is the best
