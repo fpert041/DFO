@@ -229,6 +229,7 @@ void Utilis::findBestFly() {
     for (int i = 0; i < GlobalParam::popSize; i++) {
         if (GlobalParam::swarm[i]->getFitness() < min) {
             min = GlobalParam::swarm[i]->getFitness();
+            //cout << "fly: " + to_string(i) + " - BestF: " + to_string(min) << endl;
             GlobalParam::bestIndex = i;
         }
     }
@@ -252,9 +253,9 @@ void Utilis::printSummary() {
 vector<double> Utilis::genRandPos() {
     vector<double> pos = vector<double>(GlobalParam::dim);
     for (int d = 0; d < GlobalParam::dim; d++){
-        double coordinateLimitL = -GlobalParam::searchSpaceWidth / 2; // deletable for more optimisation //<<<
-        double coordinateLimitR = coordinateLimitL + GlobalParam::searchSpaceWidth;
-        pos[d] = -GlobalParam::searchSpaceWidth / 2  + 2 * GlobalParam::searchSpaceWidth * dis(gen);
+        //double coordinateLimitL = -GlobalParam::searchSpaceWidth / 2; // deletable for more optimisation //<<<
+        //double coordinateLimitR = coordinateLimitL + GlobalParam::searchSpaceWidth;
+        pos[d] = -GlobalParam::searchSpaceWidth / 2  + 2 * GlobalParam::searchSpaceWidth / 2   * dis(gen);
     //// pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
     }
     return pos;

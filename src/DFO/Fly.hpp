@@ -83,12 +83,7 @@ public:
     // then return the distance between
     const double getDistance(int n);
     
-    const std::string toString() { // return the vector of the fly's coordinate as a string
-        std::string s = "";
-        for (int d = 0; d < posDimensions-1; ++d )
-            s.append(std::to_string(pos[d]) ).append(", ");
-        return s;
-    }
+    const std::string toString();
     
     /*
      public String toString() {

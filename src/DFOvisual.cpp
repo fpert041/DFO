@@ -11,6 +11,8 @@
 
 DFOvisual::DFOvisual(){
     
+    GlobalParam::popSize = 4;
+    
     // To test different how the program visualises different fitess funtions
     // Choose which one of these two to comment out
     
@@ -84,11 +86,13 @@ void DFOvisual::draw(){
             // draw the axis (i.e. X and Y axis)
             if (true) {
                 // in processing it'd be stroke(200, 200, 200, 5);
-                ofSetLineWidth((float) 2.5);
+                ofSetColor(100);
+                ofSetLineWidth((float) 5);
                 ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight()); // y
                 if (GlobalParam::mod_2d)
                     ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2); // x
             }
+            ofSetColor(0);
             
             // ======================= Visualising the flies on the canvas
             // ========================================
@@ -102,6 +106,7 @@ void DFOvisual::draw(){
             if (GlobalParam::mod_2d) {
                 for (int d = 0; d < GlobalParam::dim - 2; d += 2){
                     // for ( int d = 0; d < 1; d++ )
+                    ofSetColor(0);
                     int ellipseSize = 5; // ellipse size
                     if (i == GlobalParam::bestIndex) // make the colour of the best particle
                         // RED and twice the size
@@ -130,6 +135,8 @@ void DFOvisual::draw(){
                     // Horizontal Lines
                     int xGap = GlobalParam::searchSpaceWidth * scaleF / 2;
                     int yGap = -GlobalParam::searchSpaceWidth * scaleF / 2 + gap * (d + 1);
+                    ofSetColor(0);
+                    ofDrawLine(-xGap, yGap, xGap, yGap);
                     
                     // flies position
                     int ellipseSize = 5;
@@ -170,9 +177,11 @@ void DFOvisual::background(){
     ofSetColor(255, 255, 255, 150);
     ofDrawRectangle(0, 0, ofGetWidth() / 2 - 5, 80);
     ofSetColor(0);// ,0,0,20);
+    ofDrawBitmapString("Y: each dimension / X: value || dots = the val. of each dim. per each fly", 55, 10);
     ofDrawBitmapString("Dimensions: " + to_string(GlobalParam::dim), 25, 20);
     ofDrawBitmapString("Function: " + GlobalParam::evaluationFunctionName, 25, 35);
     ofDrawBitmapString("Cycles: " + to_string(GlobalParam::evalCount), 25, 50);
     ofDrawBitmapString("Fitness: " + to_string(GlobalParam::swarm[GlobalParam::bestIndex]->getFitness()), 25, 65);
+    ofDrawBitmapString("Best Index: " + to_string(GlobalParam::bestIndex), 25, 80);
     //text("DT: " + Global.dt, 25, 80);
 }

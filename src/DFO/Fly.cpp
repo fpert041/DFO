@@ -22,10 +22,14 @@ Fly::~Fly(){ // DESTRUCTOR
     pRightNeighbour = nullptr;
 }
 
+//------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------
 
 const std::vector<double> Fly::getPos(){ // get the vector ("of coordinates") of the fly's position (in the search space)
     return pos;
 }
+
+//------------------------------------------------------------------------------------
 
 const double Fly::getDistance(int n) {
     double squaredSum = 0;
@@ -34,3 +38,13 @@ const double Fly::getDistance(int n) {
     }
     return std::sqrt(squaredSum);
 }
+
+//------------------------------------------------------------------------------------
+
+const std::string Fly::toString() { // return the vector of the fly's coordinate as a string
+    std::string s = "";
+    for (int d = 0; d < posDimensions-1; ++d )
+        s.append(std::to_string(pos[d]) ).append(", ");
+    return s;
+}
+
