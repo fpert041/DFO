@@ -254,7 +254,7 @@ vector<double> Utilis::genRandPos() {
     for (int d = 0; d < GlobalParam::dim; d++){
         double coordinateLimitL = -GlobalParam::searchSpaceWidth / 2; // deletable for more optimisation //<<<
         double coordinateLimitR = coordinateLimitL + GlobalParam::searchSpaceWidth;
-        pos[d] = -GlobalParam::searchSpaceWidth / 2  + GlobalParam::searchSpaceWidth * dis(gen);
+        pos[d] = -GlobalParam::searchSpaceWidth / 2  + 2 * GlobalParam::searchSpaceWidth * dis(gen);
     //// pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
     }
     return pos;

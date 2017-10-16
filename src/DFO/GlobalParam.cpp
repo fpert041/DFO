@@ -16,6 +16,8 @@ int GlobalParam::popSize = 20;
 double GlobalParam::dt = 0.001;
 // Constant to set the maximum number of Fly Evaluations allowed to the program
 int GlobalParam::FE_allowed = 300000;
+// is the problem being visualised across a 2d surface space? (TRUE) Or just as 1D lines? (FALSE)
+bool GlobalParam::mod_2d = false;  
 
 int GlobalParam::bestIndex = -1;
 int GlobalParam::searchSpaceWidth = GlobalParam::dim*10;

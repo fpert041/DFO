@@ -172,7 +172,7 @@ void DFOvisual::background(){
     ofSetColor(0);// ,0,0,20);
     ofDrawBitmapString("Dimensions: " + to_string(GlobalParam::dim), 25, 20);
     ofDrawBitmapString("Function: " + GlobalParam::evaluationFunctionName, 25, 35);
-    ofDrawBitmapString("FEs: " + to_string(GlobalParam::evalCount), 25, 50);
+    ofDrawBitmapString("Cycles: " + to_string(GlobalParam::evalCount), 25, 50);
     ofDrawBitmapString("Fitness: " + to_string(GlobalParam::swarm[GlobalParam::bestIndex]->getFitness()), 25, 65);
     //text("DT: " + Global.dt, 25, 80);
 }

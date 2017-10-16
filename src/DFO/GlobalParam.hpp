@@ -47,8 +47,8 @@ struct GlobalParam {
     // This varaible stores name of the function used to perform the evaluation of Flies
     static std::string evaluationFunctionName;
     
-    // is the problem being visualised across a 2d surface space?
-    const static bool mod_2d = true;
+    // is the problem being visualised across a 2d surface space? Or just as 1D lines?
+    static bool mod_2d; 
     
     //--------------------------------------------------------
     
