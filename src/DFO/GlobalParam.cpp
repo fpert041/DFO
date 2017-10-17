@@ -20,8 +20,8 @@ int GlobalParam::FE_allowed = 300000;
 bool GlobalParam::mod_2d = false;  
 
 int GlobalParam::bestIndex = -1;
-int GlobalParam::searchSpaceWidth = GlobalParam::dim*10;
-int GlobalParam::searchSpaceHeight = searchSpaceWidth+GlobalParam::dim;
+int GlobalParam::searchSpaceWidth = 100; // the size of each dimension (range => +/-)
+int GlobalParam::searchSpaceHeight = searchSpaceWidth+GlobalParam::dim; // this is mainly used for visualisation
 int GlobalParam::evalCount = 0;
 int GlobalParam::leftNeighbour = 0;
 int GlobalParam::rightNeighbour = 0;

@@ -102,7 +102,8 @@ void DFOvisual::draw(){
             
             ofTranslate(GlobalParam::searchSpaceWidth * scaleF / 2, GlobalParam::searchSpaceHeight * scaleF / 2);
             
-            // EVERY 2 dimensions together (true) :: EACH dimension separate (false)
+            // (true) Group dimensions in pairs and plot them on a XY graph (as if each was 1 fly)
+            // (false) Draw EACH dimension separately and visualise the value for any given fly as a black dot on it
             if (GlobalParam::mod_2d) {
                 for (int d = 0; d < GlobalParam::dim - 2; d += 2){
                     // for ( int d = 0; d < 1; d++ )

@@ -74,7 +74,7 @@ void const DFO::updateSwarm(){
         return -1;
     
     // ========= EVALUATION Phase =========
-    for (int i = 0; i < GlobalParam::popSize; i++)
+    for (int i = 0; i < GlobalParam::popSize; ++i)
     {
         // evaluate the fitness of each Fly in the swarm, then leave a record of the fitness value into each fly
         GlobalParam::swarm[i]->setFitness(
@@ -128,7 +128,7 @@ void const DFO::updateSwarm(){
         vector<double> temp(GlobalParam::dim);
         for (int d = 0; d < GlobalParam::dim; d++) {
             temp[d] = GlobalParam::swarm[chosen]->getPos(d) +
-            pUtilis->random(1) * (GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[i]->getPos(d));// FINAL
+            pUtilis->random(-1, 1) * (GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[i]->getPos(d));// FINAL // <<<<<<<<<<<<<<<<<<<<<< why does it get stack with  random [0,1] and works with random [-1, 1]???
             
             // disturbance mechanism
             if(true){
