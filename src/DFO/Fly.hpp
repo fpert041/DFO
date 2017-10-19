@@ -42,42 +42,20 @@ public:
     ~Fly(); // DESTRUCTOR
     
     const std::vector<double> getPos(); // get the vector ("of coordinates") of the fly's position (in the search space)
-
     
-    const double getPos(int n) { //overloaded function to get the value of a single dimension from the fly's position
-        return pos[n];
-    }
+    const double getPos(int n); //overloaded function to get the value of a single dimension from the fly's position
     
-    const std::vector<double> getExPos() { // get the vector of the previous position ("coordinates")
-        return exPos;
-    }
+    const std::vector<double> getExPos(); // get the vector of the previous position ("coordinates")
     
+    const double getExPos(int n); //overloaded function to get the value of a single dimension from the fly's old position
     
-    const double getExPos(int n) { //overloaded function to get the value of a single dimension from the fly's old position
-        return exPos[n];
-    }
-    
-    void setPos(std::vector<double> position) { // set the position of the fly with a vector supplied as argument
-        if( !(position.size() == pos.size()) ){
-            std::cout << "Vector supplied is not the same size as the current fly population" << std::endl;
-            return -1;
-        }
-        exPos = pos;
-        pos = position;
-    }
+    void setPos(std::vector<double> position); // set the position of the fly with a vector supplied as argument
  
-    void setPos(int n, double inPos) { // change one specific dimension (n) of the fly's position to 'inPos'
-        exPos[n] = pos[n];
-        pos[inPos] = n;
-    }
+    void setPos(int n, double inPos); // change one specific dimension (n) of the fly's position to 'inPos'
     
-    void setFitness(double t) { // set fitness value
-        fitness = t;
-    }
+    void setFitness(double t); // set fitness value
     
-    const double getFitness() { // return fitness value
-        return fitness;
-    }
+    const double getFitness(); // return fitness value
     
     // take in the reference of a swarm of flies (vector) and an int 'n'
     // then return the distance between

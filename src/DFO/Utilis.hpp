@@ -42,7 +42,7 @@ public:
     // The below enumerator is usedin choosing which type of default (non-distance based) ineighbouring conection to choose
     enum NeighbouringTopologyType { RING, RANDOM };
     
-    NeighbouringTopologyType ntt;
+    NeighbouringTopologyType ntt; // (ntt = neighbour topology type)
     
     // ===================== functions =====================
     

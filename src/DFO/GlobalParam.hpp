@@ -47,13 +47,10 @@ struct GlobalParam {
     // This varaible stores name of the function used to perform the evaluation of Flies
     static std::string evaluationFunctionName;
     
-    // is the problem being visualised across a 2d surface space? Or just as 1D lines?
-    static bool mod_2d; 
-    
     //--------------------------------------------------------
     
     // Variables to hold globally the dimension of the search space of the problem
-    static int searchSpaceWidth, searchSpaceHeight;
+    static int searchSpaceWidth;
     
 public:
     

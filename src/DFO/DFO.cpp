@@ -49,7 +49,6 @@ void const DFO::generateSwarm(){
     // But I wonder how it would work on other search-spaces //************INVESTIGATE W/ MOHAMMAD IF POSSIBLE ****//<<<
     
     GlobalParam::searchSpaceWidth = 100; // at present this is the RANGE of the value of each dimension (search space coordinates)
-    GlobalParam::searchSpaceHeight = GlobalParam::searchSpaceWidth +  GlobalParam::dim;
     
     // generate swarm
     int size = GlobalParam::popSize;
@@ -57,7 +56,9 @@ void const DFO::generateSwarm(){
     for (int i = 0; i < size; i++){
         GlobalParam::swarm.push_back(shared_ptr<Fly>(new Fly(pUtilis->genRandPos()) ) );
     }
+
     pUtilis->findBestFly();
+
 }
 
 //--------------------------------------------------------------------------------
@@ -84,19 +85,18 @@ void const DFO::updateSwarm(){
     
     // now that each fly knows its fitness, we can check and record which one is the best
     pUtilis->findBestFly();
-    
     // ========= INTERACTION Phase =========
-    for (int i = 0; i < GlobalParam::popSize; i++) {
+    for (int k = 0; k < GlobalParam::popSize; k++) {
         // Elitist approach:
         // ignore the fly with the best index (we keep it as it is)
-        if (i == GlobalParam::bestIndex)
+        if (k == GlobalParam::bestIndex)
             continue;
         
         //// Use the below method if you want to find the closest neighbour in the search space
         // utils.findClosestNeighbours(i);
         
         //// Use the below method if you want to find the closest neighbour in the search space
-        pUtilis->getRandF_or_RingT_Neighbours(i, Utilis::RING);
+        pUtilis->getRandF_or_RingT_Neighbours(k, Utilis::RING);
         
         // cout << to_string(GlobalParam::rightNeighbour) + " :: " + to_string(i) + " :: " + to_string(GlobalParam::rightNeighbour) << endl;
         
@@ -105,14 +105,14 @@ void const DFO::updateSwarm(){
         if (true) {
             leftP = GlobalParam::swarm[GlobalParam::leftNeighbour]->getFitness();
             
-            rightP = GlobalParam::swarm[GlobalParam::leftNeighbour]->getFitness();
+            rightP = GlobalParam::swarm[GlobalParam::rightNeighbour]->getFitness();
             
         } else { // THIS VERSION is suitable for gradual and non-steep hills : try it by turning 'true' into 'false'
-            double leftDist =  GlobalParam::swarm[i]->getDistance(GlobalParam::leftNeighbour);
-            double rightDist = GlobalParam::swarm[i]->getDistance(GlobalParam::rightNeighbour);
+            double leftDist =  GlobalParam::swarm[k]->getDistance(GlobalParam::leftNeighbour);
+            double rightDist = GlobalParam::swarm[k]->getDistance(GlobalParam::rightNeighbour);
             
             leftP = leftDist * GlobalParam::swarm[GlobalParam::leftNeighbour]->getFitness();
-            rightP = rightDist * GlobalParam::swarm[GlobalParam::leftNeighbour]->getFitness();
+            rightP = rightDist * GlobalParam::swarm[GlobalParam::rightNeighbour]->getFitness();
         }
         
         int chosen;
@@ -122,13 +122,38 @@ void const DFO::updateSwarm(){
             chosen = GlobalParam::rightNeighbour;
         
         int dCounter = 0;
+        
         // ================== Apply the update equation ========================
         // =====================================================================
         
         vector<double> temp(GlobalParam::dim);
         for (int d = 0; d < GlobalParam::dim; d++) {
-            temp[d] = GlobalParam::swarm[chosen]->getPos(d) +
-            pUtilis->random(-1, 1) * (GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[i]->getPos(d));// FINAL // <<<<<<<<<<<<<<<<<<<<<< why does it get stack with  random [0,1] and works with random [-1, 1]???
+            // debug //
+            
+           // cout<< "fly n# " + to_string(k) + " / dim: " + to_string(d) << endl;
+            //cout << "  val: " + to_string(GlobalParam::swarm[k]->getPos(d))<< endl;
+            
+                 // it seems like the best neighbour is on the wrong side
+                //cout << "fly n# " + to_string(k) + " out of " + to_string(GlobalParam::dim) + " " + to_string(GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[k]->getPos(d)) << endl;
+            // endDebug //
+            
+            /* ELITIST (easier to find one solution but that's all you get) */
+            temp[d] =
+                        GlobalParam::swarm[chosen]->getPos(d) +
+                        pUtilis->random(1) *
+                        (GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[k]->getPos(d));
+                        // FINAL // <<<<<<<< why does it get stack with  random [0,1] and works with random [-1, 1]???
+            
+            
+            /* NON-ELITIST (harder to find a solution but you can find clusterings that indicate more than 1 solution) */
+            /*******************************************************************************************************
+            temp[d] =
+                         GlobalParam::swarm[chosen]->getPos(d) +
+                         pUtilis->random(1) *
+                         (GlobalParam::swarm[chosen]->getPos(d) - GlobalParam::swarm[k]->getPos(d));
+                         // FINAL
+             
+             *******************************************************************************************************/
             
             // disturbance mechanism
             if(true){
@@ -144,9 +169,10 @@ void const DFO::updateSwarm(){
             }
             
             //cout << "Disturbances in Fly  #" + to_sring(i) + ": \t" + to_sring(dCounter) << endl;
-            GlobalParam::swarm[i]->setPos(temp);
         }
+        GlobalParam::swarm[k]->setPos(temp);
         // ==== // end of interaction phase // ==== //
-        GlobalParam::evalCount ++;
+        
     }
+    GlobalParam::evalCount ++;
 }

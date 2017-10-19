@@ -22,12 +22,12 @@ Utilis::Utilis(){
     
     dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
     em = SPHERE; // defaults the evaluation method to SPHERE
-    ntt = RING; // defaults the way neighbours are linked with to RING TOPOLOGY
+    ntt = RING; // defaults the way neighbours are linked with to RING TOPOLOGY (ntt = neighbour topology type)
 }
 
 Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
     gen = std::mt19937(rd());
-    dis = std::uniform_real_distribution<>(1, 2); // Each call to dis(gen) generates a new random double
+    dis = std::uniform_real_distribution<>(0, 1); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
     
     dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
@@ -44,7 +44,7 @@ double Utilis::evaluate(vector<double> flyPos){
     switch (em) {
         case CUSTOM:
             GlobalParam::evaluationFunctionName = "Custom Fitness Function";
-            return eval_custom_fitness_func(flyPos);
+            return std::abs(eval_custom_fitness_func(flyPos));
             break;
             
         case SPHERE:
@@ -200,7 +200,7 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
     }
     else // RANDOM
     {
-        GlobalParam::leftNeighbour = dis(gen)*GlobalParam::popSize;
+        GlobalParam::leftNeighbour = int(dis(gen)*GlobalParam::popSize);
         while (GlobalParam::leftNeighbour == curr){
             int r = int(dis(gen)*GlobalParam::popSize);
             GlobalParam::leftNeighbour = r;
@@ -251,8 +251,8 @@ void Utilis::printSummary() {
 /* Generate and output a random Fly's position vector */
 
 vector<double> Utilis::genRandPos() {
-    vector<double> pos = vector<double>(GlobalParam::dim);
-    for (int d = 0; d < GlobalParam::dim; d++){
+    vector<double> pos = vector<double>(dimensions);
+    for (int d = 0; d < dimensions; d++){
         //double coordinateLimitL = -GlobalParam::searchSpaceWidth / 2; // deletable for more optimisation //<<<
         //double coordinateLimitR = coordinateLimitL + GlobalParam::searchSpaceWidth;
         pos[d] = -GlobalParam::searchSpaceWidth / 2  + 2 * GlobalParam::searchSpaceWidth / 2   * dis(gen);
@@ -264,8 +264,8 @@ vector<double> Utilis::genRandPos() {
 // Alternative version of the method above
 
 vector<double> Utilis::genRandPos2() {
-    vector<double> pos = vector<double>(GlobalParam::dim);
-    for (int d = 0; d < GlobalParam::dim; d++)
+    vector<double> pos = vector<double>(dimensions);
+    for (int d = 0; d < dimensions; d++)
         pos[d] = -GlobalParam::searchSpaceWidth + GlobalParam::searchSpaceWidth / 2 * dis(gen);
     //  pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
     
@@ -278,8 +278,9 @@ vector<double> Utilis::genRandPos2() {
 
 double Utilis::random(double from, double to){
     double ranN = dis(gen);
-    ranN *= abs(to - from);
+    ranN *= (to - from);
     ranN += from;
+    // cout << ranN << endl;
     return ranN;
 }
 
@@ -297,7 +298,7 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
     std::normal_distribution<double> distribution(bellMean, bellStdDev);
     
     return distribution(generator);
-}
+} // <<<<< possibly?
 
 //------------------------------------------------------------------------------------
 // PRIVATE METHODS
@@ -309,7 +310,7 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
 
 double Utilis::eval_sphere(std::vector<double> flyPos){
     double a = 0;
-    for (int i = 0; i < dimensions; i++) {
+    for (int i = 0; i < dimensions; ++i) {
         a += std::pow(flyPos[i] + offset, 2);
     }
     GlobalParam::evaluationFunctionName = "SPHERE";

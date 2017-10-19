@@ -7,18 +7,24 @@
 
 #include "DFOvisual.hpp"
 
+ofImage img;
+
 /* Constructor & Destructor */
 
 DFOvisual::DFOvisual(){
+    visualisationHeight = GlobalParam::searchSpaceWidth +  GlobalParam::dim;
     
-    GlobalParam::popSize = 4;
+    
+    img.load("/Users/pesa/Documents/UNI/of_v0.9.8_osx_release/apps/naturalComp/wk2_DFO/my_image.png");
+    
+    GlobalParam::popSize = 5;
     
     // To test different how the program visualises different fitess funtions
     // Choose which one of these two to comment out
     
     /* EXAMPLE USING THE DEFAULT FITNESS FUNCTION (Sphere test func in this case) */
     dfo.reset( new DFO );
-    
+//
     
     /*  EXAMPLE PASSING IN A CUSTOM FITNESS FUNCTION (Ackley test func. in this case) */
 //    dfo.reset(
@@ -53,6 +59,24 @@ DFOvisual::DFOvisual(){
 //                          }
 //                          )
 //        );
+    
+      /*  EXAMPLE PASSING IN IMG BRIGHNTESS FUNCTION () */
+//        GlobalParam::dim = 2;
+//            dfo.reset(
+//                      new DFO(
+//                              [](std::vector<double> p) {
+//                                  double x = abs(p[1]);
+//                                  double y = abs(p[2]);
+//                                  ofColor c = img.getColor(x, y); // not sure if in OF the function is actually getBrightness() but you get the idea ;)
+//                                  double brightness_of_a_pixel = (double) c.getBrightness();
+//                                  double fitness_function_result;
+//                                  for (int i = 0; i < GlobalParam::dim; i++) {
+//                                      fitness_function_result = 255. - brightness_of_a_pixel;
+//                                  }
+//                                  return fitness_function_result;
+//                              }
+//                              )
+//            );
 }
 
 DFOvisual::~DFOvisual(){
@@ -68,7 +92,7 @@ void DFOvisual::setup(){
     // OF window setup
     ofSetFrameRate(8);
     
-    ofSetWindowShape(GlobalParam::searchSpaceWidth*scaleF, GlobalParam::searchSpaceHeight*scaleF);
+    ofSetWindowShape(GlobalParam::searchSpaceWidth*scaleF, visualisationHeight*scaleF);
     
     dfo->generateSwarm();
 }
@@ -89,7 +113,7 @@ void DFOvisual::draw(){
                 ofSetColor(100);
                 ofSetLineWidth((float) 5);
                 ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight()); // y
-                if (GlobalParam::mod_2d)
+                if (mod_2d)
                     ofDrawLine(0, ofGetHeight() / 2, ofGetWidth(), ofGetHeight() / 2); // x
             }
             ofSetColor(0);
@@ -100,11 +124,11 @@ void DFOvisual::draw(){
             
             ofPushMatrix();
             
-            ofTranslate(GlobalParam::searchSpaceWidth * scaleF / 2, GlobalParam::searchSpaceHeight * scaleF / 2);
+            ofTranslate(GlobalParam::searchSpaceWidth * scaleF / 2, visualisationHeight * scaleF / 2);
             
             // (true) Group dimensions in pairs and plot them on a XY graph (as if each was 1 fly)
             // (false) Draw EACH dimension separately and visualise the value for any given fly as a black dot on it
-            if (GlobalParam::mod_2d) {
+            if (mod_2d) {
                 for (int d = 0; d < GlobalParam::dim - 2; d += 2){
                     // for ( int d = 0; d < 1; d++ )
                     ofSetColor(0);
