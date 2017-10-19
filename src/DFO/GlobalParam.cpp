@@ -8,6 +8,8 @@
 #include <stdio.h>
 #include "GlobalParam.hpp"
 
+// keep leader (best fly) in the equation or not
+bool GlobalParam::democracy = false;
 // dim: the dimensions of the problem
 int GlobalParam::dim = 10;
 // popSize: the size of the population of 'flys'

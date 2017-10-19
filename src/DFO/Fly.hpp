@@ -41,7 +41,7 @@ public:
     
     ~Fly(); // DESTRUCTOR
     
-    const std::vector<double> getPos(); // get the vector ("of coordinates") of the fly's position (in the search space)
+    const std::vector<double>& getPos(); // get the vector ("of coordinates") of the fly's position (in the search space)
     
     const double getPos(int n); //overloaded function to get the value of a single dimension from the fly's position
     

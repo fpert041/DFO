@@ -128,15 +128,8 @@ void const DFO::updateSwarm(){
         
         vector<double> temp(GlobalParam::dim);
         for (int d = 0; d < GlobalParam::dim; d++) {
-            // debug //
             
-           // cout<< "fly n# " + to_string(k) + " / dim: " + to_string(d) << endl;
-            //cout << "  val: " + to_string(GlobalParam::swarm[k]->getPos(d))<< endl;
-            
-                 // it seems like the best neighbour is on the wrong side
-                //cout << "fly n# " + to_string(k) + " out of " + to_string(GlobalParam::dim) + " " + to_string(GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[k]->getPos(d)) << endl;
-            // endDebug //
-            
+            if(!GlobalParam::democracy){
             /* ELITIST (easier to find one solution but that's all you get) */
             temp[d] =
                         GlobalParam::swarm[chosen]->getPos(d) +
@@ -144,16 +137,14 @@ void const DFO::updateSwarm(){
                         (GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[k]->getPos(d));
                         // FINAL // <<<<<<<< why does it get stack with  random [0,1] and works with random [-1, 1]???
             
-            
+            } else {
             /* NON-ELITIST (harder to find a solution but you can find clusterings that indicate more than 1 solution) */
-            /*******************************************************************************************************
             temp[d] =
                          GlobalParam::swarm[chosen]->getPos(d) +
                          pUtilis->random(1) *
                          (GlobalParam::swarm[chosen]->getPos(d) - GlobalParam::swarm[k]->getPos(d));
                          // FINAL
-             
-             *******************************************************************************************************/
+            }
             
             // disturbance mechanism
             if(true){
@@ -171,8 +162,7 @@ void const DFO::updateSwarm(){
             //cout << "Disturbances in Fly  #" + to_sring(i) + ": \t" + to_sring(dCounter) << endl;
         }
         GlobalParam::swarm[k]->setPos(temp);
-        // ==== // end of interaction phase // ==== //
-        
     }
+    // ==== // end of interaction phase // ==== //
     GlobalParam::evalCount ++;
 }

@@ -17,13 +17,14 @@ DFOvisual::DFOvisual(){
     
     img.load("/Users/pesa/Documents/UNI/of_v0.9.8_osx_release/apps/naturalComp/wk2_DFO/my_image.png");
     
-    GlobalParam::popSize = 5;
+    GlobalParam::popSize = 10;
+    //mod_2d = true;
     
     // To test different how the program visualises different fitess funtions
     // Choose which one of these two to comment out
     
     /* EXAMPLE USING THE DEFAULT FITNESS FUNCTION (Sphere test func in this case) */
-    dfo.reset( new DFO );
+      dfo.reset( new DFO );
 //
     
     /*  EXAMPLE PASSING IN A CUSTOM FITNESS FUNCTION (Ackley test func. in this case) */
@@ -62,6 +63,7 @@ DFOvisual::DFOvisual(){
     
       /*  EXAMPLE PASSING IN IMG BRIGHNTESS FUNCTION () */
 //        GlobalParam::dim = 2;
+    
 //            dfo.reset(
 //                      new DFO(
 //                              [](std::vector<double> p) {
@@ -208,5 +210,9 @@ void DFOvisual::background(){
     ofDrawBitmapString("Cycles: " + to_string(GlobalParam::evalCount), 25, 50);
     ofDrawBitmapString("Fitness: " + to_string(GlobalParam::swarm[GlobalParam::bestIndex]->getFitness()), 25, 65);
     ofDrawBitmapString("Best Index: " + to_string(GlobalParam::bestIndex), 25, 80);
+    ofDrawBitmapString("Best Vector: ", 25, 95);
+    for(int i = 0; i<GlobalParam::dim; ++i){
+        ofDrawBitmapString(to_string(int(GlobalParam::swarm[GlobalParam::bestIndex]->getPos(i))), 130+i*40, 95);
+    }
     //text("DT: " + Global.dt, 25, 80);
 }

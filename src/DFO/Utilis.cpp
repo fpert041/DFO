@@ -44,7 +44,7 @@ double Utilis::evaluate(vector<double> flyPos){
     switch (em) {
         case CUSTOM:
             GlobalParam::evaluationFunctionName = "Custom Fitness Function";
-            return std::abs(eval_custom_fitness_func(flyPos));
+            return (eval_custom_fitness_func(flyPos));
             break;
             
         case SPHERE:
@@ -298,7 +298,7 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
     std::normal_distribution<double> distribution(bellMean, bellStdDev);
     
     return distribution(generator);
-} // <<<<< possibly?
+}
 
 //------------------------------------------------------------------------------------
 // PRIVATE METHODS
@@ -308,7 +308,7 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
 // The below methods will return a double indicating the level of fitness of a given vector
 // Fitness is calcualted as the
 
-double Utilis::eval_sphere(std::vector<double> flyPos){
+double Utilis::eval_sphere(std::vector<double>& flyPos){
     double a = 0;
     for (int i = 0; i < dimensions; ++i) {
         a += std::pow(flyPos[i] + offset, 2);

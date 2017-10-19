@@ -20,7 +20,11 @@ class Fly; // forward declare the existance of a class of type Fly
 
 struct GlobalParam {
 
- 
+public:
+    
+    // keep leader in the equation or not
+    static bool democracy;
+    
     // dim: the dimensions of the problem
     static int dim;
     // popSize: the size of the population of 'flys'
@@ -51,8 +55,6 @@ struct GlobalParam {
     
     // Variables to hold globally the dimension of the search space of the problem
     static int searchSpaceWidth;
-    
-public:
     
     // ----- this struct cannot be instantiated: -----
     

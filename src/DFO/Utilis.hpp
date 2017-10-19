@@ -28,7 +28,7 @@ private:
     
     std::function<double(std::vector<double>)> eval_custom_fitness_func; // empty function storage variable -> it will be used if a fitness function is provided externally
     
-    double eval_sphere(std::vector<double>); // evaluate the fitness of a fly using the Sphere "benchmark function"
+    double eval_sphere(std::vector<double>&); // evaluate the fitness of a fly using the Sphere "benchmark function"
     
     // ********************* INTERFACE *********************
     

@@ -25,7 +25,7 @@ Fly::~Fly(){ // DESTRUCTOR
 //------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------
 
-const std::vector<double> Fly::getPos(){ // get the vector ("of coordinates") of the fly's position (in the search space)
+const std::vector<double>& Fly::getPos(){ // get the vector ("of coordinates") of the fly's position (in the search space)
     return pos;
 }
 
