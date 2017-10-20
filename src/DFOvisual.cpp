@@ -12,10 +12,6 @@ ofImage img;
 /* Constructor & Destructor */
 
 DFOvisual::DFOvisual(){
-    visualisationHeight = GlobalParam::searchSpaceWidth +  GlobalParam::dim;
-    
-    
-    img.load("/Users/pesa/Documents/UNI/of_v0.9.8_osx_release/apps/naturalComp/wk2_DFO/my_image.png");
     
     GlobalParam::popSize = 20;
     //mod_2d = true;
@@ -64,7 +60,7 @@ DFOvisual::DFOvisual(){
     
       /*  EXAMPLE PASSING IN IMG BRIGHNTESS FUNCTION () */
 //        GlobalParam::dim = 2;
-    
+//        img.load("/Users/pesa/Documents/UNI/of_v0.9.8_osx_release/apps/naturalComp/wk2_DFO/my_image.png");
 //            dfo.reset(
 //                      new DFO(
 //                              [](std::vector<double> p) {
