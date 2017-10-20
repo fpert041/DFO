@@ -17,15 +17,16 @@ DFOvisual::DFOvisual(){
     
     img.load("/Users/pesa/Documents/UNI/of_v0.9.8_osx_release/apps/naturalComp/wk2_DFO/my_image.png");
     
-    GlobalParam::popSize = 10;
+    GlobalParam::popSize = 20;
     //mod_2d = true;
+    //GlobalParam::democracy = true;
     
     // To test different how the program visualises different fitess funtions
     // Choose which one of these two to comment out
     
     /* EXAMPLE USING THE DEFAULT FITNESS FUNCTION (Sphere test func in this case) */
       dfo.reset( new DFO );
-//
+    
     
     /*  EXAMPLE PASSING IN A CUSTOM FITNESS FUNCTION (Ackley test func. in this case) */
 //    dfo.reset(

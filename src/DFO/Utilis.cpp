@@ -17,7 +17,7 @@
 Utilis::Utilis(){
     
     gen = std::mt19937(rd());
-    dis = std::uniform_real_distribution<>(0, 1); // Each call to dis(gen) generates a new random double
+    dis = std::uniform_real_distribution<>(0., 1.); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
     
     dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
@@ -27,7 +27,7 @@ Utilis::Utilis(){
 
 Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
     gen = std::mt19937(rd());
-    dis = std::uniform_real_distribution<>(0, 1); // Each call to dis(gen) generates a new random double
+    dis = std::uniform_real_distribution<>(0., 1.); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
     
     dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
@@ -255,7 +255,7 @@ vector<double> Utilis::genRandPos() {
     for (int d = 0; d < dimensions; d++){
         //double coordinateLimitL = -GlobalParam::searchSpaceWidth / 2; // deletable for more optimisation //<<<
         //double coordinateLimitR = coordinateLimitL + GlobalParam::searchSpaceWidth;
-        pos[d] = -GlobalParam::searchSpaceWidth / 2  + 2 * GlobalParam::searchSpaceWidth / 2   * dis(gen);
+        pos[d] = -GlobalParam::searchSpaceWidth / 2.  + 2. * GlobalParam::searchSpaceWidth / 2.   * dis(gen);
     //// pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
     }
     return pos;
@@ -266,7 +266,7 @@ vector<double> Utilis::genRandPos() {
 vector<double> Utilis::genRandPos2() {
     vector<double> pos = vector<double>(dimensions);
     for (int d = 0; d < dimensions; d++)
-        pos[d] = -GlobalParam::searchSpaceWidth + GlobalParam::searchSpaceWidth / 2 * dis(gen);
+        pos[d] = -GlobalParam::searchSpaceWidth + GlobalParam::searchSpaceWidth / 2. * dis(gen);
     //  pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
     
     return pos;
@@ -311,7 +311,7 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
 double Utilis::eval_sphere(std::vector<double>& flyPos){
     double a = 0;
     for (int i = 0; i < dimensions; ++i) {
-        a += std::pow(flyPos[i] + offset, 2);
+        a += std::pow(flyPos[i] + offset, 2.);
     }
     GlobalParam::evaluationFunctionName = "SPHERE";
     return a;
