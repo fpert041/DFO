@@ -27,7 +27,7 @@ public:
     // is the problem being visualised across a 2d surface space? (TRUE) Or just as 1D lines? (FALSE)
     bool mod_2d = false;  
     
-    int visualisationHeight = GlobalParam::searchSpaceWidth +  GlobalParam::dim;
+    int visualisationHeight;
     
     DFOvisual();
     ~DFOvisual();

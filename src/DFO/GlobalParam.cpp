@@ -8,26 +8,23 @@
 #include <stdio.h>
 #include "GlobalParam.hpp"
 
-// keep leader (best fly) in the equation or not
-bool GlobalParam::democracy = false;
-// dim: the dimensions of the problem
-int GlobalParam::dim = 10;
-// popSize: the size of the population of 'flys'
-int GlobalParam::popSize = 20;
-// disturbance threshold
-double GlobalParam::dt = 0.001;
-// Constant to set the maximum number of Fly Evaluations allowed to the program
-int GlobalParam::FE_allowed = 300000;
-
-
-int GlobalParam::bestIndex = -1;
-int GlobalParam::searchSpaceWidth = 100; // the size (range) of each dimension (range => +/-)
-int GlobalParam::evalCount = 0;
-int GlobalParam::leftNeighbour = 0;
-int GlobalParam::rightNeighbour = 0;
-std::string GlobalParam::evaluationFunctionName = "";
-
-std::vector<std::shared_ptr<Fly>> GlobalParam::swarm;
-
-
-
+GlobalParam::GlobalParam(){
+    // keep leader (best fly) in the equation or not
+    democracy = false;
+    // dim: the dimensions of the problem
+    dim = 10;
+    // popSize: the size of the population of 'flys'
+    popSize = 20;
+    // disturbance threshold
+    dt = 0.001;
+    // Constant to set the maximum number of Fly Evaluations allowed to the program
+    FE_allowed = 300000;
+    
+    
+    bestIndex = -1;
+    searchSpaceWidth = std::vector<int>(dim, 100); // the size (range) of each dimension (range => +/-)
+    evalCount = 0;
+    leftNeighbour = 0;
+    rightNeighbour = 0;
+    evaluationFunctionName = "";
+}

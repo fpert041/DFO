@@ -20,20 +20,13 @@
  *
  *********************************************************************************/
 
-DFO::DFO(){
-    pUtilis = new Utilis();
-}
+DFO::DFO(){}
 
-DFO::DFO(std::function<double(std::vector<double>)> fitnessFunc){
-    pUtilis = new Utilis(fitnessFunc);
-}
+DFO::DFO(std::function<double(std::vector<double>)> fitnessFunc) : Utilis(fitnessFunc){}
 
 // ******** DFO destructor *********** //
 
-DFO::~DFO(){
-    delete(pUtilis);
-    pUtilis = nullptr;
-}
+DFO::~DFO(){}
 
 //--------------------------------------------------------------------------------
 /*********************************************************************************
@@ -48,16 +41,14 @@ void const DFO::generateSwarm(){
     // Set up global parameters for the problem space -> this works well for visualising the problem
     // But I wonder how it would work on other search-spaces //************INVESTIGATE W/ MOHAMMAD IF POSSIBLE ****//<<<
     
-    GlobalParam::searchSpaceWidth = 100; // at present this is the RANGE of the value of each dimension (search space coordinates)
-    
     // generate swarm
-    int size = GlobalParam::popSize;
-    GlobalParam::swarm.clear();
+    int size = popSize;
+    swarm.clear();
     for (int i = 0; i < size; i++){
-        GlobalParam::swarm.push_back(shared_ptr<Fly>(new Fly(pUtilis->genRandPos()) ) );
+        swarm.push_back(shared_ptr<Fly>(new Fly(genRandPos(), this)));
     }
 
-    pUtilis->findBestFly();
+    findBestFly();
 
 }
 
@@ -71,89 +62,85 @@ void const DFO::generateSwarm(){
 
 void const DFO::updateSwarm(){
     
-    if (GlobalParam::evalCount > GlobalParam::FE_allowed)
+    if (evalCount > FE_allowed)
         return -1;
     
     // ========= EVALUATION Phase =========
-    for (int i = 0; i < GlobalParam::popSize; ++i)
+    for (int i = 0; i < popSize; ++i)
     {
         // evaluate the fitness of each Fly in the swarm, then leave a record of the fitness value into each fly
-        GlobalParam::swarm[i]->setFitness(
-                                              pUtilis->evaluate(GlobalParam::swarm[i]->getPos())
-                                          );
+        swarm[i]->setFitness( evaluate(swarm[i]->getPos()) );
     }
     
     // now that each fly knows its fitness, we can check and record which one is the best
-    pUtilis->findBestFly();
+    findBestFly();
     // ========= INTERACTION Phase =========
-    for (int k = 0; k < GlobalParam::popSize; k++) {
+    for (int k = 0; k < popSize; k++) {
         // Elitist approach:
         // ignore the fly with the best index (we keep it as it is)
-        if (k == GlobalParam::bestIndex)
+        if (k == bestIndex)
             continue;
         
         //// Use the below method if you want to find the closest neighbour in the search space
         // utils.findClosestNeighbours(i);
         
         //// Use the below method if you want to find the closest neighbour in the search space
-        pUtilis->getRandF_or_RingT_Neighbours(k, Utilis::RING);
+        getRandF_or_RingT_Neighbours(k, RING);
         
-        // cout << to_string(GlobalParam::rightNeighbour) + " :: " + to_string(i) + " :: " + to_string(GlobalParam::rightNeighbour) << endl;
+        // cout << to_string(rightNeighbour) + " :: " + to_string(i) + " :: " + to_string(rightNeighbour) << endl;
         
         // NEIGHBOURS
         double leftP, rightP;
         if (true) {
-            leftP = GlobalParam::swarm[GlobalParam::leftNeighbour]->getFitness();
+            leftP = swarm[leftNeighbour]->getFitness();
             
-            rightP = GlobalParam::swarm[GlobalParam::rightNeighbour]->getFitness();
+            rightP = swarm[rightNeighbour]->getFitness();
             
         } else { // THIS VERSION is suitable for gradual and non-steep hills : try it by turning 'true' into 'false'
-            double leftDist =  GlobalParam::swarm[k]->getDistance(GlobalParam::leftNeighbour);
-            double rightDist = GlobalParam::swarm[k]->getDistance(GlobalParam::rightNeighbour);
+            double leftDist =  swarm[k]->getDistance(leftNeighbour);
+            double rightDist = swarm[k]->getDistance(rightNeighbour);
             
-            leftP = leftDist * GlobalParam::swarm[GlobalParam::leftNeighbour]->getFitness();
-            rightP = rightDist * GlobalParam::swarm[GlobalParam::rightNeighbour]->getFitness();
+            leftP = leftDist * swarm[leftNeighbour]->getFitness();
+            rightP = rightDist * swarm[rightNeighbour]->getFitness();
         }
         
         int chosen;
         if (leftP < rightP)
-            chosen = GlobalParam::leftNeighbour;
+            chosen = leftNeighbour;
         else
-            chosen = GlobalParam::rightNeighbour;
+            chosen = rightNeighbour;
         
         int dCounter = 0;
         
         // ================== Apply the update equation ========================
         // =====================================================================
         
-        vector<double> temp(GlobalParam::dim);
-        for (int d = 0; d < GlobalParam::dim; d++) {
+        vector<double> temp(dim);
+        for (int d = 0; d < dim; d++) {
             
-            if(!GlobalParam::democracy){
+            if(!democracy){
             /* ELITIST (easier to find one solution but that's all you get) */
             temp[d] =
-                        GlobalParam::swarm[chosen]->getPos(d) +
-                        pUtilis->random(1) *
-                        (GlobalParam::swarm[GlobalParam::bestIndex]->getPos(d) - GlobalParam::swarm[k]->getPos(d));
+                        swarm[chosen]->getPos(d) + random(1) *
+                        (swarm[bestIndex]->getPos(d) - swarm[k]->getPos(d));
                         // FINAL // <<<<<<<< why does it get stack with  random [0,1] and works with random [-1, 1]???
             
             } else {
             /* NON-ELITIST (harder to find a solution but you can find clusterings that indicate more than 1 solution) */
             temp[d] =
-                         GlobalParam::swarm[chosen]->getPos(d) +
-                         pUtilis->random(1) *
-                         (GlobalParam::swarm[chosen]->getPos(d) - GlobalParam::swarm[k]->getPos(d));
+                         swarm[chosen]->getPos(d) + random(1) *
+                         (swarm[chosen]->getPos(d) - swarm[k]->getPos(d));
                          // FINAL
             }
             
             // disturbance mechanism
             if(true){
-                if (pUtilis->random(1) < GlobalParam::dt)
+                if (random(1) < dt)
                 {
                     if (true)
-                        temp[d] = pUtilis->random(-GlobalParam::searchSpaceWidth, GlobalParam::searchSpaceWidth);
+                        temp[d] = random(-searchSpaceWidth[d], searchSpaceWidth[d]);
                     else
-                        temp[d] = pUtilis->genGaussian(-GlobalParam::searchSpaceWidth/2.0, GlobalParam::searchSpaceWidth/2.0); // alternative stochastic method // turn If statements into FALSE if you want to check it out
+                        temp[d] = genGaussian(-searchSpaceWidth[d]/2.0, searchSpaceWidth[d]/2.0); // alternative stochastic method // turn If statements into FALSE if you want to check it out
                     
                     dCounter++;
                 }
@@ -161,8 +148,8 @@ void const DFO::updateSwarm(){
             
             //cout << "Disturbances in Fly  #" + to_sring(i) + ": \t" + to_sring(dCounter) << endl;
         }
-        GlobalParam::swarm[k]->setPos(temp);
+        swarm[k]->setPos(temp);
     }
     // ==== // end of interaction phase // ==== //
-    GlobalParam::evalCount ++;
+    evalCount ++;
 }

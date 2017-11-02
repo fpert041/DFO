@@ -25,6 +25,7 @@ private:
     std::vector<double>exPos; // old position
     double fitness = 10E8; // fitness
     int posDimensions; // variable holding the dimensions of the problem's space
+    GlobalParam * pContext = nullptr; // holds a pointer to the swarm we are in and its parameters
     
 public:
     
@@ -37,7 +38,8 @@ public:
     
     
     // Constructors
-    Fly(std::vector<double> inPos);
+    Fly(std::vector<double> inPos, GlobalParam& context);
+    Fly(std::vector<double> inPos, GlobalParam* context);
     
     ~Fly(); // DESTRUCTOR
     

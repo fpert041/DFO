@@ -20,7 +20,6 @@ Utilis::Utilis(){
     dis = std::uniform_real_distribution<>(0., 1.); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
     
-    dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
     em = SPHERE; // defaults the evaluation method to SPHERE
     ntt = RING; // defaults the way neighbours are linked with to RING TOPOLOGY (ntt = neighbour topology type)
 }
@@ -30,7 +29,6 @@ Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
     dis = std::uniform_real_distribution<>(0., 1.); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
     
-    dimensions = GlobalParam::dim; // get the dimensions of the current problem from "GlobalParam"
     em = CUSTOM; // defaults the evaluation method to CUSTOM
     eval_custom_fitness_func.operator=(fitness_func); // store provided fitness funciton into a variable
     ntt = RING; // defaults the way neighbours are linked with to RING TOPOLOGY
@@ -43,7 +41,7 @@ Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
 double Utilis::evaluate(vector<double> flyPos){
     switch (em) {
         case CUSTOM:
-            GlobalParam::evaluationFunctionName = "Custom Fitness Function";
+            evaluationFunctionName = "Custom Fitness Function";
             return (eval_custom_fitness_func(flyPos));
             break;
             
@@ -78,30 +76,30 @@ void Utilis::shakeOffset() {
 
 /* find the closest 2 neighbours in the swarm for the fly at location 'flyIndex' within the swarm */
 
-void findClosestNeighbours(int flyIndex) {
+void Utilis::findClosestNeighbours(int flyIndex) {
     double minDistL = 10E15;
-    for (int i = 0; i < GlobalParam::popSize; i++) {
+    for (int i = 0; i < popSize; i++) {
         if (i == flyIndex)
             continue;
         
-        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
+        double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistL) {
             minDistL = d;
-            GlobalParam::leftNeighbour = i;
+            leftNeighbour = i;
         }
     }
     
     double minDistR = 10E15;
-    for (int i = 0; i < GlobalParam::popSize; i++) {
+    for (int i = 0; i < popSize; i++) {
         if (i == flyIndex)
             continue;
-        if (i == GlobalParam::leftNeighbour)
+        if (i == leftNeighbour)
             continue;
         
-        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
+        double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistR) {
             minDistR = d;
-            GlobalParam::rightNeighbour = i;
+            rightNeighbour = i;
         }
     }
 
@@ -109,33 +107,33 @@ void findClosestNeighbours(int flyIndex) {
 
 // overloaded function that stores neighbours' information into each fly
 
-void findClosestNeighbours(int flyIndex, Fly& flyRef) {
+void Utilis::findClosestNeighbours(int flyIndex, Fly& flyRef) {
     double minDistL = 10E15;
-    for (int i = 0; i < GlobalParam::popSize; i++) {
+    for (int i = 0; i < popSize; i++) {
         if (i == flyIndex)
             continue;
         
-        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
+        double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistL) {
             minDistL = d;
-            GlobalParam::leftNeighbour = i;
-            flyRef.pLeftNeighbour = GlobalParam::swarm[flyIndex];
+            leftNeighbour = i;
+            flyRef.pLeftNeighbour = swarm[flyIndex];
             flyRef.leftNindex = i;
         }
     }
     
     double minDistR = 10E15;
-    for (int i = 0; i < GlobalParam::popSize; i++) {
+    for (int i = 0; i < popSize; i++) {
         if (i == flyIndex)
             continue;
-        if (i == GlobalParam::leftNeighbour)
+        if (i == leftNeighbour)
             continue;
         
-        double d = GlobalParam::swarm[flyIndex]->getDistance(i);
+        double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistR) {
             minDistR = d;
-            GlobalParam::rightNeighbour = i;
-            flyRef.pRightNeighbour = GlobalParam::swarm[flyIndex];
+            rightNeighbour = i;
+            flyRef.pRightNeighbour = swarm[flyIndex];
             flyRef.rightNindex = i;
         }
     }
@@ -150,24 +148,24 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
     
     if (type == RING) // RING
     {
-        GlobalParam::leftNeighbour = curr - 1;
-        GlobalParam::rightNeighbour = curr + 1;
+        leftNeighbour = curr - 1;
+        rightNeighbour = curr + 1;
         
         if (curr == 0)
-            GlobalParam::leftNeighbour = GlobalParam::popSize - 1;
-        if (curr == GlobalParam::popSize - 1)
-            GlobalParam::rightNeighbour = 0;
+            leftNeighbour = popSize - 1;
+        if (curr == popSize - 1)
+            rightNeighbour = 0;
     }
     else // RANDOM
     {
-        GlobalParam::leftNeighbour = int(dis(gen)*GlobalParam::popSize);
-        while (GlobalParam::leftNeighbour == curr){
-            GlobalParam::leftNeighbour = int(dis(gen)*GlobalParam::popSize);
+        leftNeighbour = int(dis(gen)*popSize);
+        while (leftNeighbour == curr){
+            leftNeighbour = int(dis(gen)*popSize);
         }
         
-        GlobalParam::rightNeighbour = dis(gen)*GlobalParam::popSize;
-        while ((GlobalParam::rightNeighbour == curr) || (GlobalParam::rightNeighbour == GlobalParam::leftNeighbour))
-            GlobalParam::rightNeighbour = int(dis(gen)*GlobalParam::popSize);
+        rightNeighbour = dis(gen)*popSize;
+        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour))
+            rightNeighbour = int(dis(gen)*popSize);
     }
     
 }
@@ -178,42 +176,42 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
     
     if (type == RING) // RING
     {
-        GlobalParam::leftNeighbour = curr - 1;
+        leftNeighbour = curr - 1;
         flyref.leftNindex = curr - 1;
-        flyref.pLeftNeighbour = GlobalParam::swarm[GlobalParam::popSize - 1];
+        flyref.pLeftNeighbour = swarm[popSize - 1];
         
-        GlobalParam::rightNeighbour = curr + 1;
+        rightNeighbour = curr + 1;
         flyref.rightNindex = curr + 1;
-        flyref.pRightNeighbour = GlobalParam::swarm[GlobalParam::popSize + 1];
+        flyref.pRightNeighbour = swarm[popSize + 1];
         
         if (curr == 0){ // deal with low extreme
-            GlobalParam::leftNeighbour = GlobalParam::popSize - 1;
+            leftNeighbour = popSize - 1;
             flyref.leftNindex = curr - 1;
-            flyref.pLeftNeighbour = GlobalParam::swarm[GlobalParam::popSize - 1];
+            flyref.pLeftNeighbour = swarm[popSize - 1];
         }
         
-        if (curr == GlobalParam::popSize - 1){ // deal with high extreme
-            GlobalParam::rightNeighbour = 0;
+        if (curr == popSize - 1){ // deal with high extreme
+            rightNeighbour = 0;
             flyref.rightNindex = 0;
-            flyref.pRightNeighbour = GlobalParam::swarm[0];
+            flyref.pRightNeighbour = swarm[0];
         }
     }
     else // RANDOM
     {
-        GlobalParam::leftNeighbour = int(dis(gen)*GlobalParam::popSize);
-        while (GlobalParam::leftNeighbour == curr){
-            int r = int(dis(gen)*GlobalParam::popSize);
-            GlobalParam::leftNeighbour = r;
+        leftNeighbour = int(dis(gen)*popSize);
+        while (leftNeighbour == curr){
+            int r = int(dis(gen)*popSize);
+            leftNeighbour = r;
             flyref.leftNindex = r;
-            flyref.pLeftNeighbour = GlobalParam::swarm[r];
+            flyref.pLeftNeighbour = swarm[r];
         }
         
-        GlobalParam::rightNeighbour = dis(gen)*GlobalParam::popSize;
-        while ((GlobalParam::rightNeighbour == curr) || (GlobalParam::rightNeighbour == GlobalParam::leftNeighbour)){
-            int r = int(dis(gen)*GlobalParam::popSize);
-            GlobalParam::rightNeighbour = r;
+        rightNeighbour = dis(gen)*popSize;
+        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour)){
+            int r = int(dis(gen)*popSize);
+            rightNeighbour = r;
             flyref.rightNindex = r;
-            flyref.pRightNeighbour = GlobalParam::swarm[r];
+            flyref.pRightNeighbour = swarm[r];
         }
     }
     
@@ -226,11 +224,11 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
 void Utilis::findBestFly() {
     double min = 10E10;
     
-    for (int i = 0; i < GlobalParam::popSize; i++) {
-        if (GlobalParam::swarm[i]->getFitness() < min) {
-            min = GlobalParam::swarm[i]->getFitness();
+    for (int i = 0; i < popSize; i++) {
+        if (swarm[i]->getFitness() < min) {
+            min = swarm[i]->getFitness();
             //cout << "fly: " + to_string(i) + " - BestF: " + to_string(min) << endl;
-            GlobalParam::bestIndex = i;
+            bestIndex = i;
         }
     }
 }
@@ -240,10 +238,10 @@ void Utilis::findBestFly() {
 /* Print to console summary of the findings of the algorithm */
 
 void Utilis::printSummary() {
-    if (GlobalParam::evalCount % 1000 == 0)
-        cout << "\nFE: " + to_string(GlobalParam::evalCount / 1000) + " ===> \n\t"
-        + to_string(GlobalParam::swarm[GlobalParam::bestIndex]->getFitness()) + "\t" + to_string(GlobalParam::bestIndex) + "\t"
-                           + GlobalParam::swarm[GlobalParam::bestIndex]->toString() << endl;
+    if (evalCount % 1000 == 0)
+        cout << "\nFE: " + to_string(evalCount / 1000) + " ===> \n\t"
+        + to_string(swarm[bestIndex]->getFitness()) + "\t" + to_string(bestIndex) + "\t"
+                           + swarm[bestIndex]->toString() << endl;
 }
 
 //------------------------------------------------------------------------------------
@@ -251,12 +249,12 @@ void Utilis::printSummary() {
 /* Generate and output a random Fly's position vector */
 
 vector<double> Utilis::genRandPos() {
-    vector<double> pos = vector<double>(dimensions);
-    for (int d = 0; d < dimensions; d++){
-        //double coordinateLimitL = -GlobalParam::searchSpaceWidth / 2; // deletable for more optimisation //<<<
-        //double coordinateLimitR = coordinateLimitL + GlobalParam::searchSpaceWidth;
-        pos[d] = -GlobalParam::searchSpaceWidth / 2.  + 2. * GlobalParam::searchSpaceWidth / 2.   * dis(gen);
-    //// pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
+    vector<double> pos = vector<double>(dim);
+    for (int d = 0; d < dim; d++){
+        //double coordinateLimitL = -searchSpaceWidth[d] / 2; // deletable for more optimisation //<<<
+        //double coordinateLimitR = coordinateLimitL + searchSpaceWidth[d];
+        pos[d] = -searchSpaceWidth[d] / 2.  + 2. * searchSpaceWidth[d] / 2.   * dis(gen);
+    //// pos[d] = dis(gen)*searchSpaceWidth[d] - searchSpaceWidth[d]/2;
     }
     return pos;
 }
@@ -264,10 +262,10 @@ vector<double> Utilis::genRandPos() {
 // Alternative version of the method above
 
 vector<double> Utilis::genRandPos2() {
-    vector<double> pos = vector<double>(dimensions);
-    for (int d = 0; d < dimensions; d++)
-        pos[d] = -GlobalParam::searchSpaceWidth + GlobalParam::searchSpaceWidth / 2. * dis(gen);
-    //  pos[d] = dis(gen)*GlobalParam::searchSpaceWidth - GlobalParam::searchSpaceWidth/2;
+    vector<double> pos = vector<double>(dim);
+    for (int d = 0; d < dim; d++)
+        pos[d] = -searchSpaceWidth[d] + searchSpaceWidth[d] / 2. * dis(gen);
+    //  pos[d] = dis(gen)*searchSpaceWidth[d] - searchSpaceWidth[d]/2;
     
     return pos;
 }
@@ -310,10 +308,10 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
 
 double Utilis::eval_sphere(std::vector<double>& flyPos){
     double a = 0;
-    for (int i = 0; i < dimensions; ++i) {
+    for (int i = 0; i < dim; ++i) {
         a += std::pow(flyPos[i] + offset, 2.);
     }
-    GlobalParam::evaluationFunctionName = "SPHERE";
+    evaluationFunctionName = "SPHERE";
     return a;
 }
 

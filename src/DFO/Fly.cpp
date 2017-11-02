@@ -8,10 +8,18 @@
 #include "Fly.hpp"
 
 
-Fly::Fly(std::vector<double> inPos){ // CONSTRUCTOR
+Fly::Fly(std::vector<double> inPos, GlobalParam& context){ // CONSTRUCTOR
     pos = inPos; // set the position of the fly
     exPos = pos; // initially the old position vector is initialised using the same values as the actual position vector
     posDimensions = inPos.size(); // set the value that holds the number of dimensions of the space where the fly lives
+    pContext = &context; // track the swarm we are in
+}
+
+Fly::Fly(std::vector<double> inPos, GlobalParam* p_context){ // CONSTRUCTOR_2
+    pos = inPos; // set the position of the fly
+    exPos = pos; // initially the old position vector is initialised using the same values as the actual position vector
+    posDimensions = inPos.size(); // set the value that holds the number of dimensions of the space where the fly lives
+    pContext = p_context; // track the swarm we are in
 }
 
 
@@ -83,7 +91,7 @@ const double Fly::getFitness() { // return fitness value
 const double Fly::getDistance(int n) { // euclidean distance between position vectors
     double squaredSum = 0;
     for (int d = 0; d < posDimensions - 1; d++) {
-        squaredSum += std::pow(getPos(d) - GlobalParam::swarm[n]->getPos(d), 2);
+        squaredSum += std::pow(getPos(d) - pContext->swarm[n]->getPos(d), 2);
     }
     return std::sqrt(squaredSum);
 }

@@ -13,7 +13,7 @@
 
 using namespace std;
 
-class DFO {
+class DFO : public Utilis {
 
 public:
     // default constructor
@@ -23,9 +23,6 @@ public:
 
     // default destructor
     ~DFO();
-    
-    // wrapper for the DFO algorithm components
-    Utilis* pUtilis;
     
     // generate DFO swarm (cycle 0 of the algorithm)
     void const generateSwarm();

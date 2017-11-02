@@ -15,7 +15,7 @@
 
 using namespace std;
 
-class Utilis {
+class Utilis : public GlobalParam {
 private:
     std::random_device rd;  //Will be used to obtain a seed for the random number engine
     std::mt19937 gen; //Standard mersenne_twister_engine seeded with rd()
@@ -24,7 +24,6 @@ private:
     double ran; // random number set when an object of this type is initialise
     
     double offset = -0;
-    int dimensions;
     
     std::function<double(std::vector<double>)> eval_custom_fitness_func; // empty function storage variable -> it will be used if a fitness function is provided externally
     
