@@ -16,7 +16,7 @@ DFOvisual::DFOvisual(){
     //
     // To test different how the program visualises different fitess funtions
     // Choose which one of these two to comment out
-    //
+    // //
     
     /* EXAMPLE USING THE DEFAULT FITNESS FUNCTION (Sphere test func in this case) */
     dfo.reset( new DFO );
