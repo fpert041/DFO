@@ -36,6 +36,15 @@ Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
 
 //------------------------------------------------------------------------------------
 
+void Utilis::setFitnessFunc(std::function<double(std::vector<double>)> fitness_func){
+    eval_custom_fitness_func.operator=(fitness_func); // store provided fitness funciton into a variable
+    em = CUSTOM; // defaults the evaluation method to CUSTOM
+}
+
+void Utilis::resetFitnessFunc(){
+    em = SPHERE; // store provided fitness funciton into a variable
+}
+
 /* Evaluate fly with position vector 'flyPos' using the DEFAULT fitness function (as indicated by the value of the 'em' varable (enum: EvaluationMethod) */
 
 double Utilis::evaluate(vector<double> flyPos){
@@ -60,8 +69,9 @@ double Utilis::evaluate(vector<double> flyPos){
 double Utilis::evaluate(vector<double> flyPos, EvaluationMethod fit_func_id){
     EvaluationMethod oldEm = em;
     em = fit_func_id;
-    evaluate(flyPos);
+    double e = evaluate(flyPos);
     em = oldEm;
+    return(e);
 }
 
 //------------------------------------------------------------------------------------
@@ -269,6 +279,17 @@ vector<double> Utilis::genRandPos2() {
     
     return pos;
 }
+
+// Alternative version of the method above, where the search space is only positive (== to searchSpaceWidth[d])
+vector<double> Utilis::genRandPosPositive() {
+    vector<double> pos = vector<double>(dim);
+    for (int d = 0; d < dim; d++){
+        double tPos = dis(gen)*searchSpaceWidth[d];
+        pos[d] = tPos;
+    }
+    return pos;
+}
+
 
 //------------------------------------------------------------------------------------
 

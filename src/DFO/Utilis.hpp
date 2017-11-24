@@ -48,6 +48,10 @@ public:
     Utilis(); // CONSTRUCTOR (defined in cpp) -> default evaluation function ==> 'sphere' eval. func is the default method of fitness evaluation
     Utilis(std::function<double(std::vector<double>)> fitness_func); // OVERRIDDEN CONSTRUCTOR -- If we pass in a fitness function as an argument, this will become the default evaluation method for a Fly's fitness
     
+    void setFitnessFunc(std::function<double(std::vector<double>)>); // set custom fitness function
+    
+    void resetFitnessFunc(); // reset fitness function to "sphere" benchmark test
+    
     double evaluate(vector<double> flyPos); // Evaluate the fitness of a certain Fly using the DEFAULT fitness function (indicated by the value of the 'em' varable (enum: EvaluationMethod)
     double evaluate(vector<double> flyPos, EvaluationMethod fit_func_id); // Overridden method: Evaluate the fitness of a certain Fly using the PROVIDED fitness function
     
@@ -66,6 +70,8 @@ public:
     vector<double> genRandPos(); // Generate and return a random Fly's position vector
     
     vector<double> genRandPos2(); // Alternative version of the method above
+    
+    vector<double> genRandPosPositive(); // Alternative version of the method above, where the search space is only positive
     
     double random(double from, double to); // Output random number (normal distribution) between '1st arg' and '2nd arg'
     double random(double to);// averloaded method, so that if no 2nd arg is pecified it'll be between 0 and the arg passed in

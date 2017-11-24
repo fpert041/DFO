@@ -28,6 +28,13 @@ DFO::DFO(std::function<double(std::vector<double>)> fitnessFunc) : Utilis(fitnes
 
 DFO::~DFO(){}
 
+// ---- setters and getters -----
+
+// keep fly's coordinates within the given search space width
+void const DFO::setConstrainPos(bool status){
+    constrainPositions = status;
+}
+
 //--------------------------------------------------------------------------------
 /*********************************************************************************
  *
@@ -52,6 +59,23 @@ void const DFO::generateSwarm(){
 
 }
 
+void const DFO::generateSwarmPositiveAxis(){
+    
+    // Set up global parameters for the problem space -> this works well for visualising the problem
+    // But I wonder how it would work on other search-spaces //************INVESTIGATE W/ MOHAMMAD IF POSSIBLE ****//<<<
+    
+    // generate swarm
+    int size = popSize;
+    swarm.clear();
+    for (int i = 0; i < size; i++){
+        swarm.push_back(shared_ptr<Fly>(new Fly(genRandPosPositive(), this)));
+    }
+    
+    findBestFly();
+    
+}
+
+
 //--------------------------------------------------------------------------------
 /*********************************************************************************
  *
@@ -63,7 +87,7 @@ void const DFO::generateSwarm(){
 void const DFO::updateSwarm(){
     
     if (evalCount > FE_allowed)
-        return -1;
+        return void();
     
     // ========= EVALUATION Phase =========
     for (int i = 0; i < popSize; ++i)
@@ -91,7 +115,7 @@ void const DFO::updateSwarm(){
         
         // NEIGHBOURS
         double leftP, rightP;
-        if (true) {
+        if (/* DISABLES CODE */ (true)) {
             leftP = swarm[leftNeighbour]->getFitness();
             
             rightP = swarm[rightNeighbour]->getFitness();
@@ -133,17 +157,24 @@ void const DFO::updateSwarm(){
                          // FINAL
             }
             
+            
             // disturbance mechanism
             if(true){
                 if (random(1) < dt)
                 {
-                    if (true)
-                        temp[d] = random(-searchSpaceWidth[d], searchSpaceWidth[d]);
+                    if (/* DISABLES CODE */ (true))
+                        temp[d] = random(0, searchSpaceWidth[d]);
                     else
-                        temp[d] = genGaussian(-searchSpaceWidth[d]/2.0, searchSpaceWidth[d]/2.0); // alternative stochastic method // turn If statements into FALSE if you want to check it out
+                        temp[d] = genGaussian(0, searchSpaceWidth[d]); // alternative stochastic method // turn If statements into FALSE if you want to check it out
                     
                     dCounter++;
                 }
+            }
+            
+            // <<<<<<<<<<<<<<<<<   constrain dimensions to fit the range specified
+            if (constrainPositions) {
+                if ( temp[d] > searchSpaceWidth[d] ) temp[d] =  searchSpaceWidth[d];
+                if (temp[d] < 0) temp[d] =  0;
             }
             
             //cout << "Disturbances in Fly  #" + to_sring(i) + ": \t" + to_sring(dCounter) << endl;

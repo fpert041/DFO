@@ -60,7 +60,7 @@ const double Fly::getExPos(int n) { // get the value of dimension "n" in the pre
 void Fly::setPos(std::vector<double> position) { // set the position of the fly with a vector supplied as argument
     if( !(position.size() == pos.size()) ){
         std::cout << "Vector supplied is not the same size as the current fly's dimension" << std::endl;
-        return -1;
+        return void();
     }
     exPos = pos;
     pos = position;
@@ -100,7 +100,7 @@ const double Fly::getDistance(int n) { // euclidean distance between position ve
 
 const std::string Fly::toString() { // return the vector of the fly's coordinate as a string
     std::string s = "";
-    for (int d = 0; d < posDimensions-1; ++d )
+    for (int d = 0; d < posDimensions; ++d )
         s.append(std::to_string(pos[d]) ).append(", ");
     return s;
 }

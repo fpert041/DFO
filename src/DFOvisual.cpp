@@ -21,9 +21,9 @@ DFOvisual::DFOvisual(){
     /* EXAMPLE USING THE DEFAULT FITNESS FUNCTION (Sphere test func in this case) */
     dfo.reset( new DFO );
 
-    visualisationHeight = dfo->searchSpaceWidth[0] +  dfo->dim;
-    dfo->popSize = 20;
-    //dfo->democracy = true;
+    visualisationHeight = dfo->getSearchSpaceWidth()[0] +  dfo->getDim();
+    dfo->setPopSize(20);
+    //dfo->setDemocracy(true);
     
     
     /*  EXAMPLE PASSING IN A CUSTOM FITNESS FUNCTION (Ackley test func. in this case) */
@@ -58,7 +58,7 @@ DFOvisual::DFOvisual(){
 //                          }
 //                          )
 //        );
-//    dfo->dim = 2;
+//    dfo->setDim(2);
     
       /*  EXAMPLE PASSING IN IMG BRIGHNTESS FUNCTION () */
 //    mod_2d = true;
@@ -78,9 +78,9 @@ DFOvisual::DFOvisual(){
 //                              }
 //                              )
 //            );
-//  dfo->dim = 2;
-//  dfo->searchSpaceWidth[0] = img.getWidth();
-//  dfo->searchSpaceWidth[1] = img.getHeight();
+//  dfo->dfo->setDim(2);
+//  dfo->setSearchSpaceWidth(0, img.getWidth());
+//  dfo->setSearchSpaceWidth(0, img.getHeight());
 }
 
 DFOvisual::~DFOvisual(){
@@ -96,7 +96,7 @@ void DFOvisual::setup(){
     // OF window setup
     ofSetFrameRate(8);
     
-    ofSetWindowShape(dfo->searchSpaceWidth[0]*scaleF, visualisationHeight*scaleF);
+    ofSetWindowShape(dfo->getSearchSpaceWidth()[0]*scaleF, visualisationHeight*scaleF);
     
     dfo->generateSwarm();
 }
@@ -107,8 +107,8 @@ void DFOvisual::draw(){
     {
         background();
         
-        for(int i = 0; i<dfo->popSize; ++i){
-            ofSetColor(255 / dfo->popSize, 255 / dfo->popSize, 255 / dfo->popSize);
+        for(int i = 0; i<dfo->getPopSize(); ++i){
+            ofSetColor(255 / dfo->getPopSize(), 255 / dfo->getPopSize(), 255 / dfo->getPopSize());
             ofSetLineWidth(2);
             
             // draw the axis (i.e. X and Y axis)
@@ -128,16 +128,16 @@ void DFOvisual::draw(){
             
             ofPushMatrix();
             
-            ofTranslate(dfo->searchSpaceWidth[0] * scaleF / 2, visualisationHeight * scaleF / 2);
+            ofTranslate(dfo->getSearchSpaceWidth()[0] * scaleF / 2, visualisationHeight * scaleF / 2);
             
             // (true) Group dimensions in pairs and plot them on a XY graph (as if each was 1 fly)
             // (false) Draw EACH dimension separately and visualise the value for any given fly as a black dot on it
             if (mod_2d) {
-                for (int d = 0; d < dfo->dim - 2; d += 2){
+                for (int d = 0; d < dfo->getDim() - 2; d += 2){
                     // for ( int d = 0; d < 1; d++ )
                     ofSetColor(0);
                     int ellipseSize = 5; // ellipse size
-                    if (i == dfo->bestIndex) // make the colour of the best particle
+                    if (i == dfo->getBestIndex()) // make the colour of the best particle
                         // RED and twice the size
                     {
                         ofSetColor(255, 0, 0);
@@ -157,19 +157,19 @@ void DFOvisual::draw(){
                 }
             } else {// show each Dimension separately
                 
-                int gap = ofGetHeight() / (dfo->dim + 1);
-                for (int d = 0; d < dfo->dim; d++) {
+                int gap = ofGetHeight() / (dfo->getDim() + 1);
+                for (int d = 0; d < dfo->getDim(); d++) {
                     ofSetLineWidth(0.3);
                     
                     // Horizontal Lines
-                    int xGap = dfo->searchSpaceWidth[0] * scaleF / 2;
-                    int yGap = -dfo->searchSpaceWidth[0] * scaleF / 2 + gap * (d + 1);
+                    int xGap = dfo->getSearchSpaceWidth()[0] * scaleF / 2;
+                    int yGap = -dfo->getSearchSpaceWidth()[0] * scaleF / 2 + gap * (d + 1);
                     ofSetColor(0);
                     ofDrawLine(-xGap, yGap, xGap, yGap);
                     
                     // flies position
                     int ellipseSize = 5;
-                    if (i == dfo->bestIndex) {
+                    if (i == dfo->getBestIndex()) {
                         ofSetColor(255, 0, 0);
                         ellipseSize *= 2;// 5;
                     }
@@ -207,14 +207,14 @@ void DFOvisual::background(){
     ofDrawRectangle(0, 0, ofGetWidth() / 2 - 5, 80);
     ofSetColor(0);// ,0,0,20);
     ofDrawBitmapString("Y: each dimension / X: value || dots = the val. of each dim. per each fly", 55, 10);
-    ofDrawBitmapString("Dimensions: " + to_string(dfo->dim), 25, 20);
-    ofDrawBitmapString("Function: " + dfo->evaluationFunctionName, 25, 35);
-    ofDrawBitmapString("Cycles: " + to_string(dfo->evalCount), 25, 50);
-    ofDrawBitmapString("Fitness: " + to_string(dfo->swarm[dfo->bestIndex]->getFitness()), 25, 65);
-    ofDrawBitmapString("Best Index: " + to_string(dfo->bestIndex), 25, 80);
+    ofDrawBitmapString("Dimensions: " + to_string(dfo->getDim()), 25, 20);
+    ofDrawBitmapString("Function: " + dfo->getEvalFuncName(), 25, 35);
+    ofDrawBitmapString("Cycles: " + to_string(dfo->getEvalCount()), 25, 50);
+    ofDrawBitmapString("Fitness: " + to_string(dfo->swarm[dfo->getBestIndex()]->getFitness()), 25, 65);
+    ofDrawBitmapString("Best Index: " + to_string(dfo->getBestIndex()), 25, 80);
     ofDrawBitmapString("Best Vector: ", 25, 95);
-    for(int i = 0; i<dfo->dim; ++i){
-        ofDrawBitmapString(to_string(int(dfo->swarm[dfo->bestIndex]->getPos(i))), 130+i*40, 95);
+    for(int i = 0; i<dfo->getDim(); ++i){
+        ofDrawBitmapString(to_string(int(dfo->swarm[dfo->getBestIndex()]->getPos(i))), 130+i*40, 95);
     }
     //text("DT: " + Global.dt, 25, 80);
 }
