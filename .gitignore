@@ -1,10 +1,10 @@
-*.git
-/.git
 *.app
 *.o
 /Build
 Build
 /DerivedData
 DerivedData
+*/Build
+*/DerivedData
 *.png
 *.jpg

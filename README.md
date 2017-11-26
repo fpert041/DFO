@@ -22,22 +22,36 @@ The algorithm was first proposed by Mohammad Majid al-Rifaie, a computing lectur
 
 ## Technical Notes
 
-The algorithm is being showcased within an openFrameworks project to better visualise its action. The algorithm itself is not dependent on the framework and its cpp and header files can be used in any program. However, the xCode project that I included here, that is the program contained in this repo in general, needs to be run within openframeworks (just place it inside apps/myApps or any folder 3 levels down from the root folder of OF). You can [download openFrameworks on their website](http://openframeworks.cc/download/). Tested with of_v0.9.8_osx_release.
+The algorithm is being showcased within some examples. As of this version these are two types of available examples:
+* Bare C++ examples
+    * dfo_cards_cpp - how to programmatically solve a simple logic game of cards
+* openFramewroks examples
+    * visual_DFO - visualise DFO in action as it optimises its way to "best fitness"
+
+The examples that work in openFrameworks, are projects that either do some kind of in media processing, or that help you better visualise the algorithm in action. The algorithm itself is never dependent on any framework and its cpp and header files can be used in any program. However, the xCode projectsfor the openFrameworks (OF) examples need to be run within OF. For this to work you MUST place the current folder (where this README is) inside apps/myApps or any folder 3 levels down from the root folder of OF. You can [download openFrameworks on their website](http://openframeworks.cc/download/). Tested with of_v0.9.8_osx_release.
+
+Bare C++ examples don't need any framework or library to work other than the DFO engine - as long as you leave them into the "examples/cpp" folder they will run regardless of where you clone this repo into.
+
 
 ## How to use
 
-The algorithm is contained in the DFO folder, which can be extracted and placed into any C++ project. Currently only one running algorithm per project is allowable as its global parameters are static variables and constants, therefore attempting to run several instances of the algorithm would not result in a number of independent swarms BUT IN  AN OVERLAPPING MESS. It is for this reason that I (should) have made sure that the main algorithm wrapper class can be instantiated only ONCE (singleton). In any case don't try to make several DFO objects.
+The algorithm itself is contained in the DFO folder, which can be extracted and placed into any C++ project.
 
 To use the DFO in a different program you need to create an instance of the algorithm. The wrapper class is "DFO", so just link `DFO.h` to your program and make sure the source files are part of the bindings of your program. Once you have done this, you have to create the DFO instance by calling one of its constructors, then you can use:
 
 ```
-const generateSwarm();
+generateSwarm();
 ```
 
 -- to generate a new swarm and initialise its parameters (you can edit those in `GlobalParam.hpp`)
 
 ```
-const updateSwarm();
+generateSwarmPositiveAxis();
+```
+-- ALTERNATIVE: to generate the swarm so that it starts off only on the positive hyperoctant of our search space (hyperoctane = n-dimensional version of a quadrant)
+
+```
+updateSwarm();
 ```
 
 -- to run a cycle of the algorithm, evaluate the current positions of the flies and update the swarm based on the flies' interactions  (you can edit the settings of the algorithm in `GlobalParam.hpp`)
@@ -53,8 +67,70 @@ const updateSwarm();
  `GlobalParam::popSize `
 * disturbance threshold (default to = 0.001)
  `GlobalParam::dt `
-* Constant to set the maximum number of Fly Evaluations allowed to the program (default to = 300000)
+* Constant to set the maximum number of Fly Evaluations allowed to the program (default = 300000 - useflu to avoid infinite loops)
  `GlobalParam::FE_allowed `
+ * boolean that sets whether the algorithm will make the individuals optimise only according to their "best neighbour" (true) or according to the "best in the swarm" too (false = default)
+  `GlobalParam::democracy `
+  * boolean that sets whether the flies will be constrained within a bounded search space  = it keeps each fly's coordinates within the given search space width
+  `DFO::constrainPositions `
 
-Just re-define them in your caller class, just like this program in one of the examples does (see inside DFOvisual .cpp and .h)
+There are "setter" and "getter" methods  you can use to change these and other parameters (including setting/changing a custom fitness function). Here are the most useful:
+
+`DFO dfo` or `DFO * pDfo = new DFO()` or  `unique_ptr<DFO> dfo = unique_ptr<DFO>(new DFO())` etc.
+
+-- create a default instance of a DFO "swarm" and its algorithm
+
+`setPopSize( int new_pop_size )`
+
+-- set the population size
+
+`setDemocracy(bool true_or_false )`
+
+-- set the algorithm version
+
+`setDim( int new_dimensions_number )`
+
+-- set the dimensions of the search space ( which is equal to the length of a fly's positional vector, also defineable as its hypothesis or "proposed solution")
+
+`setConstrainPos(bool true_or_false)`
+
+-- set whther files will be allowed to explore an unbounded search space after their initialisation (false = default) or whther their deimensions will be bound to a maximum value equal to the initial search space width and a minimum value of 0
+
+`setSearchSpaceWidth( int new_max_range_for_this_dim )`
+
+-- set the search space positive range of all the dimensions equal to a given input
+
+`setSearchSpaceWidth( int which_dim_to_set , int new_max_range_for_this_dim )`
+
+-- set the search space positive range of a specific dimension equal to a given input
+
+`setFitnessFunc( [this](std::vector<double> p) { fitness = 0; /* DO SOMETHING */ return fitness} )`
+
+-- set sustom fitness function (you can also do this at the start by passing in a function into the DFO constructor)
+
+ - - -
+ 
+ `std::vector<double> getSearchSpaceWidth()`
+ 
+ -- return the search space dimensions vecor
+ 
+ `int getDim()`
+ 
+  -- return the number of dimensions
+ 
+ `std::string getEvalFuncName()`
+ 
+   -- return whther the fitness function is a default one (if yes, which one?) or a custom one
+ 
+ `int getEvalCount()`
+ 
+ -- return the current cycle of the algorithm
+ 
+ `int getBestIndex()`
+ 
+ -- return the swarm's best index
+ 
+ `double Fly.getFitness()`
+ 
+ -- Fly's method that returns its fitness
 
