@@ -1,0 +1,8 @@
+*/Build
+*/DerivedData
+/Build
+/DerivedData
+*.app
+*.o
+*.png
+*.jpg

@@ -1,0 +1,15 @@
+//
+//  Project.xcconfig
+//  dfo_cards_cpp
+//
+//  Created by Francesco Perticarari on 26/11/2017.
+//  Copyright © 2017 agapeSoft. All rights reserved.
+//
+
+//This is where the DFO folder is: the root of our DFO engine
+DFO_PATH = ../../../
+
+// Our include path
+DFO_INCLUDE = $(DFO_PATH) $(DFO_PATH)/include
+
+HEADER_SEARCH_PATHS = $(DFO_INCLUDE)
