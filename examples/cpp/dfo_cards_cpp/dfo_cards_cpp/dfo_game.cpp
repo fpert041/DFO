@@ -76,7 +76,7 @@ void Dfo_game::run() {
         float fitness = dfo->swarm[dfo->getBestIndex()]->getFitness();
         std::cout << "cycle: " << i+1 << std::endl;
         std::cout << "best fly index: " << dfo->getBestIndex() << std::endl;
-        std::cout << "best fly location: " << dfo->swarm[dfo->getBestIndex()]->toString() << std::endl;
+        std::cout << "best fly location: " << dfo->getBestFly()->toString() << std::endl;
         std::cout << "fitness: "<< fitness << std::endl;
         if (fitness == 0) {
             std::cout << "iterations needed: "<< i << std::endl;

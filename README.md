@@ -2,9 +2,9 @@
 Dispersive Flies Optimisation implementation in C++
 
 ### Original Algorithm: Copyright (C) 2014 Mohammad Majid al-Rifaie
-#### Current re-implementation and C++ porting: Copyright (C) 2017 Francesco Perticarari
+### Current re-implementation and C++ porting: Copyright (C) 2017 Francesco Perticarari
 
-### License: This is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License.
+#### License: This is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License.
 
 [link to the original paper](http://doc.gold.ac.uk/mohammad/DFO/)
 
@@ -25,6 +25,7 @@ The algorithm was first proposed by Mohammad Majid al-Rifaie, a computing lectur
 The algorithm is being showcased within some examples. As of this version these are two types of available examples:
 * Bare C++ examples
     * dfo_cards_cpp - how to programmatically solve a simple logic game of cards
+    * knap - how to programmatically solve 01 Knapsack problems (see [this website](http://people.sc.fsu.edu/~jburkardt/datasets/knapsack_01/knapsack_01.html))
 * openFramewroks examples
     * visual_DFO - visualise DFO in action as it optimises its way to "best fitness"
 
@@ -110,9 +111,21 @@ There are "setter" and "getter" methods  you can use to change these and other p
 
  - - -
  
+ `std::vector<std::shared_ptr<Fly>> getSwarm();`
+ 
+  -- return the vector of shared_pointers for the swarm
+ 
+ `std::shared_ptr<Fly> getBestFly();`
+ 
+ -- return the shared_pointers to the best Fly in the swarm
+ 
  `std::vector<double> getSearchSpaceWidth()`
  
- -- return the search space dimensions vecor
+  -- return the search space dimensions vecor
+ 
+ `int getSearchSpaceWidth(int dim);`
+ 
+ -- return one specific dimension width
  
  `int getDim()`
  

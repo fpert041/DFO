@@ -5,7 +5,6 @@
 //  Created by Francesco Perticarari on 14/10/2017.
 //
 
-#include <stdio.h>
 #include "../include/GlobalParam.hpp"
 
 GlobalParam::GlobalParam(){
@@ -38,6 +37,7 @@ void GlobalParam::setDemocracy(bool dem){
 
 void GlobalParam::setSearchSpaceWidth(int width){
     searchSpaceWidth = std::vector<int>(dim, width); // the size (range) of each dimension (can have a range of +/-)
+    std::cout << "" << std::endl;
 }
 
 void GlobalParam::setSearchSpaceWidth(int dim, int width){
@@ -61,10 +61,18 @@ void GlobalParam::setDt(double inDt){
 
 void GlobalParam::setFEAllowed(double num){
     // Constant to set the maximum number of Fly Evaluations allowed to the program
-    FE_allowed = 300000;
+    FE_allowed = num;
 }
 
 // ----- getters ----
+
+std::vector<std::shared_ptr<Fly>> GlobalParam::getSwarm(){
+    return swarm;
+}
+
+std::shared_ptr<Fly> GlobalParam::getBestFly(){
+    return swarm[bestIndex];
+}
 
 bool GlobalParam::getDemocracy(){
     return democracy;
@@ -72,6 +80,10 @@ bool GlobalParam::getDemocracy(){
 
 std::vector<int> GlobalParam::getSearchSpaceWidth(){
     return searchSpaceWidth;
+}
+
+int GlobalParam::getSearchSpaceWidth(int dim){
+    return searchSpaceWidth[dim];
 }
 
 int GlobalParam::getBestIndex(){
@@ -92,6 +104,10 @@ int GlobalParam::getPopSize(){
 
 int GlobalParam::getDim() {
     return dim;
+}
+
+int GlobalParam::getFEAllowed() {
+    return FE_allowed;
 }
 
 

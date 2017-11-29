@@ -284,8 +284,7 @@ vector<double> Utilis::genRandPos2() {
 vector<double> Utilis::genRandPosPositive() {
     vector<double> pos = vector<double>(dim);
     for (int d = 0; d < dim; d++){
-        double tPos = dis(gen)*searchSpaceWidth[d];
-        pos[d] = tPos;
+        pos[d] = random(searchSpaceWidth[d]);
     }
     return pos;
 }

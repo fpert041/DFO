@@ -15,6 +15,7 @@
 #include <vector>
 #include <string>
 #include <memory>
+#include <iostream>
 
 class Fly; // forward declare the existance of a class of type Fly
 
@@ -84,9 +85,15 @@ public:
     
     // -- getters --
     
+    std::vector<std::shared_ptr<Fly>> getSwarm();
+    
+    std::shared_ptr<Fly> getBestFly();
+    
     bool getDemocracy();
     
     std::vector<int> getSearchSpaceWidth();
+    
+    int getSearchSpaceWidth(int dim);
     
     int getBestIndex();
     
@@ -97,6 +104,8 @@ public:
     int getPopSize();
     
     int getDim();
+    
+    int getFEAllowed();
     
 };
 

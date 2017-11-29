@@ -21,7 +21,7 @@ DFOvisual::DFOvisual(){
     /* EXAMPLE USING THE DEFAULT FITNESS FUNCTION (Sphere test func in this case) */
     dfo.reset( new DFO );
 
-    visualisationHeight = dfo->getSearchSpaceWidth()[0] +  dfo->getDim();
+    visualisationHeight = dfo->getSearchSpaceWidth(0) +  dfo->getDim();
     dfo->setPopSize(20);
     //dfo->setDemocracy(true);
     
@@ -96,7 +96,7 @@ void DFOvisual::setup(){
     // OF window setup
     ofSetFrameRate(8);
     
-    ofSetWindowShape(dfo->getSearchSpaceWidth()[0]*scaleF, visualisationHeight*scaleF);
+    ofSetWindowShape(dfo->getSearchSpaceWidth(0)*scaleF, visualisationHeight*scaleF);
     
     dfo->generateSwarm();
 }
@@ -210,11 +210,11 @@ void DFOvisual::background(){
     ofDrawBitmapString("Dimensions: " + to_string(dfo->getDim()), 25, 20);
     ofDrawBitmapString("Function: " + dfo->getEvalFuncName(), 25, 35);
     ofDrawBitmapString("Cycles: " + to_string(dfo->getEvalCount()), 25, 50);
-    ofDrawBitmapString("Fitness: " + to_string(dfo->swarm[dfo->getBestIndex()]->getFitness()), 25, 65);
+    ofDrawBitmapString("Fitness: " + to_string(dfo->getBestFly()->getFitness()), 25, 65);
     ofDrawBitmapString("Best Index: " + to_string(dfo->getBestIndex()), 25, 80);
     ofDrawBitmapString("Best Vector: ", 25, 95);
     for(int i = 0; i<dfo->getDim(); ++i){
-        ofDrawBitmapString(to_string(int(dfo->swarm[dfo->getBestIndex()]->getPos(i))), 130+i*40, 95);
+        ofDrawBitmapString(to_string(int(dfo->getBestFly()->getPos(i))), 130+i*40, 95);
     }
     //text("DT: " + Global.dt, 25, 80);
 }

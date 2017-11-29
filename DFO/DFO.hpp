@@ -10,6 +10,7 @@
 
 #include <stdio.h>
 #include "include/Utilis.hpp"
+#include "include/helpers.hpp"
 
 using namespace std;
 
@@ -38,23 +39,6 @@ public:
     
     // keep fly's coordinates within the given search space width
     void const setConstrainPos(bool status);
-    
-    // ----- singleton needed stuff ---- This class can be implemented only ONCE
-    
-    // Dont forget to declare these two. C++ 03 way of making sure they
-    // are unacceptable otherwise you may accidentally get copies of
-    // your singleton appearing.
-    
-    DFO(DFO const&) = delete;
-    void operator=(DFO const&) = delete;
-    
-    static DFO& getInstance()
-    {
-        static DFO instance; // Guaranteed to be destroyed.
-        // Instantiated on first use.
-        return instance;
-    }
-    // Note: In C++ 11 we can use the better ways of deleting the methods
 };
 
 #endif /* DFO_hpp */
