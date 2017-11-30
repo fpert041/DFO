@@ -14,6 +14,7 @@
 		C78D26C31FCDA93200B22E56 /* Fly.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78D26BF1FCDA93200B22E56 /* Fly.cpp */; };
 		C78D26C91FCEBD4F00B22E56 /* helpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78D26C81FCEBD4F00B22E56 /* helpers.cpp */; };
 		C78D26CE1FCF079200B22E56 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78D26CD1FCF079100B22E56 /* main.cpp */; };
+		C78D26D11FCF085D00B22E56 /* reader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C78D26CF1FCF085D00B22E56 /* reader.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -43,6 +44,8 @@
 		C78D26C71FCEBC6F00B22E56 /* helpers.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = helpers.hpp; sourceTree = "<group>"; };
 		C78D26C81FCEBD4F00B22E56 /* helpers.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = helpers.cpp; sourceTree = "<group>"; };
 		C78D26CD1FCF079100B22E56 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		C78D26CF1FCF085D00B22E56 /* reader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = reader.cpp; sourceTree = "<group>"; };
+		C78D26D01FCF085D00B22E56 /* reader.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = reader.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +81,8 @@
 			children = (
 				C78D26B21FCDA92900B22E56 /* knapsack_app.cpp */,
 				C78D26B31FCDA92900B22E56 /* knapsack_app.h */,
+				C78D26CF1FCF085D00B22E56 /* reader.cpp */,
+				C78D26D01FCF085D00B22E56 /* reader.hpp */,
 				C78D26CD1FCF079100B22E56 /* main.cpp */,
 			);
 			path = knapsack;
@@ -180,6 +185,7 @@
 				C78D26C31FCDA93200B22E56 /* Fly.cpp in Sources */,
 				C78D26B41FCDA92900B22E56 /* knapsack_app.cpp in Sources */,
 				C78D26CE1FCF079200B22E56 /* main.cpp in Sources */,
+				C78D26D11FCF085D00B22E56 /* reader.cpp in Sources */,
 				C78D26C01FCDA93200B22E56 /* GlobalParam.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

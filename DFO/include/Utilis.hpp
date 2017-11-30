@@ -52,6 +52,12 @@ public:
     
     void resetFitnessFunc(); // reset fitness function to "sphere" benchmark test
     
+    void setNeighbourTopology(NeighbouringTopologyType nt = Utilis::RING); // set the neighbouring topology
+
+    // ********************* ONLY FOR CHILDREN *********************
+    
+protected:
+    
     double evaluate(vector<double> flyPos); // Evaluate the fitness of a certain Fly using the DEFAULT fitness function (indicated by the value of the 'em' varable (enum: EvaluationMethod)
     double evaluate(vector<double> flyPos, EvaluationMethod fit_func_id); // Overridden method: Evaluate the fitness of a certain Fly using the PROVIDED fitness function
     

@@ -45,6 +45,12 @@ void Utilis::resetFitnessFunc(){
     em = SPHERE; // store provided fitness funciton into a variable
 }
 
+void Utilis::setNeighbourTopology(NeighbouringTopologyType nt){
+    ntt = nt; // set the neighbouring topology
+}
+
+//------------------------------------------------------------------------------------
+
 /* Evaluate fly with position vector 'flyPos' using the DEFAULT fitness function (as indicated by the value of the 'em' varable (enum: EvaluationMethod) */
 
 double Utilis::evaluate(vector<double> flyPos){

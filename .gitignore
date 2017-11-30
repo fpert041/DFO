@@ -1,8 +1,15 @@
 */Build
 */DerivedData
+*DerivedData
+*Build
 /Build
 /DerivedData
 *.app
 *.o
 *.png
 *.jpg
+*.d
+*.dia
+*~
+*dgph~
+*.build

@@ -109,6 +109,10 @@ There are "setter" and "getter" methods  you can use to change these and other p
 
 -- set sustom fitness function (you can also do this at the start by passing in a function into the DFO constructor)
 
+`setNeighbourTopology(NeighbouringTopologyType nt); // set the neighbouring topology`
+
+-- set the neighbouring topology that DFO uses to connect flies (defaults is DFO::RING topolgy), but can be set to DFO::RANDOM
+
  - - -
  
  `std::vector<std::shared_ptr<Fly>> getSwarm();`
