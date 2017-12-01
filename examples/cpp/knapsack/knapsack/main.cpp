@@ -71,7 +71,7 @@ int main(int argc, const char * argv[]) {
     //------------
     // SETUP
     
-    int set = 7; // from 1 to 8
+    int set = 1; // from 1 to 8
     
     //Dfo_knap knap;
     Dfo_knap knap(knap_capacityA[set-1], weightsA[set-1], profitsA[set-1]);

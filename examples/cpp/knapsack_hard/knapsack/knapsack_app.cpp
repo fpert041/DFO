@@ -101,7 +101,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
 
                                 double errC = 0;
                                 for(int i = 0; i<numKnaps; ++i){
-                                    errC += abs(pow(E, (double)(sumConst[i] - knap_capacity[i])/maxConsts[i])-1.0);
+                                    //errC += abs(pow(E, (double)(sumConst[i] - knap_capacity[i])/maxConsts[i])-1.0);
                                     if(sumConst[i] > knap_capacity[i]) errC += 100.0;
                                 }
                                 errC /= numKnaps;
@@ -164,6 +164,9 @@ void Dfo_knap::run() {
         if(i%1000 == 0) {
             
             float fitness = dfo->getBestFly()->getFitness();
+            int bestMaxWeight = 0;
+            vector<int> testCons = vector<int>(numKnaps, 0);
+            int testCons2 = 0;
             std::cout << "cycle: " << i << std::endl;
             std::cout << "best fly index: " << dfo->getBestIndex() << std::endl;
             
@@ -177,10 +180,23 @@ void Dfo_knap::run() {
                 std::vector<double> bestPos = dfo->getBestFly()->getPos();
                 for(int i = 0; i<bestPos.size(); ++i){
                     bestPos[i] = floor(bestPos[i] + 0.5);
+                    if(bestPos[i] >= 0.5){
+                        bestMaxWeight += weights[i];
+                        for(int j = 0; j<numKnaps; ++j){
+                            testCons[j] += constraints[j][i];
+                        }
+                    }
                 }
                 std::cout << "best fly location: " << vect_to_string(bestPos) << std::endl;
             }
             std::cout << "fitness: "<< fitness << std::endl;
+            std::cout << "best weight obtained : "<< bestMaxWeight << std::endl;
+            
+            std::cout << "best fly's used capacities:"<< std::endl;
+            for(int i = 0; i<numKnaps; ++i){
+                std::cout << "knap " << i+1 << ": " << testCons[i] << " ";
+            }
+            std::cout << std::endl;
             
             if (fitness == 0) {
                 std::cout << "iterations needed: "<< i << std::endl;
