@@ -85,7 +85,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
     if (reduc)  {
         newFtSize = pow(2,dimsPerFeature)-1;
         dfo->setSearchSpaceWidth(newFtSize);
-        int lastChunkDim = numObjects%dimsPerFeature;
+        lastChunkDim = numObjects%dimsPerFeature;
         dfo->setSearchSpaceWidth(chunks-1, pow(2, lastChunkDim)-1);
     } else
         dfo->setSearchSpaceWidth(1);
@@ -99,11 +99,10 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
                             [this](std::vector<double> p) {
                                 int sumWeights = 0;
                                 vector<int> sumConst = vector<int>(numKnaps, 0);
-                                
-                                for(int k = 0; k<chunks; ++k){
+                                bitset<16> A;//A will hold the binary representation of N up to 16 bits (we don't really need anything bigger than this as the dimensions should be constrained to lower values anyway)
+                                for(int k = 0; k<chunks-1; ++k){
                                     int N = floor(p[k]+0.5); //input number in base 10
-                                    bitset<16> A=N; //A will hold the binary representation of N up to 16 bits (we don't really need anything bigger than this as the dimensions should be constrained to lower values anyway)
-                                    
+                                    A=N;
                                     for(int i = 0; i<dimsPerFeature; ++i) {
                                         if(A[i] >= 0.5) {
                                             sumWeights += weights[i+k*dimsPerFeature];
@@ -112,7 +111,22 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
                                             }
                                         }
                                     }
+                                    A=0;
                                 }
+                                
+                                // last chunk ---
+                                int N = floor(p[chunks-1]+0.5); //input number in base 10
+                                A=N;
+                                for(int i = 0; i<lastChunkDim; ++i) {
+                                    if(A[i] >= 0.5) {
+                                        sumWeights += weights[i+(chunks-1)*dimsPerFeature];
+                                        for(int j = 0; j<numKnaps; ++j){
+                                            sumConst[j] += constraints[j][i+(chunks-1)*dimsPerFeature];
+                                        }
+                                    }
+                                }
+                                A=0;
+                                //----
                                 
                                 double errC = 0;
                                 for(int i = 0; i<numKnaps; ++i){
@@ -185,7 +199,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
     dfo->setFEAllowed(50001);
     
     // set type of randomness for disturbance
-    //dfo->setDtRandMode(DFO::GAUSS); // Seems to be better without this
+    dfo->setDtRandMode(DFO::GAUSS); // Seems to be better without this
     
     // set type of neighbouring topology
     //dfo->setNeighbourTopology(DFO::RANDOM); // Seems to be better without this
@@ -224,21 +238,38 @@ void Dfo_knap::run() {
             
             if(reduc) {
                 std::cout << "best fly location: " ;
-                for(int j = 0; j<chunks; ++j){
-                    int N = floor(bestPos[j]+0.5); //input number in base 10
-                    bitset<16> A=N;//A will hold the binary representation of N with 16 bits precision
+                bitset<16> A;//A will hold the binary representation of N with 16 bits precision
+                for(int k = 0; k<chunks-1; ++k){
+                    int N = floor(bestPos[k]+0.5); //input number in base 10
+                    A=N;
                     for (int i = 0; i<dimsPerFeature; ++i){
-                        std::cout << A[i] << " ";
+                        std::cout << A[i] << "";
                         if(A[i] >= 0.5) {
-                            bestMaxWeight += weights[i+j*dimsPerFeature];
+                            bestMaxWeight += weights[i+k*dimsPerFeature];
                             for(int j = 0; j<numKnaps; ++j){
-                                testCons[j] += constraints[j][i+j*dimsPerFeature];
+                                testCons[j] += constraints[j][i+k*dimsPerFeature];
                             }
                         }
                     }
-                    cout << "(" << dfo->getBestFly()->getPos(j) << ") ";
-                    //cout << "| ";
+                    A=0;
+                    cout << "(" << dfo->getBestFly()->getPos(k) << ") "; //cout << "| ";
                 }
+                // last chunk ---
+                int N = floor(bestPos[chunks-1]+0.5); //input number in base 10
+                A=N;
+                for (int i = 0; i<dimsPerFeature; ++i){
+                    std::cout << A[i] << "";
+                    if(A[i] >= 0.5) {
+                        bestMaxWeight += weights[i+(chunks-1)*dimsPerFeature];
+                        for(int j = 0; j<numKnaps; ++j){
+                            testCons[j] += constraints[j][i+(chunks-1)*dimsPerFeature];
+                        }
+                    }
+                }
+                A=0;
+                cout << "(" << dfo->getBestFly()->getPos((chunks-1)) << ") "; //cout << "| ";
+                // ----
+                
                 std::cout <<  "\n";
             } else {
                 for(int i = 0; i<bestPos.size(); ++i){

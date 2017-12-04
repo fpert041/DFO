@@ -164,8 +164,12 @@ void const DFO::updateSwarm(){
                 {
                     if (drm == UNI)
                         temp[d] = random(0., double(searchSpaceWidth[d]));
-                    else
-                        temp[d] = genGaussian(double(searchSpaceWidth[d])/2., double(searchSpaceWidth[d])/2.); // alternative stochastic method // turn If statements into FALSE if you want to check it out
+                    else{
+                        //temp[d] = genGaussian(double(searchSpaceWidth[d])/2., double(searchSpaceWidth[d])/2.); // alternative stochastic method // (more likely towards middle of search space range)
+                        temp[d] = genGaussian(searchSpaceWidth[d], searchSpaceWidth[d]);// (more towards the upper end of search space range)
+                        if(temp[d]>searchSpaceWidth[d])
+                            temp[d]-=searchSpaceWidth[d];
+                    }
                     
                     dCounter++;
                 }

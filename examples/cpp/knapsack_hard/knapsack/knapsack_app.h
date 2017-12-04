@@ -44,6 +44,7 @@ class Dfo_knap {
     
     bool reduc = false;
     int dimsPerFeature = 4; // keep it up to 16
+    int lastChunkDim = 0;
     int chunks = 1;
     int newFtSize = 1;
 
