@@ -12,6 +12,7 @@
 #define E 2.7182818284590452353602874713527
 
 #include "../../../../DFO/DFO.hpp"
+#include "problem.hpp"
 
 #include <vector>
 #include <string>
@@ -33,17 +34,25 @@ class Dfo_knap {
     int numKnaps;
     vector<int> weights;
     vector<vector<int>> constraints;
-    //std::vector<int> solution {1,1,1,1,0,1,0,0,0,0};
+    int optimalWight;
     
     int numObjects;
     int maxWeight;
     vector<int> maxConsts;
+    
+    Problem* pProblemData = nullptr;
+    
     bool reduc = false;
+    int dimsPerFeature = 4; // keep it up to 16
+    int chunks = 1;
+    int newFtSize = 1;
 
 public:
     
-    //Dfo_knap();
-    Dfo_knap(vector<int>maxCap, std::vector<int> w, vector<vector<int>> c);
+    Dfo_knap(); // generate a DFO model to solve example problem instance
+    Dfo_knap(Problem& data); // model constructors that take in externally define problems
+    Dfo_knap(Problem* data);
+    Dfo_knap(vector<int>maxCap, std::vector<int> w, vector<vector<int>> c, int targetOptimum);
     
     void setup(int popSize = 50, DimensionalReduc r = EXTENDED);
     void changeCyclesNum(int newNum);

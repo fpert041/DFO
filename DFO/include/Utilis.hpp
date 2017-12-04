@@ -41,8 +41,6 @@ public:
     // The below enumerator is usedin choosing which type of default (non-distance based) ineighbouring conection to choose
     enum NeighbouringTopologyType { RING, RANDOM };
     
-    NeighbouringTopologyType ntt; // (ntt = neighbour topology type)
-    
     // ===================== functions =====================
     
     Utilis(); // CONSTRUCTOR (defined in cpp) -> default evaluation function ==> 'sphere' eval. func is the default method of fitness evaluation
@@ -53,10 +51,14 @@ public:
     void resetFitnessFunc(); // reset fitness function to "sphere" benchmark test
     
     void setNeighbourTopology(NeighbouringTopologyType nt = Utilis::RING); // set the neighbouring topology
+    
+    string getNeighbourTopology(); // get the neighbouring topology
 
     // ********************* ONLY FOR CHILDREN *********************
     
 protected:
+    
+    NeighbouringTopologyType ntt; // (ntt = neighbour topology type)
     
     double evaluate(vector<double> flyPos); // Evaluate the fitness of a certain Fly using the DEFAULT fitness function (indicated by the value of the 'em' varable (enum: EvaluationMethod)
     double evaluate(vector<double> flyPos, EvaluationMethod fit_func_id); // Overridden method: Evaluate the fitness of a certain Fly using the PROVIDED fitness function
@@ -64,7 +66,9 @@ protected:
     void findClosestNeighbours(int flyIndex); // find the 2 closest neighbours for the fly at the index supplied
     void findClosestNeighbours(int flyIndex, Fly& flyRef); // overloaded function that stores neighbours' information into each fly
     
-    void getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType type); //Set the closest 2 neighbours in the swarm for the fly at location 'curr' using either RING TOPOLOGY or RANDOMNESS (use provided enum)
+    void getRandF_or_RingT_Neighbours(int curr); //Set the closest 2 neighbours in the swarm for the fly at location 'curr' using either RING TOPOLOGY or RANDOMNESS (use provided enum)
+    void getRandF_or_RingT_Neighbours(int curr, Fly& flyref); // overloaded function that stores neighbours' information into each fly
+    void getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType type); // overloaded function that used an external input to set the closest 2 neighbours in the swarm for the fly at location 'curr' using either RING TOPOLOGY or RANDOMNESS (use provided enum)
     void getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType type, Fly& flyref); // overloaded function that stores neighbours' information into each fly
     
     void shakeOffset(); // move offset by a random value between -10 and 10

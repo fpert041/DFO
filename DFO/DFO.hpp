@@ -20,6 +20,7 @@ protected:
     bool constrainPositions = false;
 
 public:
+    
     // default constructor
     DFO();
     // overloaded constructor where a function is passed in as an argument

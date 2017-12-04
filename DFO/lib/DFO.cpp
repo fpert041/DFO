@@ -109,7 +109,7 @@ void const DFO::updateSwarm(){
         // utils.findClosestNeighbours(i);
         
         //// Use the below method if you want to find the closest neighbour in the search space
-        getRandF_or_RingT_Neighbours(k, RING);
+        getRandF_or_RingT_Neighbours(k);
         
         // cout << to_string(rightNeighbour) + " :: " + to_string(i) + " :: " + to_string(rightNeighbour) << endl;
         
@@ -162,10 +162,10 @@ void const DFO::updateSwarm(){
             if(true){
                 if (random(1) < dt)
                 {
-                    if (/* DISABLES CODE */ (true))
-                        temp[d] = random(0, searchSpaceWidth[d]);
+                    if (drm == UNI)
+                        temp[d] = random(0., double(searchSpaceWidth[d]));
                     else
-                        temp[d] = genGaussian(0, searchSpaceWidth[d]); // alternative stochastic method // turn If statements into FALSE if you want to check it out
+                        temp[d] = genGaussian(double(searchSpaceWidth[d])/2., double(searchSpaceWidth[d])/2.); // alternative stochastic method // turn If statements into FALSE if you want to check it out
                     
                     dCounter++;
                 }
@@ -174,7 +174,7 @@ void const DFO::updateSwarm(){
             // <<<<<<<<<<<<<<<<<   constrain dimensions to fit the range specified
             if (constrainPositions) {
                 if ( temp[d] > searchSpaceWidth[d] ) temp[d] =  searchSpaceWidth[d];
-                if (temp[d] < 0) temp[d] =  0;
+                if (temp[d] < 0.) temp[d] =  0.;
             }
             
             //cout << "Disturbances in Fly  #" + to_sring(i) + ": \t" + to_sring(dCounter) << endl;

@@ -14,19 +14,17 @@
 #include <fstream>
 #include <vector>
 #include <string>
+#include <sstream>
+#include "problem.hpp"
 
 using namespace std;
 
 class Reader {
 public:
-    Reader();
+    Reader(string problemTextPath);
+    ~Reader();
     
-    vector<int*> nKnaps;
-    vector<int*> nObjects;
-    
-    vector<double*> weights;
-    vector<double*> capabs;
-    vector<double*> constraints;
+    vector<Problem*> problems;
     
 };
 

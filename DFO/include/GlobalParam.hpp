@@ -21,6 +21,9 @@ class Fly; // forward declare the existance of a class of type Fly
 
 class GlobalParam {
     
+public:
+    enum DtRanMode { UNI, GAUSS};
+    
 protected:
     
     // keep leader in the equation or not
@@ -52,6 +55,9 @@ protected:
     // Variables to hold globally the dimension of the search space of the problem
     std::vector<int> searchSpaceWidth;
     
+    // Parameter for the type of randomness governing the disturbance
+    DtRanMode drm;
+    
 public:
     
     // an array of 'empty' fly-objects: it will hold our swarm
@@ -78,10 +84,13 @@ public:
         // keep leader (best fly) in the equation or not
     
     void setSearchSpaceWidth(int width);
-    // the size (range) of each dimension (can have a range of +/-)
+        // the size (range) of each dimension (can have a range of +/-)
 
     void setSearchSpaceWidth(int dim, int width);
         // set the size (range) of a specific dimension (can have a range of +/-)
+    
+    void setDtRandMode(DtRanMode mode);
+        // set the type of randomness governing the disturbance
     
     // -- getters --
     
@@ -106,6 +115,8 @@ public:
     int getDim();
     
     int getFEAllowed();
+    
+    std::string getDtRandMode();
     
 };
 

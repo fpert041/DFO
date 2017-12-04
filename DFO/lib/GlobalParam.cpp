@@ -18,7 +18,8 @@ GlobalParam::GlobalParam(){
     dt = 0.001;
     // Constant to set the maximum number of Fly Evaluations allowed to the program
     FE_allowed = 300000;
-    
+    // Parameter for the type of randomness governing the disturbance
+    drm = UNI;
     
     bestIndex = -1;
     searchSpaceWidth = std::vector<int>(dim, 100); // the size (range) of each dimension (can have a range of +/-)
@@ -64,6 +65,12 @@ void GlobalParam::setFEAllowed(double num){
     FE_allowed = num;
 }
 
+void GlobalParam::setDtRandMode(DtRanMode mode){
+    // set the type of randomness governing the disturbance
+    drm = mode;
+}
+
+
 // ----- getters ----
 
 std::vector<std::shared_ptr<Fly>> GlobalParam::getSwarm(){
@@ -108,6 +115,12 @@ int GlobalParam::getDim() {
 
 int GlobalParam::getFEAllowed() {
     return FE_allowed;
+}
+
+std::string GlobalParam::getDtRandMode(){
+    // set the type of randomness governing the disturbance
+    if(drm == UNI) return "UNIFORM";
+    else return "GAUSSIAN";
 }
 
 

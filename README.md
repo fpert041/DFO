@@ -109,9 +109,13 @@ There are "setter" and "getter" methods  you can use to change these and other p
 
 -- set sustom fitness function (you can also do this at the start by passing in a function into the DFO constructor)
 
-`setNeighbourTopology(NeighbouringTopologyType nt); // set the neighbouring topology`
+`setNeighbourTopology(NeighbouringTopologyType nt);`
 
 -- set the neighbouring topology that DFO uses to connect flies (defaults is DFO::RING topolgy), but can be set to DFO::RANDOM
+
+`setDtRandMode(DtRanMode drm)`
+
+-- set the type of randomness governing the disturbance (defaults is DFO::UNI = uniform), but can be set to DFO::GAUSS
 
  - - -
  
@@ -150,4 +154,12 @@ There are "setter" and "getter" methods  you can use to change these and other p
  `double Fly.getFitness()`
  
  -- Fly's method that returns its fitness
+ 
+ `str getNeighbourTopology()`
+ 
+ -- get the neighbouring topology used to link flies
+ 
+ `std::string getDtRandMode()`
+ 
+ -- get the type of randomness governing the disturbance
 

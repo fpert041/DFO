@@ -158,7 +158,88 @@ void Utilis::findClosestNeighbours(int flyIndex, Fly& flyRef) {
 
 //------------------------------------------------------------------------------------
 
+string Utilis::getNeighbourTopology(){ // get the neighbouring topology
+    if(ntt == RING) return "RING";
+    else return "RANDOM";
+}
+
+//------------------------------------------------------------------------------------
+
 /* Set the closest 2 neighbours in the swarm for the fly at location 'curr' using either RING TOPOLOGY or RANDOMNESS */
+
+void Utilis::getRandF_or_RingT_Neighbours(int curr) {
+    if (ntt == RING) // RING
+    {
+        leftNeighbour = curr - 1;
+        rightNeighbour = curr + 1;
+        
+        if (curr == 0)
+        leftNeighbour = popSize - 1;
+        if (curr == popSize - 1)
+        rightNeighbour = 0;
+    }
+    else // RANDOM
+    {
+        leftNeighbour = int(dis(gen)*popSize);
+        while (leftNeighbour == curr){
+            leftNeighbour = int(dis(gen)*popSize);
+        }
+        
+        rightNeighbour = dis(gen)*popSize;
+        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour))
+        rightNeighbour = int(dis(gen)*popSize);
+    }
+    
+}
+
+// overloaded funtion which also stores the information locally into each Fly
+
+
+void Utilis::getRandF_or_RingT_Neighbours(int curr, Fly& flyref) {
+    if (ntt == RING) // RING
+    {
+        leftNeighbour = curr - 1;
+        flyref.leftNindex = curr - 1;
+        flyref.pLeftNeighbour = swarm[popSize - 1];
+        
+        rightNeighbour = curr + 1;
+        flyref.rightNindex = curr + 1;
+        flyref.pRightNeighbour = swarm[popSize + 1];
+        
+        if (curr == 0){ // deal with low extreme
+            leftNeighbour = popSize - 1;
+            flyref.leftNindex = curr - 1;
+            flyref.pLeftNeighbour = swarm[popSize - 1];
+        }
+        
+        if (curr == popSize - 1){ // deal with high extreme
+            rightNeighbour = 0;
+            flyref.rightNindex = 0;
+            flyref.pRightNeighbour = swarm[0];
+        }
+    }
+    else // RANDOM
+    {
+        leftNeighbour = int(dis(gen)*popSize);
+        while (leftNeighbour == curr){
+            int r = int(dis(gen)*popSize);
+            leftNeighbour = r;
+            flyref.leftNindex = r;
+            flyref.pLeftNeighbour = swarm[r];
+        }
+        
+        rightNeighbour = dis(gen)*popSize;
+        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour)){
+            int r = int(dis(gen)*popSize);
+            rightNeighbour = r;
+            flyref.rightNindex = r;
+            flyref.pRightNeighbour = swarm[r];
+        }
+    }
+    
+}
+
+// overloaded funtion to specify how to assign neighbours either using ring topology
 
 void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType type) {
     
@@ -321,7 +402,7 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
     std::default_random_engine generator;
     std::normal_distribution<double> distribution(bellMean, bellStdDev);
     
-    return distribution(generator);
+    return distribution(gen);
 }
 
 //------------------------------------------------------------------------------------
