@@ -55,10 +55,16 @@ Dfo_knap::Dfo_knap(vector<int>maxCap, vector<int> w, vector<vector<int>> c, int 
 
 //------------------------------------------------------------
 
-void Dfo_knap::setup(int popSize, DimensionalReduc r) {
+void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
     
     // check if a REDUCED flag has been passed in as 2n arg (if so turn bool switch)
     if(r == REDUCED) reduc = true;
+    
+    if(ftPerDim!=1 && ftPerDim!=2 && ftPerDim!=4 && ftPerDim!=8 && ftPerDim!=16){
+        throw myex;
+        return;
+    }
+    dimsPerFeature = ftPerDim;
     
     // check and store the number of given objects
     numObjects = (int)weights.size();
@@ -86,6 +92,8 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
         newFtSize = pow(2,dimsPerFeature)-1;
         dfo->setSearchSpaceWidth(newFtSize);
         lastChunkDim = numObjects%dimsPerFeature;
+        // Conditional Operator = condition ? result_if_true : result_if_false
+        lastChunkDim = (lastChunkDim==0) ? dimsPerFeature : lastChunkDim;
         dfo->setSearchSpaceWidth(chunks-1, pow(2, lastChunkDim)-1);
     } else
         dfo->setSearchSpaceWidth(1);
@@ -136,12 +144,12 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
                                 
                                 double errW = double(maxWeight - sumWeights)/maxWeight;
                                 
-                                double fitness = errC + errW;
+                                double fitness = errC + errW*10.;
                                 
                                 //if (N<0) fitness += 100.0; // Only useful if I don't constrain the swarm (which I do)
                                 //if (N>pow(2,numObjects)) fitness += 100.0 // ''
                                 
-                                return fitness;
+                                return fitness*10.;
                             }
                             );
          
@@ -173,9 +181,9 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
                                 
                                 double errW = double(maxWeight - sumWeights)/maxWeight;
                                 
-                                double fitness = errC + errW;
+                                double fitness = errC + errW*10.;
                                 
-                                return fitness;
+                                return fitness*10.;
                                 
                             }
                             );
@@ -190,7 +198,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
     dfo->setDemocracy(true);
     
     // increase the likelyhood of a random dispersion
-    dfo->setDt(0.2);
+    dfo->setDt(0.1);
     
     // constarin each dimension to a range between 0 and 1
     dfo->setConstrainPos(true);
@@ -199,7 +207,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r) {
     dfo->setFEAllowed(50001);
     
     // set type of randomness for disturbance
-    dfo->setDtRandMode(DFO::GAUSS); // Seems to be better without this
+    //dfo->setDtRandMode(DFO::GAUSS); // Seems to be better without this (not sure when reducing features)
     
     // set type of neighbouring topology
     //dfo->setNeighbourTopology(DFO::RANDOM); // Seems to be better without this
@@ -224,9 +232,9 @@ void Dfo_knap::run() {
     // run the algorithm 100 times
     for (int i = 0; i<dfo->getFEAllowed(); ++i){
         dfo->updateSwarm();
-        std::vector<double> bestPos = dfo->getBestFly()->getPos();
         if(i%1000 == 0) {
-            
+            cout << pProblemData->probID << " \n";
+            std::vector<double> bestPos = dfo->getBestFly()->getPos();
             float fitness = dfo->getBestFly()->getFitness();
             int bestMaxWeight = 0;
             vector<int> testCons = vector<int>(numKnaps, 0);

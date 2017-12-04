@@ -44,21 +44,24 @@ int main(int argc, const char * argv[]) {
     //------------
     // SETUP
     
-    int set = 45; // from 1 to 48
+    int set = 1; // from 1 to 48
     
-    Dfo_knap knap;
-    //Dfo_knap knap(reader.problems[set-1]);
+    //Dfo_knap knap;
+    Dfo_knap knap(reader.problems[set-1]);
     
     //------------
     // RUN
     
-    // arguments: population size & dimensionality reduction factor:
-    // (1) pass in an int and define how many flys to spawn in the swarm (defaults to 50 but problems 1 - 7 can easily be tackled with 10 or 20)
+    // optional arguments: population size + dimensionality reduction factor + dimensions per feature (if reduced):
+    // (1) pass in an int and define how many flies to spawn in the swarm (defaults to 50)
     // (2) pass in REDUCED to use dimensionality reduction (not advisable on 8 / defaults to EXTENDED == no reduction)
-    knap.setup(30, REDUCED);
-    //knap.setup(50);
+    // (3) pass in a power of 2 between 1 and 16 to set the number of features to be reducded into 1 dimension
     
-    knap.changeCyclesNum(50001);
+    knap.setup(100, REDUCED, 8);
+    //knap.setup(30, REDUCED)
+    //knap.setup();
+    
+    knap.changeCyclesNum(1001);
     
     knap.run();
     

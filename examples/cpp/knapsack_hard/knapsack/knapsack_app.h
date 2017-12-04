@@ -23,8 +23,17 @@
 #include <bitset>
 #include <math.h>
 #include <functional>
+#include <exception>
 
 enum DimensionalReduc { REDUCED, EXTENDED };
+
+class DimensionsPerFeatureError: public exception
+{
+    virtual const char* what() const throw()
+    {
+        return "You Must only use 1, 2, 4, 8, or 16";
+    }
+};
 
 class Dfo_knap {
     // variable that will hold the DFO algorithm components
@@ -43,7 +52,7 @@ class Dfo_knap {
     Problem* pProblemData = nullptr;
     
     bool reduc = false;
-    int dimsPerFeature = 4; // keep it up to 16
+    int dimsPerFeature = 4; // keep it less than 17 AND a power of 2!
     int lastChunkDim = 0;
     int chunks = 1;
     int newFtSize = 1;
@@ -55,9 +64,11 @@ public:
     Dfo_knap(Problem* data);
     Dfo_knap(vector<int>maxCap, std::vector<int> w, vector<vector<int>> c, int targetOptimum);
     
-    void setup(int popSize = 50, DimensionalReduc r = EXTENDED);
+    void setup(int popSize = 50, DimensionalReduc r = EXTENDED, int ftPerDim = 4);
     void changeCyclesNum(int newNum);
     void run();
+    
+    DimensionsPerFeatureError myex;
 };
 
 #endif /* main_h */

@@ -1,0 +1,358 @@
+ example Problem
+
+cycle: 11000
+pop. size: 50, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0010(4.15818) 1111(15) 0101(9.90883) 1100(2.68808) 0010(3.62693) 1011(12.9899) 0100(2.24075) 
+fitness: 0.138785
+best fly's suggested fill-ups:
+knap 1: 595 knap 2: 594 
+best weight obtained : 141278
+best weight target : 141278
+iterations needed: 11000
+---
+cycle: 2000
+pop. size: 50, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0010(3.75168) 1111(15) 0101(9.60846) 1100(3.07639) 0010(3.71572) 1011(13.0831) 0100(2.28448) 
+fitness: 0.138785
+best fly's suggested fill-ups:
+knap 1: 595 knap 2: 594 
+best weight obtained : 141278
+best weight target : 141278
+iterations needed: 2000
+---
+cycle: 17000
+pop. size: 50, nghbr topol. used: RING, DT type: GAUSSIAN
+best fly index: 0
+best fly location: 0010(3.53187) 1111(15) 0101(9.56669) 1100(2.71071) 0010(4.47726) 1011(13.2124) 0100(2.0624) 
+fitness: 0.138785
+best fly's suggested fill-ups:
+knap 1: 595 knap 2: 594 
+best weight obtained : 141278
+best weight target : 141278
+iterations needed: 17000
+---
+cycle: 28000
+pop. size: 50, nghbr topol. used: RING, DT type: GAUSSIAN
+best fly index: 0
+best fly location: 0010(3.64275) 1111(15) 0101(10.3003) 1100(2.66286) 0010(4.48162) 1011(12.5862) 0100(1.5058) 
+fitness: 0.138785
+best fly's suggested fill-ups:
+knap 1: 595 knap 2: 594 
+best weight obtained : 141278
+best weight target : 141278
+iterations needed: 28000
+---
+cycle: 17000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0010(4.32457) 1111(15) 0101(9.54729) 1100(3.43759) 0010(4.13932) 1011(13.1479) 0100(1.79624) 
+fitness: 0.138785
+best fly's suggested fill-ups:
+knap 1: 595 knap 2: 594 
+best weight obtained : 141278
+best weight target : 141278
+iterations needed: 17000
+---
+cycle: 4000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0010(3.63131) 1111(15) 0101(10.324) 1100(2.56631) 0010(3.52188) 1011(12.8098) 0100(2.48002) 
+fitness: 0.138785
+best fly's suggested fill-ups:
+knap 1: 595 knap 2: 594 
+best weight obtained : 141278
+best weight target : 141278
+iterations needed: 4000
+---
+
+ problem SENTO1.DAT
+ 
+---
+SENTO1.DAT 
+cycle: 100000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0100(2.38218) 1001(9.20997) 1000(0.989802) 1111(15) 0110(6.29299) 0000(0) 1010(5.07259) 0100(2.3958) 0000(0) 1000(1.08361) 0100(2.30241) 0110(6.40351) 0000(0) 1001(8.50672) 0010(4.43032) 
+fitness: 18.3615
+best fly's suggested fill-ups:
+knap 1: 5111 knap 2: 5633 knap 3: 5591 knap 4: 3771 knap 5: 5204 knap 6: 4195 knap 7: 4576 knap 8: 4096 knap 9: 4797 knap 10: 2387 knap 11: 4881 knap 12: 5810 knap 13: 3858 knap 14: 4007 knap 15: 5029 knap 16: 5697 knap 17: 3151 knap 18: 5044 knap 19: 3933 knap 20: 2231 knap 21: 5575 knap 22: 5915 knap 23: 4936 knap 24: 5954 knap 25: 5593 knap 26: 5851 knap 27: 3194 knap 28: 3143 knap 29: 3111 knap 30: 3223 
+best weight obtained : 7723
+best weight target : 7772
+---
+
+ 
+ problem SENTO2.DAT
+
+ ---
+cycle: 50000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 1111(15) 1001(9.3638) 1010(5.43957) 1111(15) 1110(6.90648) 1110(7.48801) 1010(4.88983) 0100(1.80505) 0100(2.27397) 1010(5.47228) 1110(6.5583) 1110(7.16953) 0001(8.23791) 1001(8.9768) 1010(5.46211) 
+fitness: 0.0884778
+best fly's suggested fill-ups:
+knap 1: 8787 knap 2: 9850 knap 3: 9933 knap 4: 9006 knap 5: 9838 knap 6: 7480 knap 7: 9017 knap 8: 8646 knap 9: 8593 knap 10: 5125 knap 11: 7645 knap 12: 9738 knap 13: 8012 knap 14: 9460 knap 15: 9730 knap 16: 9400 knap 17: 7569 knap 18: 8587 knap 19: 7724 knap 20: 3808 knap 21: 9201 knap 22: 9041 knap 23: 8749 knap 24: 9425 knap 25: 9886 knap 26: 9498 knap 27: 8338 knap 28: 7889 knap 29: 5768 knap 30: 4775 
+best weight obtained : 8623
+best weight target : 8722
+---
+
+cycle: 100000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0111(14.4297) 1011(13.0282) 1010(4.56289) 1111(15) 1111(15) 1010(4.65219) 1010(4.61641) 1100(3.04437) 0001(8.31995) 1010(5.23496) 0000(0) 1111(15) 1000(0.922354) 1001(8.55619) 1010(5.49309) 
+fitness: 0.0887949
+best fly's suggested fill-ups:
+knap 1: 9655 knap 2: 9780 knap 3: 9218 knap 4: 9560 knap 5: 9657 knap 6: 7804 knap 7: 9317 knap 8: 8604 knap 9: 9692 knap 10: 4691 knap 11: 8583 knap 12: 9916 knap 13: 8291 knap 14: 7358 knap 15: 9864 knap 16: 8728 knap 17: 5838 knap 18: 7597 knap 19: 8560 knap 20: 4722 knap 21: 9078 knap 22: 8543 knap 23: 7905 knap 24: 9937 knap 25: 9717 knap 26: 9894 knap 27: 8871 knap 28: 7263 knap 29: 6155 knap 30: 4695 
+best weight obtained : 8620
+best weight target : 8722
+---
+
+cycle: 96000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 48
+best fly location: 0111(13.5474) 1001(9.1509) 1010(4.50613) 1111(15) 1110(7.07731) 1000(1.00525) 1011(12.7534) 0100(2.1301) 0101(10.0236) 1010(5.42013) 0101(9.87416) 1111(15) 0000(0) 1001(8.77791) 1010(5.05788) 
+fitness: 7.80127
+best fly's suggested fill-ups:
+knap 1: 9973 knap 2: 9396 knap 3: 9483 knap 4: 9141 knap 5: 9499 knap 6: 8575 knap 7: 9487 knap 8: 8079 knap 9: 9119 knap 10: 5397 knap 11: 6576 knap 12: 8870 knap 13: 6961 knap 14: 6913 knap 15: 9786 knap 16: 8585 knap 17: 5278 knap 18: 7532 knap 19: 7746 knap 20: 3740 knap 21: 8595 knap 22: 8085 knap 23: 7682 knap 24: 9682 knap 25: 9931 knap 26: 9955 knap 27: 7067 knap 28: 6204 knap 29: 5561 knap 30: 4742 
+best weight obtained : 8722
+best weight target : 8722
+iterations needed: 96000
+---
+ 
+ 
+ problem WEING1.DAT
+
+ ---
+cycle: 1000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0010(4.32848) 1111(15) 0101(9.50016) 1100(2.57722) 0010(4.39267) 1011(12.7769) 0100(1.95996) 
+fitness: 0.138785
+best fly's suggested fill-ups:
+knap 1: 595 knap 2: 594 
+best weight obtained : 141278
+best weight target : 141278
+iterations needed: 1000
+---
+
+
+ problem WEING2.DAT
+
+ cycle: 50000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0010(3.81211) 1011(12.9157) 0100(1.5961) 1100(2.56198) 1010(5.48487) 1011(13.251) 0000(0) 
+fitness: 0.203127
+best fly's suggested fill-ups:
+knap 1: 475 knap 2: 499 
+best weight obtained : 130723
+best weight target : 130883
+---
+
+---
+cycle: 30000
+pop. size: 100, nghbr topol. used: RING, DT type: UNIFORM
+best fly index: 0
+best fly location: 0010(4.19171) 1011(13.2031) 0110(6.03915) 0100(2.28679) 0010(3.51402) 1011(13.3172) 0000(0) 
+fitness: 0.202152
+best fly's suggested fill-ups:
+knap 1: 495 knap 2: 499 
+best weight obtained : 130883
+best weight target : 130883
+iterations needed: 30000
+ 
+ 
+ problem WEING3.DAT
+ 
+ 
+ problem WEING4.DAT
+ 
+ 
+ problem WEING5.DAT
+ 
+ 
+ problem WEING6.DAT 
+ 
+ 
+ problem WEING7.DAT
+ 
+ 
+ problem WEING8.DAT
+ 
+ 
+ problem WEISH01.DAT
+ 
+ 
+ problem WEISH02.DAT
+ 
+ 
+ problem WEISH03.DAT
+ 
+ 
+ problem WEISH04.DAT
+ 
+ 
+ problem WEISH05.DAT
+ 
+ 
+ problem WEISH06.DAT
+ 
+
+ problem WEISH07.DAT
+ 
+ 
+ problem WEISH08.DAT
+ 
+
+ problem WEISH09.DAT
+ 
+ 
+ 
+ problem WEISH10.DAT
+ 
+ 
+ 
+ problem WEISH11.DAT
+ 
+ 
+ 
+ 
+ 
+ problem WEISH12.DAT
+ 
+ 
+ 
+ 
+ problem WEISH13.DAT
+ 
+ 
+
+ 
+ 
+ 
+ problem WEISH14.DAT
+ 
+
+ 
+ 
+ problem WEISH15.DAT
+ 
+ 
+ 
+ 
+ 
+ problem WEISH16.DAT
+ 
+
+ 
+ 
+ problem WEISH17.DAT
+ 
+ 
+
+ 
+ problem WEISH18.DAT
+ 
+
+ 
+ problem WEISH19.DAT
+ 
+
+ 
+ problem WEISH20.DAT
+ 
+
+ 
+ problem WEISH21.DAT
+ 
+
+ 
+ 
+ problem WEISH22.DAT
+ 
+ 
+ 
+ 
+ problem WEISH23.DAT
+ 
+
+ 
+ 
+ problem WEISH24.DAT
+ 
+
+ 
+ 
+ 
+ problem WEISH25.DAT
+ 
+ 
+
+ 
+ 
+ 
+ problem WEISH26.DAT
+ 
+ 
+
+ 
+ problem WEISH27.DAT
+ 
+
+ 
+ 
+ problem WEISH28.DAT
+ 
+
+ 
+ 
+ problem WEISH29.DAT
+ 
+
+ 
+ problem WEISH30.DAT
+ 
+
+ 
+ 
+ 
+ problem PB1.DAT
+ 
+ 
+ 
+ 
+ 
+ problem PB2.DAT
+ 
+ 
+
+ 
+ 
+ 
+ problem PB4.DAT
+ 
+ 
+
+ 
+ 
+ problem PB5.DAT
+ 
+ 
+
+ 
+ 
+ problem PB6.DAT
+ 
+ 
+
+ 
+ problem PB7.DAT
+
+ 
+ problem HP1.DAT
+ 
+ 
+ problem HP2.DAT
+ 
+
