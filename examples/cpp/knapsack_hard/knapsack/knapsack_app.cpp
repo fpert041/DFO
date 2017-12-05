@@ -104,8 +104,6 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
     // set a fitness function that would work for this problem:
     // we need to check whether a card is in group 0 or 1,
     // then we compute and return out a measure of the "error" that we get for each solution
-    weightVsConstRatio = 50.0; // the higher this value, the more importance we will give to the weight (profit)
-                               // -if too high, we will probably push flies to exceed the knapsack max capacities
     if (reduc) {
         
         dfo->setFitnessFunc(
