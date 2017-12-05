@@ -159,6 +159,10 @@ There are "setter" and "getter" methods  you can use to change these and other p
  
  -- get the neighbouring topology used to link flies
  
+ `float getDt()`
+ 
+ -- get the disturbance threshold
+ 
  `std::string getDtRandMode()`
  
  -- get the type of randomness governing the disturbance

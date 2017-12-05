@@ -57,11 +57,13 @@ int main(int argc, const char * argv[]) {
     // (2) pass in REDUCED to use dimensionality reduction (not advisable on 8 / defaults to EXTENDED == no reduction)
     // (3) pass in a power of 2 between 1 and 16 to set the number of features to be reducded into 1 dimension
     
-    knap.setup(100, REDUCED, 8);
+    knap.setup(100, REDUCED, 4);
     //knap.setup(30, REDUCED)
     //knap.setup();
     
-    knap.changeCyclesNum(1001);
+    knap.changeCyclesNum(100001); // set the cycles of the algorithm
+    knap.changeAlgo(SWARM_BEST); // set the type of DFO algorithm
+    knap.changeGreedVsSafetyRatio(70); // change the ratio between "reward" for filling the knapsack and "punishment" for exceeding the knapsack capacity (it defaults to 10, which makes it practically impossible to exceed the knapsack but doesn't let the algorithm "dare" to fill up)
     
     knap.run();
     

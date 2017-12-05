@@ -13,6 +13,7 @@ using namespace dfoHelpers;
 //------------------------------------------------------------
 
 Dfo_knap::Dfo_knap() {
+    probID = "Example Problem";
     numKnaps = 2;
     numObjects = 28;
     knap_capacity = {600, 600};
@@ -27,6 +28,7 @@ Dfo_knap::Dfo_knap() {
 
 Dfo_knap::Dfo_knap(Problem& data){
     pProblemData = &data;
+    probID = data.probID;
     optimalWight = data.optimalWeight;
     constraints = data.constraints;
     weights = data.weights;
@@ -37,6 +39,7 @@ Dfo_knap::Dfo_knap(Problem& data){
 
 Dfo_knap::Dfo_knap(Problem* data){
     pProblemData = data;
+    probID = data->probID;
     optimalWight = data->optimalWeight;
     constraints = data->constraints;
     weights = data->weights;
@@ -101,6 +104,8 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
     // set a fitness function that would work for this problem:
     // we need to check whether a card is in group 0 or 1,
     // then we compute and return out a measure of the "error" that we get for each solution
+    weightVsConstRatio = 50.0; // the higher this value, the more importance we will give to the weight (profit)
+                               // -if too high, we will probably push flies to exceed the knapsack max capacities
     if (reduc) {
         
         dfo->setFitnessFunc(
@@ -144,7 +149,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
                                 
                                 double errW = double(maxWeight - sumWeights)/maxWeight;
                                 
-                                double fitness = errC + errW*10.;
+                                double fitness = errC + errW*weightVsConstRatio;
                                 
                                 //if (N<0) fitness += 100.0; // Only useful if I don't constrain the swarm (which I do)
                                 //if (N>pow(2,numObjects)) fitness += 100.0 // ''
@@ -181,7 +186,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
                                 
                                 double errW = double(maxWeight - sumWeights)/maxWeight;
                                 
-                                double fitness = errC + errW*10.;
+                                double fitness = errC + errW*weightVsConstRatio;
                                 
                                 return fitness*10.;
                                 
@@ -227,21 +232,31 @@ void Dfo_knap::changeCyclesNum(int newNum){
     dfo->setFEAllowed(newNum);
 }
 
+void Dfo_knap::changeAlgo(AlgoType type){
+    dfo->setDemocracy(type);
+}
+
+void Dfo_knap::changeGreedVsSafetyRatio(float ratio){
+    weightVsConstRatio = ratio;
+};
+
 void Dfo_knap::run() {
 
     // run the algorithm 100 times
     for (int i = 0; i<dfo->getFEAllowed(); ++i){
         dfo->updateSwarm();
         if(i%1000 == 0) {
-            cout << pProblemData->probID << " \n";
+            cout << probID << " \n";
             std::vector<double> bestPos = dfo->getBestFly()->getPos();
             float fitness = dfo->getBestFly()->getFitness();
             int bestMaxWeight = 0;
             vector<int> testCons = vector<int>(numKnaps, 0);
             std::cout << "cycle: " << i <<  "\n";
+            std::cout << "algo: " << (dfo->getDemocracy() ? "Best Neighbour" : "Swarm's Best") <<  ", ";
+            std::cout << "greed/safety ratio: " << weightVsConstRatio << "\n";
             std::cout << "pop. size: " << dfo->getPopSize() << ", ";
             std::cout << "nghbr topol. used: " << dfo->getNeighbourTopology() << ", ";
-            std::cout << "DT type: " << dfo->getDtRandMode() << "\n";
+            std::cout << "dist thresh: " << dfo->getDt() << "(" <<dfo->getDtRandMode() << ")\n";
             std::cout << "best fly index: " << dfo->getBestIndex() <<  "\n";
             
             if(reduc) {
@@ -304,6 +319,8 @@ void Dfo_knap::run() {
                 std::cout << "iterations needed: "<< i <<  "\n";
                 std::cout << "---" << std::endl;
                 break;
+            } else {
+                std::cout << " - " << "\n";
             }
             std::cout << "---" << std::endl;
         }

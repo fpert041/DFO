@@ -117,6 +117,10 @@ int GlobalParam::getFEAllowed() {
     return FE_allowed;
 }
 
+float GlobalParam::getDt() {
+    return float(dt);
+}
+
 std::string GlobalParam::getDtRandMode(){
     // set the type of randomness governing the disturbance
     if(drm == UNI) return "UNIFORM";

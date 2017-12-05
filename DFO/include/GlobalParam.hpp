@@ -116,6 +116,8 @@ public:
     
     int getFEAllowed();
     
+    float getDt();
+    
     std::string getDtRandMode();
     
 };

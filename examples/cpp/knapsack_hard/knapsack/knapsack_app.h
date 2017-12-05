@@ -26,6 +26,7 @@
 #include <exception>
 
 enum DimensionalReduc { REDUCED, EXTENDED };
+enum AlgoType { BEST_NEIGH=1, SWARM_BEST=0 };
 
 class DimensionsPerFeatureError: public exception
 {
@@ -44,12 +45,14 @@ class Dfo_knap {
     vector<int> weights;
     vector<vector<int>> constraints;
     int optimalWight;
+    float weightVsConstRatio = 10.0; // we'll redefine this in "setup()"
     
     int numObjects;
     int maxWeight;
     vector<int> maxConsts;
     
     Problem* pProblemData = nullptr;
+    string probID = "";
     
     bool reduc = false;
     int dimsPerFeature = 4; // keep it less than 17 AND a power of 2!
@@ -66,6 +69,8 @@ public:
     
     void setup(int popSize = 50, DimensionalReduc r = EXTENDED, int ftPerDim = 4);
     void changeCyclesNum(int newNum);
+    void changeAlgo(AlgoType type);
+    void changeGreedVsSafetyRatio(float ratio);
     void run();
     
     DimensionsPerFeatureError myex;
