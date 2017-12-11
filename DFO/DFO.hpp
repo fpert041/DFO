@@ -26,6 +26,8 @@ public:
     // overloaded constructor where a function is passed in as an argument
     DFO(std::function<double(std::vector<double>)> fitnessFunc);
 
+    DFO( const DFO &obj);
+    
     // default destructor
     ~DFO();
     

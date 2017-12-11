@@ -70,6 +70,16 @@ void GlobalParam::setDtRandMode(DtRanMode mode){
     drm = mode;
 }
 
+void GlobalParam::setSwarm(std::vector<std::shared_ptr<Fly>> newS){
+    // set the swarm
+    if(newS.size() == swarm.size()){
+        for(int i = 0; i<newS.size(); i++){
+            swarm[i] = newS[i];
+        }
+    } else
+        std::cout << "THE NEW SWARM IS NOT COMPATIBLE" << std::endl;
+}
+
 
 // ----- getters ----
 

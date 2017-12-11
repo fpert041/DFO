@@ -92,6 +92,9 @@ public:
     void setDtRandMode(DtRanMode mode);
         // set the type of randomness governing the disturbance
     
+    void setSwarm(std::vector<std::shared_ptr<Fly>> newS);
+        // set the swarm
+    
     // -- getters --
     
     std::vector<std::shared_ptr<Fly>> getSwarm();

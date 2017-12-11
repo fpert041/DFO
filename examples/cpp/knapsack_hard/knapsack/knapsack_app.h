@@ -60,6 +60,12 @@ class Dfo_knap {
     int lastChunkDim = 0;
     int chunks = 1;
     int newFtSize = 1;
+    
+    double fitness;
+    int counter2 = 0;
+    
+    void report(int i, vector<double> bestPos, int bestMaxWeight);
+    void adapt(float& newDt, float& targetDt, int& counter);
 
 public:
     
@@ -72,6 +78,7 @@ public:
     void changeCyclesNum(int newNum);
     void changeAlgo(AlgoType type);
     void changeGreedVsSafetyRatio(float ratio);
+    void changeNeighTopol(DFO::NeighbouringTopologyType ntt = DFO::RING);
     void run();
     
     DimensionsPerFeatureError myex;

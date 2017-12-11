@@ -53,6 +53,8 @@ public:
     void setNeighbourTopology(NeighbouringTopologyType nt = Utilis::RING); // set the neighbouring topology
     
     string getNeighbourTopology(); // get the neighbouring topology
+    
+    void setLeader(std::vector<double> newF); // set the leader of the swarm
 
     // ********************* ONLY FOR CHILDREN *********************
     
@@ -88,6 +90,7 @@ protected:
     
     double genGaussian(double bellMean, double bellStdDev); // Given the distribution mean value and its standard deviation (variance), generate and return a Gaussian Random number
     
+    int torus( int n, int inDim ); // turn a linear dimensional space into a "Torus-like" space, by wrapping dimensions
     
     // TODO: Implement the following evaluation methods -> Schwefel12 Rosenbrock GSchwefel26 Rastrigin Ackley Griewank PenalizedP8 PenalizedP16 // Once you do this, add their calls into the cases of evaluate()
 };

@@ -343,6 +343,21 @@ void Utilis::printSummary() {
 
 //------------------------------------------------------------------------------------
 
+// turn a linear dimensional space into a "Torus-like" space, by wrapping dimensions
+int Utilis::torus( int n, int inDim )
+{
+    int threshold = getSearchSpaceWidth(inDim);
+    int result = n;
+    if ( n >= threshold )
+        result = n % threshold;
+    else if ( n < 0 )
+        result = threshold-n; //?
+    
+    return result;
+}
+
+//------------------------------------------------------------------------------------
+
 /* Generate and output a random Fly's position vector */
 
 vector<double> Utilis::genRandPos() {
@@ -403,6 +418,17 @@ double Utilis::genGaussian(double bellMean, double bellStdDev) {
     std::normal_distribution<double> distribution(bellMean, bellStdDev);
     
     return distribution(gen);
+}
+
+//------------------------------------------------------------------------------------
+
+ // set the leader of the swarm externally
+void Utilis::setLeader(std::vector<double> newF){
+    if(newF.size() == swarm[0]->getPos().size()){
+        swarm[0].reset(new Fly(newF, this));
+    } else {
+        std::cout << "THE SWARM IS NOT COMPATIBLE WITH THE INPUT FLY's POSITION" << std::endl;
+    }
 }
 
 //------------------------------------------------------------------------------------
