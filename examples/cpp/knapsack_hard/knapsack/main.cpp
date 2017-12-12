@@ -65,7 +65,7 @@ int main(int argc, const char * argv[]) {
     
     knap.changeCyclesNum(100001); // set the cycles of the algorithm
     knap.changeAlgo(SWARM_BEST); // set the type of DFO algorithm
-    knap.changeGreedVsSafetyRatio(50); // change the ratio between "reward" for filling the knapsack and "punishment" for exceeding the knapsack capacity (it defaults to 10, which makes it practically impossible to exceed the knapsack but doesn't let the algorithm "dare" to fill up)
+    knap.changeGreedVsSafetyRatio(0.75); // change the ratio between "reward" for filling the knapsack and "punishment" for exceeding the knapsack capacity (it defaults to 0.75, which makes it practically impossible to exceed the knapsack but doesn't let the algorithm "dare" to fill up)
     knap.changeNeighTopol(DFO::RANDOM);
     
     knap.run();
