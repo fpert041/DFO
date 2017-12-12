@@ -197,7 +197,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
     
     
     // set neighbours to check per side
-    dfo->setNumNeighbours(3);
+    dfo->setNumNeighbours(4);
     
     // set up a populatin size of 100
     dfo->setPopSize(popSize);
@@ -255,7 +255,7 @@ void Dfo_knap::run() {
     int i = 0;
     vector<int> testCons = vector<int>(numKnaps, 0);
     
-    int tenPercentFEA = floor(dfo->getFEAllowed()*0.1);
+    int tenPercentFEA = floor(dfo->getFEAllowed()*0.2);
     
     std::vector<double> bestPos = dfo->getBestFly()->getPos();
     int bestMaxWeight = 0;
@@ -365,7 +365,7 @@ void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter, float& wvsc, i
             dfo->setDemocracy(false);
         }
         weightVsConstRatio *= 0.5;
-        weightVsConstRatio = weightVsConstRatio < 0.001 ? 0.001 : weightVsConstRatio;
+        weightVsConstRatio = weightVsConstRatio < 0.002 ? 0.002 : weightVsConstRatio;
         counter = 0;
     }
     
