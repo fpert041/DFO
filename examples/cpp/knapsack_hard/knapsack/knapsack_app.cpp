@@ -270,6 +270,9 @@ void Dfo_knap::run() {
             report(i, bestPos, bestMaxWeight, testCons);
         }
         if (bestMaxWeight == optimalWight) {
+            std::cout <<  "\n";
+            std::cout << "best weight obtained : "<< bestMaxWeight <<  "\n";
+            std::cout << "best weight target : "<< optimalWight <<  "\n";
             std::cout << "iterations needed: "<< i <<  "\n";
             std::cout << "---" << std::endl;
             break;
@@ -322,6 +325,9 @@ void Dfo_knap::run() {
             report(i, bestPos, bestMaxWeight, testCons);
         }
         if (bestMaxWeight == optimalWight) {
+            std::cout <<  "\n";
+            std::cout << "best weight obtained : "<< bestMaxWeight <<  "\n";
+            std::cout << "best weight target : "<< optimalWight <<  "\n";
             std::cout << "iterations needed: "<< i <<  "\n";
             std::cout << "---" << std::endl;
             break;
@@ -411,6 +417,7 @@ void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter, float& wvsc, i
 
 // Function for reporting data every N number of cycles or at the end
 void Dfo_knap::report(int& i, vector<double>& bestPos, int& bestMaxWeight, vector<int> testCons){
+    cout << "\n";
     cout << probID << ", ";
 
     std::cout << "cycle: " << i <<  "\n";
