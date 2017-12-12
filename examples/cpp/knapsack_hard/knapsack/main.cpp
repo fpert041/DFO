@@ -44,7 +44,7 @@ int main(int argc, const char * argv[]) {
     //------------
     // SETUP
     
-    int set = 1; // from 1 to 48
+    int set = 2; // from 1 to 48
     
     //Dfo_knap knap;
     Dfo_knap knap(reader.problems[set-1]);

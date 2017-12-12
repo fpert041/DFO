@@ -326,7 +326,6 @@ void Dfo_knap::run() {
             std::cout << "---" << std::endl;
             break;
         }
-        std::cout << "---" << std::endl;
     }
     
 }
