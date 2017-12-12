@@ -192,8 +192,8 @@ void const DFO::updateSwarm(){
             
             // <<<<<<<<<<<<<<<<<   constrain dimensions to fit the range specified
             if (constrainPositions) {
-                if ( temp[d] > searchSpaceWidth[d] ) temp[d] =  searchSpaceWidth[d];
-                if (temp[d] < 0.) temp[d] =  0.;
+                if ( temp[d] > searchSpaceWidth[d] ) temp[d] = searchSpaceWidth[d];//   fmod(temp[d], searchSpaceWidth[d]);
+                if (temp[d] < 0.) temp[d] =  0;//searchSpaceWidth[d] - fmod(temp[d], searchSpaceWidth[d]);
             }
             
             //cout << "Disturbances in Fly  #" + to_sring(i) + ": \t" + to_sring(dCounter) << endl;

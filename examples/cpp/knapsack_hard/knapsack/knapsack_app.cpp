@@ -187,7 +187,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
                                 
                                 double errW = double(maxWeight - sumWeights)/maxWeight;
                                 
-                                double fitness = errC + errW*weightVsConstRatio;
+                                double fitness = errC*weightVsConstRatio + errW;
                                 
                                 return fitness*10.;
                                 
@@ -197,7 +197,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
     
     
     // set neighbours to check per side
-    dfo->setNumNeighbours(2);
+    dfo->setNumNeighbours(3);
     
     // set up a populatin size of 100
     dfo->setPopSize(popSize);
@@ -351,7 +351,7 @@ void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter, float& wvsc, i
         counter ++;
     } else {
         counter = floor(counter*0.1);
-        weightVsConstRatio = weightVsConstRatio > wvsc ? wvsc : weightVsConstRatio + 1;
+        weightVsConstRatio = weightVsConstRatio >= wvsc*2 ? wvsc*2 : weightVsConstRatio + 0.02;
     }
     
     // IMPORTANT WOW! FACTOR: THIS PART CHANGES DYNAMICALLY HOW THE ALGORITHM WORKS AND HOW THE FITNESS FUNCTION ASSESSES THE FITNESS REWARDS/PENALTIES --> In case the algorithm gets stuck, the equations are pushed "outside of the allowed parameters to explore the search space through "non acdeptable paths". This means that the fitness function starts to temporarily give less "penalty" to knapsacks that are filled above their limit. This allows the algorithm to "explore" more when it remains blocked for too long
@@ -360,12 +360,12 @@ void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter, float& wvsc, i
         if(dfo->getNeighbourTopology() == "RING"){
             dfo->setNeighbourTopology(DFO::RANDOM);
             dfo->setDemocracy(true);
-            weightVsConstRatio *= 0.5;
         } else {
             dfo->setNeighbourTopology(DFO::RING);
             dfo->setDemocracy(false);
-            weightVsConstRatio *= 0.5;
         }
+        weightVsConstRatio *= 0.5;
+        weightVsConstRatio = weightVsConstRatio < 0.001 ? 0.001 : weightVsConstRatio;
         counter = 0;
     }
     
