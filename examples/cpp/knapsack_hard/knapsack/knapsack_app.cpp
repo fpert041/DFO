@@ -150,12 +150,12 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
                                 
                                 double errW = double(maxWeight - sumWeights)/maxWeight;
                                 
-                                double fitness = errC*weightVsConstRatio + errW;
+                                double fitness = errC*(weightVsConstRatio) + errW*(1.0 - weightVsConstRatio);
                                 
                                 //if (N<0) fitness += 100.0; // Only useful if I don't constrain the swarm (which I do)
                                 //if (N>pow(2,numObjects)) fitness += 100.0 // ''
                                 
-                                return fitness*10.;
+                                return fitness*100.;
                             }
                             );
         
@@ -248,7 +248,7 @@ void Dfo_knap::changeNeighTopol(DFO::NeighbouringTopologyType ntt){
 };
 
 void Dfo_knap::run() {
-    float targetWvsC = weightVsConstRatio;
+    double targetWvsC = weightVsConstRatio;
     float newDt = 0.8;
     float targetDt = dfo->getDt();
     int counter = 0;
@@ -339,7 +339,7 @@ void Dfo_knap::run() {
 
 // Function for calling the update method of the algorithm, testing features, and a modify a few parameters if it gets stuck
 
-void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter, float& wvsc, int& bestMaxWeight, vector<double>& bestPos, vector<int> testCons){
+void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter, double& wvsc, int& bestMaxWeight, vector<double>& bestPos, vector<int> testCons){
     bestMaxWeight = 0;
     
     newDt = (newDt >= targetDt) ? targetDt : (newDt - 0.001);

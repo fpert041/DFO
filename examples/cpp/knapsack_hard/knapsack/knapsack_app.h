@@ -45,7 +45,7 @@ class Dfo_knap {
     vector<int> weights;
     vector<vector<int>> constraints;
     int optimalWight;
-    float weightVsConstRatio = 10.0; // the higher this value, the more importance we will give to the weight (profit)
+    double weightVsConstRatio = 0.75; // the higher this value, the more importance we will give to the weight (profit)
     // -if too high, we will probably push flies to exceed the knapsack max capacities
     
     int numObjects;
@@ -67,7 +67,7 @@ class Dfo_knap {
     bool demo = false;
     
     void report(int& i, vector<double>& bestPos, int& bestMaxWeight, vector<int> testCons);
-    void adapt(float& newDt, float& targetDt, int& counter, float& wvsc, int& bestMaxWeight, vector<double>& bestPos, vector<int> testCons);
+    void adapt(float& newDt, float& targetDt, int& counter, double& wvsc, int& bestMaxWeight, vector<double>& bestPos, vector<int> testCons);
 
 public:
     
