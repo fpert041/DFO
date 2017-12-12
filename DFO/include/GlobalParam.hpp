@@ -47,7 +47,7 @@ protected:
     int evalCount;
     
     // Two variables to store globally the indeces of the left and right neighbour of a Fly currencly being checked
-    int leftNeighbour, rightNeighbour;
+    std::vector<int> leftNeighbour, rightNeighbour;
     
     // This varaible stores name of the function used to perform the evaluation of Flies
     std::string evaluationFunctionName;
@@ -57,6 +57,9 @@ protected:
     
     // Parameter for the type of randomness governing the disturbance
     DtRanMode drm;
+    
+    // Parameter for the number of neighbours checked per side
+    int numNeighbours;
     
 public:
     
@@ -68,6 +71,9 @@ public:
     GlobalParam();
     
     // -- setters --
+    void setNumNeighbours(int num);
+    // set number of neighbours per side to be checked
+    
     void setFEAllowed(double num);
         // Constant to set the maximum number of Fly Evaluations allowed to the program
     
@@ -120,6 +126,8 @@ public:
     int getFEAllowed();
     
     float getDt();
+    
+    int getNumNeighbours();
     
     std::string getDtRandMode();
     

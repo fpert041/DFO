@@ -144,13 +144,13 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
                                 
                                 double errC = 0;
                                 for(int i = 0; i<numKnaps; ++i){
-                                    if(sumConst[i] > knap_capacity[i]) errC += 100.0;
+                                    if(sumConst[i] > knap_capacity[i]) errC += 1.0;
                                 }
                                 errC /= numKnaps;
                                 
                                 double errW = double(maxWeight - sumWeights)/maxWeight;
                                 
-                                double fitness = errC + errW*weightVsConstRatio;
+                                double fitness = errC*weightVsConstRatio + errW;
                                 
                                 //if (N<0) fitness += 100.0; // Only useful if I don't constrain the swarm (which I do)
                                 //if (N>pow(2,numObjects)) fitness += 100.0 // ''
@@ -196,12 +196,14 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
     }
     
     
+    // set neighbours to check per side
+    dfo->setNumNeighbours(2);
     
     // set up a populatin size of 100
     dfo->setPopSize(popSize);
     
     // set neighbour-best algorithm rather swarm-best version (which would be prone to fall into local minima)
-    dfo->setDemocracy(true);
+    dfo->setDemocracy(demo);
     
     // increase the likelyhood of a random dispersion
     dfo->setDt(0.1);
@@ -210,7 +212,7 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
     dfo->setConstrainPos(true);
     
     // set security stopper for maximum
-    dfo->setFEAllowed(50001);
+    dfo->setFEAllowed(FEAllowed);
     
     // set type of randomness for disturbance
     //dfo->setDtRandMode(DFO::GAUSS); // Seems to be better without this (not sure when reducing features)
@@ -225,15 +227,15 @@ void Dfo_knap::setup(int popSize, DimensionalReduc r, int ftPerDim) {
      */
     dfo->generateSwarmPositiveAxis();
     
-    
-    
 }
 
 void Dfo_knap::changeCyclesNum(int newNum){
+    FEAllowed = newNum;
     dfo->setFEAllowed(newNum);
 }
 
 void Dfo_knap::changeAlgo(AlgoType type){
+    demo = type;
     dfo->setDemocracy(type);
 }
 
@@ -246,9 +248,12 @@ void Dfo_knap::changeNeighTopol(DFO::NeighbouringTopologyType ntt){
 };
 
 void Dfo_knap::run() {
+    float targetWvsC = weightVsConstRatio;
     float newDt = 0.8;
     float targetDt = dfo->getDt();
     int counter = 0;
+    int i = 0;
+    vector<int> testCons = vector<int>(numKnaps, 0);
     
     int tenPercentFEA = floor(dfo->getFEAllowed()*0.1);
     
@@ -256,13 +261,13 @@ void Dfo_knap::run() {
     int bestMaxWeight = 0;
     
     // run the algorithm N% of allowed times (useful for partially taking advantage of dimensionality reduction)
-    for (int i = 0; i<tenPercentFEA; ++i){
+    for (i = 0; i<tenPercentFEA; ++i){
         
-        adapt(newDt, targetDt, counter);
+        adapt(newDt, targetDt, counter, targetWvsC, bestMaxWeight, bestPos, testCons);
         
         // analysis
         if(i%1000 == 0) {
-            report(i, bestPos, bestMaxWeight);
+            report(i, bestPos, bestMaxWeight, testCons);
         }
         if (bestMaxWeight == optimalWight) {
             std::cout << "iterations needed: "<< i <<  "\n";
@@ -308,24 +313,30 @@ void Dfo_knap::run() {
     dfo->setLeader(binaryBestPos);
     
     // run the algorithm until the max number of flies evaluations allowed
-    for (int i = tenPercentFEA; i<dfo->getFEAllowed(); ++i){
+    for (i = tenPercentFEA; i<dfo->getFEAllowed(); ++i){
     
-        adapt(newDt, targetDt, counter);
+        adapt(newDt, targetDt, counter, targetWvsC, bestMaxWeight, bestPos, testCons);
         
         // analysis
         if(i%1000 == 0) {
-            report(i, bestPos, bestMaxWeight);
+            report(i, bestPos, bestMaxWeight, testCons);
         }
         if (bestMaxWeight == optimalWight) {
             std::cout << "iterations needed: "<< i <<  "\n";
             std::cout << "---" << std::endl;
             break;
         }
+        std::cout << "---" << std::endl;
     }
     
 }
 
-void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter){
+
+// Function for calling the update method of the algorithm, testing features, and a modify a few parameters if it gets stuck
+
+void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter, float& wvsc, int& bestMaxWeight, vector<double>& bestPos, vector<int> testCons){
+    bestMaxWeight = 0;
+    
     newDt = (newDt >= targetDt) ? targetDt : (newDt - 0.001);
     dfo->setDt(newDt);
     dfo->updateSwarm();
@@ -335,30 +346,87 @@ void Dfo_knap::adapt(float& newDt, float& targetDt, int& counter){
         counter ++;
     } else {
         counter = floor(counter*0.1);
+        weightVsConstRatio = weightVsConstRatio > wvsc ? wvsc : weightVsConstRatio + 1;
     }
     
+    // IMPORTANT WOW! FACTOR: THIS PART CHANGES DYNAMICALLY HOW THE ALGORITHM WORKS AND HOW THE FITNESS FUNCTION ASSESSES THE FITNESS REWARDS/PENALTIES --> In case the algorithm gets stuck, the equations are pushed "outside of the allowed parameters to explore the search space through "non acdeptable paths". This means that the fitness function starts to temporarily give less "penalty" to knapsacks that are filled above their limit. This allows the algorithm to "explore" more when it remains blocked for too long
     fitness = tempfitness;
     if(counter > 1000){
-        if(dfo->getNeighbourTopology() == "RING")
+        if(dfo->getNeighbourTopology() == "RING"){
             dfo->setNeighbourTopology(DFO::RANDOM);
-        else
+            dfo->setDemocracy(true);
+            weightVsConstRatio *= 0.5;
+        } else {
             dfo->setNeighbourTopology(DFO::RING);
+            dfo->setDemocracy(false);
+            weightVsConstRatio *= 0.5;
+        }
         counter = 0;
+    }
+    
+    //---
+    
+    bestPos = dfo->getBestFly()->getPos();
+    
+    if(reduc) {
+        bitset<16> A;//A will hold the binary representation of N with 16 bits precision
+        for(int k = 0; k<chunks-1; ++k){
+            int N = floor(bestPos[k]+0.5); //input number in base 10
+            A=N;
+            for (int m = 0; m<dimsPerFeature; ++m){
+                if(A[m] >= 0.5) {
+                    bestMaxWeight += weights[m+k*dimsPerFeature];
+                    for(int j = 0; j<numKnaps; ++j){
+                        testCons[j] += constraints[j][m+k*dimsPerFeature];
+                    }
+                }
+            }
+            A=0;
+        }
+        // last chunk ---
+        int N = floor(bestPos[chunks-1]+0.5); //input number in base 10
+        A=N;
+        for (int m = 0; m<lastChunkDim; ++m){
+            if(A[m] >= 0.5) {
+                bestMaxWeight += weights[m+(chunks-1)*dimsPerFeature];
+                for(int j = 0; j<numKnaps; ++j){
+                    testCons[j] += constraints[j][m+(chunks-1)*dimsPerFeature];
+                }
+            }
+        }
+        A=0;
+        // ----
+    } else {
+        for(int m = 0; m<bestPos.size(); ++m){
+            bestPos[m] = floor(bestPos[m] + 0.5);
+            if(bestPos[m] >= 0.5){
+                bestMaxWeight += weights[m];
+                for(int j = 0; j<numKnaps; ++j){
+                    testCons[j] += constraints[j][m];
+                }
+            }
+        }
     }
 }
 
-void Dfo_knap::report(int i, vector<double> bestPos, int bestMaxWeight){
-    cout << probID << " \n";
-    vector<int> testCons = vector<int>(numKnaps, 0);
+
+// Function for reporting data every N number of cycles or at the end
+void Dfo_knap::report(int& i, vector<double>& bestPos, int& bestMaxWeight, vector<int> testCons){
+    cout << probID << ", ";
+
     std::cout << "cycle: " << i <<  "\n";
     std::cout << "algo: " << (dfo->getDemocracy() ? "Best Neighbour" : "Swarm's Best") <<  ", ";
     std::cout << "greed/safety ratio: " << weightVsConstRatio << "\n";
     std::cout << "pop. size: " << dfo->getPopSize() << ", ";
     std::cout << "nghbr topol. used: " << dfo->getNeighbourTopology() << ", ";
     std::cout << "dist thresh: " << dfo->getDt() << "(" <<dfo->getDtRandMode() << ")\n";
-    std::cout << "best fly index: " << dfo->getBestIndex() <<  "\n";
+    std::cout << "num. neighb. assessed: " << dfo->getNumNeighbours() * 2 << "\n";
+    std::cout << "fitness: "<< fitness <<  ", ";
+    std::cout << "best fly index: " << dfo->getBestIndex() <<  ", ";
     
     bestPos = dfo->getBestFly()->getPos();
+    
+    bestMaxWeight = 0;
     
     if(reduc) {
         std::cout << "best fly location: " ;
@@ -366,12 +434,12 @@ void Dfo_knap::report(int i, vector<double> bestPos, int bestMaxWeight){
         for(int k = 0; k<chunks-1; ++k){
             int N = floor(bestPos[k]+0.5); //input number in base 10
             A=N;
-            for (int i = 0; i<dimsPerFeature; ++i){
-                std::cout << A[i] << "";
-                if(A[i] >= 0.5) {
-                    bestMaxWeight += weights[i+k*dimsPerFeature];
+            for (int m = 0; m<dimsPerFeature; ++m){
+                std::cout << A[m] << "";
+                if(A[m] >= 0.5) {
+                    bestMaxWeight += weights[m+k*dimsPerFeature];
                     for(int j = 0; j<numKnaps; ++j){
-                        testCons[j] += constraints[j][i+k*dimsPerFeature];
+                        testCons[j] += constraints[j][m+k*dimsPerFeature];
                     }
                 }
             }
@@ -381,12 +449,12 @@ void Dfo_knap::report(int i, vector<double> bestPos, int bestMaxWeight){
         // last chunk ---
         int N = floor(bestPos[chunks-1]+0.5); //input number in base 10
         A=N;
-        for (int i = 0; i<lastChunkDim; ++i){
-            std::cout << A[i] << "";
-            if(A[i] >= 0.5) {
-                bestMaxWeight += weights[i+(chunks-1)*dimsPerFeature];
+        for (int m = 0; m<lastChunkDim; ++m){
+            std::cout << A[m] << "";
+            if(A[m] >= 0.5) {
+                bestMaxWeight += weights[m+(chunks-1)*dimsPerFeature];
                 for(int j = 0; j<numKnaps; ++j){
-                    testCons[j] += constraints[j][i+(chunks-1)*dimsPerFeature];
+                    testCons[j] += constraints[j][m+(chunks-1)*dimsPerFeature];
                 }
             }
         }
@@ -396,18 +464,17 @@ void Dfo_knap::report(int i, vector<double> bestPos, int bestMaxWeight){
         
         std::cout <<  "\n";
     } else {
-        for(int i = 0; i<bestPos.size(); ++i){
-            bestPos[i] = floor(bestPos[i] + 0.5);
-            if(bestPos[i] >= 0.5){
-                bestMaxWeight += weights[i];
+        for(int m = 0; m<bestPos.size(); ++m){
+            bestPos[m] = floor(bestPos[m] + 0.5);
+            if(bestPos[m] >= 0.5){
+                bestMaxWeight += weights[m];
                 for(int j = 0; j<numKnaps; ++j){
-                    testCons[j] += constraints[j][i];
+                    testCons[j] += constraints[j][m];
                 }
             }
         }
         std::cout << "best fly location: " << vect_to_string(bestPos) <<  "\n";
     }
-    std::cout << "fitness: "<< fitness <<  "\n";
     std::cout << "best fly's suggested fill-ups:"<<  "\n";
     for(int i = 0; i<numKnaps; ++i){
         std::cout << "knap " << i+1 << ": " << testCons[i] << " ";
@@ -415,7 +482,5 @@ void Dfo_knap::report(int i, vector<double> bestPos, int bestMaxWeight){
     std::cout <<  "\n";
     std::cout << "best weight obtained : "<< bestMaxWeight <<  "\n";
     std::cout << "best weight target : "<< optimalWight <<  "\n";
-    
-    std::cout << "---" << std::endl;
 }
 

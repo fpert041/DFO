@@ -114,26 +114,41 @@ void const DFO::updateSwarm(){
         // cout << to_string(rightNeighbour) + " :: " + to_string(i) + " :: " + to_string(rightNeighbour) << endl;
         
         // NEIGHBOURS
-        double leftP, rightP;
+        double leftP = 10E8, rightP = 10E8;
+        int leftInd = -1, rightInd = -1, chosen = -1;
+        
         if (/* DISABLES CODE */ (true)) {
-            leftP = swarm[leftNeighbour]->getFitness();
-            
-            rightP = swarm[rightNeighbour]->getFitness();
+            for(int i = 0; i<numNeighbours; ++i){
+                if(swarm[leftNeighbour[i]]->getFitness() < leftP){
+                    leftP = swarm[leftNeighbour[i]]->getFitness();
+                    leftInd = i;
+                }
+                if(swarm[rightNeighbour[i]]->getFitness() < rightP){
+                    rightP = swarm[rightNeighbour[i]]->getFitness();
+                    rightInd = i;
+                }
+            }
             
         } else { // THIS VERSION is suitable for gradual and non-steep hills : try it by turning 'true' into 'false'
-            double leftDist =  swarm[k]->getDistance(leftNeighbour);
-            double rightDist = swarm[k]->getDistance(rightNeighbour);
-            
-            leftP = leftDist * swarm[leftNeighbour]->getFitness();
-            rightP = rightDist * swarm[rightNeighbour]->getFitness();
+            for(int i = 0; i<numNeighbours; ++i){
+                double leftDist =  swarm[k]->getDistance(leftNeighbour[i]);
+                double rightDist = swarm[k]->getDistance(rightNeighbour[i]);
+                if(swarm[leftNeighbour[i]]->getFitness() < leftP){
+                    leftP =  leftDist * swarm[leftNeighbour[i]]->getFitness();
+                    leftInd = i;
+                }
+                if(swarm[rightNeighbour[i]]->getFitness() < rightP){
+                    rightP = rightDist * swarm[rightNeighbour[i]]->getFitness();
+                    rightInd = i;
+                }
+            }
         }
         
-        int chosen;
         if (leftP < rightP)
-            chosen = leftNeighbour;
+            chosen = leftNeighbour[leftInd];
         else
-            chosen = rightNeighbour;
-        
+            chosen = rightNeighbour[rightInd];
+    
         int dCounter = 0;
         
         // ================== Apply the update equation ========================

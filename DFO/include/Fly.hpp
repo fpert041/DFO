@@ -29,9 +29,7 @@ private:
     
 public:
     
-    std::shared_ptr<Fly> pLeftNeighbour = nullptr;
-    std::shared_ptr<Fly> pRightNeighbour = nullptr; // you can use these smart pointer to locally keep a reference to neighbour flies
-    int leftNindex, rightNindex; // these two values store locally the index position of the left and right neighbours in the global swarm-vector
+    std::vector<int> leftNindex, rightNindex; // these two values store locally the index position of the left and right neighbours in the global swarm-vector
     // Note: the above parameters are not necessary in all situations as sometimes flies are considered neighbours based merely on their index position (using ring topology)
     
     // =============== Interface Methods =================
@@ -40,8 +38,6 @@ public:
     // Constructors
     Fly(std::vector<double> inPos, GlobalParam& context);
     Fly(std::vector<double> inPos, GlobalParam* context);
-    
-    ~Fly(); // DESTRUCTOR
     
     const std::vector<double>& getPos(); // get the vector ("of coordinates") of the fly's position (in the search space)
     

@@ -20,16 +20,25 @@ GlobalParam::GlobalParam(){
     FE_allowed = 300000;
     // Parameter for the type of randomness governing the disturbance
     drm = UNI;
+    // Parameter for the number of neighbours checked per side
+    numNeighbours = 1;
     
     bestIndex = -1;
     searchSpaceWidth = std::vector<int>(dim, 100); // the size (range) of each dimension (can have a range of +/-)
     evalCount = 0;
-    leftNeighbour = 0;
-    rightNeighbour = 0;
+    leftNeighbour = std::vector<int>(numNeighbours, -1);
+    rightNeighbour = std::vector<int>(numNeighbours, -1);
     evaluationFunctionName = "";
 }
 
 // ----- setters ----
+
+void GlobalParam::setNumNeighbours(int num){
+    // set number of neighbours per side to be checked
+    numNeighbours = num;
+    leftNeighbour = std::vector<int>(numNeighbours, -1);
+    rightNeighbour = std::vector<int>(numNeighbours, -1);
+}
 
 void GlobalParam::setDemocracy(bool dem){
     // keep leader (best fly) in the equation or not
@@ -129,6 +138,10 @@ int GlobalParam::getFEAllowed() {
 
 float GlobalParam::getDt() {
     return float(dt);
+}
+
+int GlobalParam::getNumNeighbours() {
+    return numNeighbours;
 }
 
 std::string GlobalParam::getDtRandMode(){

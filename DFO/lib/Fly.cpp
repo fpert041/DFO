@@ -22,14 +22,6 @@ Fly::Fly(std::vector<double> inPos, GlobalParam* p_context){ // CONSTRUCTOR_2
     pContext = p_context; // track the swarm we are in
 }
 
-
-Fly::~Fly(){ // DESTRUCTOR
-//    delete pRightNeighbour;
-//    delete pLeftNeighbour;
-    pLeftNeighbour = nullptr;
-    pRightNeighbour = nullptr;
-}
-
 //------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------
 

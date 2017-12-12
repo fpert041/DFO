@@ -60,12 +60,14 @@ class Dfo_knap {
     int lastChunkDim = 0;
     int chunks = 1;
     int newFtSize = 1;
+    int FEAllowed = 50001;
     
     double fitness;
     int counter2 = 0;
+    bool demo = false;
     
-    void report(int i, vector<double> bestPos, int bestMaxWeight);
-    void adapt(float& newDt, float& targetDt, int& counter);
+    void report(int& i, vector<double>& bestPos, int& bestMaxWeight, vector<int> testCons);
+    void adapt(float& newDt, float& targetDt, int& counter, float& wvsc, int& bestMaxWeight, vector<double>& bestPos, vector<int> testCons);
 
 public:
     

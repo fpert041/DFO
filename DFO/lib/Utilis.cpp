@@ -91,6 +91,7 @@ void Utilis::shakeOffset() {
 //------------------------------------------------------------------------------------
 
 /* find the closest 2 neighbours in the swarm for the fly at location 'flyIndex' within the swarm */
+// Currently works only with 1 neighbour per side //
 
 void Utilis::findClosestNeighbours(int flyIndex) {
     double minDistL = 10E15;
@@ -101,7 +102,7 @@ void Utilis::findClosestNeighbours(int flyIndex) {
         double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistL) {
             minDistL = d;
-            leftNeighbour = i;
+            leftNeighbour[0] = i;
         }
     }
     
@@ -109,13 +110,13 @@ void Utilis::findClosestNeighbours(int flyIndex) {
     for (int i = 0; i < popSize; i++) {
         if (i == flyIndex)
             continue;
-        if (i == leftNeighbour)
+        if (i == leftNeighbour[0])
             continue;
         
         double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistR) {
             minDistR = d;
-            rightNeighbour = i;
+            rightNeighbour[0] = i;
         }
     }
 
@@ -132,9 +133,8 @@ void Utilis::findClosestNeighbours(int flyIndex, Fly& flyRef) {
         double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistL) {
             minDistL = d;
-            leftNeighbour = i;
-            flyRef.pLeftNeighbour = swarm[flyIndex];
-            flyRef.leftNindex = i;
+            leftNeighbour[0] = i;
+            flyRef.leftNindex[0] = i;
         }
     }
     
@@ -142,15 +142,14 @@ void Utilis::findClosestNeighbours(int flyIndex, Fly& flyRef) {
     for (int i = 0; i < popSize; i++) {
         if (i == flyIndex)
             continue;
-        if (i == leftNeighbour)
+        if (i == leftNeighbour[0])
             continue;
         
         double d = swarm[flyIndex]->getDistance(i);
         if (d < minDistR) {
             minDistR = d;
-            rightNeighbour = i;
-            flyRef.pRightNeighbour = swarm[flyIndex];
-            flyRef.rightNindex = i;
+            rightNeighbour[0] = i;
+            flyRef.rightNindex[0] = i;
         }
     }
     
@@ -170,73 +169,74 @@ string Utilis::getNeighbourTopology(){ // get the neighbouring topology
 void Utilis::getRandF_or_RingT_Neighbours(int curr) {
     if (ntt == RING) // RING
     {
-        leftNeighbour = curr - 1;
-        rightNeighbour = curr + 1;
-        
-        if (curr == 0)
-        leftNeighbour = popSize - 1;
-        if (curr == popSize - 1)
-        rightNeighbour = 0;
+        for(int i = 0; i<numNeighbours; ++i){
+            leftNeighbour[i] = curr - i;
+            rightNeighbour[i] = curr + i;
+            
+            if (leftNeighbour[i] < 0)
+                leftNeighbour[i] = popSize - i;
+            if (rightNeighbour[i] > popSize - i)
+                rightNeighbour[i] = i;
+        }
     }
     else // RANDOM
     {
-        leftNeighbour = int(dis(gen)*popSize);
-        while (leftNeighbour == curr){
-            leftNeighbour = int(dis(gen)*popSize);
+        for(int i = 0; i<numNeighbours; ++i){
+            leftNeighbour[i] = int(dis(gen)*popSize);
+            while (leftNeighbour[i] == curr){
+                leftNeighbour[i] = int(dis(gen)*popSize);
+            }
+            
+            rightNeighbour[i] = dis(gen)*popSize;
+            while ((rightNeighbour[i] == curr) || (rightNeighbour[i] == leftNeighbour[i]))
+                rightNeighbour[i] = int(dis(gen)*popSize);
         }
-        
-        rightNeighbour = dis(gen)*popSize;
-        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour))
-        rightNeighbour = int(dis(gen)*popSize);
     }
     
 }
 
-// overloaded funtion which also stores the information locally into each Fly
 
+// overloaded funtion which also stores the information locally into each Fly
 
 void Utilis::getRandF_or_RingT_Neighbours(int curr, Fly& flyref) {
     if (ntt == RING) // RING
     {
-        leftNeighbour = curr - 1;
-        flyref.leftNindex = curr - 1;
-        flyref.pLeftNeighbour = swarm[popSize - 1];
-        
-        rightNeighbour = curr + 1;
-        flyref.rightNindex = curr + 1;
-        flyref.pRightNeighbour = swarm[popSize + 1];
-        
-        if (curr == 0){ // deal with low extreme
-            leftNeighbour = popSize - 1;
-            flyref.leftNindex = curr - 1;
-            flyref.pLeftNeighbour = swarm[popSize - 1];
-        }
-        
-        if (curr == popSize - 1){ // deal with high extreme
-            rightNeighbour = 0;
-            flyref.rightNindex = 0;
-            flyref.pRightNeighbour = swarm[0];
+        for(int i = 0; i<numNeighbours; ++i){
+            leftNeighbour[i] = curr - i;
+            flyref.leftNindex[i] = curr - i;
+            
+            rightNeighbour[i] = curr + i;
+            flyref.rightNindex[i] = curr + i;
+            
+            if (leftNeighbour[i] < 0){ // deal with low extreme
+                leftNeighbour[i] = popSize - i;
+                flyref.leftNindex[i] = curr - i;
+            }
+            
+            if (rightNeighbour[i] > popSize - i){ // deal with high extreme
+                rightNeighbour[i] = i;
+                flyref.rightNindex[i] = i;
+            }
         }
     }
     else // RANDOM
     {
-        leftNeighbour = int(dis(gen)*popSize);
-        while (leftNeighbour == curr){
-            int r = int(dis(gen)*popSize);
-            leftNeighbour = r;
-            flyref.leftNindex = r;
-            flyref.pLeftNeighbour = swarm[r];
-        }
-        
-        rightNeighbour = dis(gen)*popSize;
-        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour)){
-            int r = int(dis(gen)*popSize);
-            rightNeighbour = r;
-            flyref.rightNindex = r;
-            flyref.pRightNeighbour = swarm[r];
+        for(int i = 0; i<numNeighbours; ++i){
+            leftNeighbour[i] = int(dis(gen)*popSize);
+            while (leftNeighbour[i] == curr){
+                int r = int(dis(gen)*popSize);
+                leftNeighbour[i] = r;
+                flyref.leftNindex[i] = r;
+            }
+            
+            rightNeighbour[i] = dis(gen)*popSize;
+            while ((rightNeighbour[i] == curr) || (rightNeighbour[i] == leftNeighbour[i])){
+                int r = int(dis(gen)*popSize);
+                rightNeighbour[i] = r;
+                flyref.rightNindex[i] = r;
+            }
         }
     }
-    
 }
 
 // overloaded funtion to specify how to assign neighbours either using ring topology
@@ -245,26 +245,29 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
     
     if (type == RING) // RING
     {
-        leftNeighbour = curr - 1;
-        rightNeighbour = curr + 1;
+        for(int i = 0; i<numNeighbours; ++i){
+        leftNeighbour[i] = curr - i;
+        rightNeighbour[i] = curr + i;
         
-        if (curr == 0)
-            leftNeighbour = popSize - 1;
-        if (curr == popSize - 1)
-            rightNeighbour = 0;
+        if (leftNeighbour[i] < 0)
+            leftNeighbour[i] = popSize - i;
+        if (rightNeighbour[i] > popSize - 1)
+            rightNeighbour[i] = i;
+        }
     }
     else // RANDOM
     {
-        leftNeighbour = int(dis(gen)*popSize);
-        while (leftNeighbour == curr){
-            leftNeighbour = int(dis(gen)*popSize);
+        for(int i = 0; i<numNeighbours; ++i){
+            leftNeighbour[i] = int(dis(gen)*popSize);
+            while (leftNeighbour[i] == curr){
+                leftNeighbour[i] = int(dis(gen)*popSize);
+            }
+            
+            rightNeighbour[i] = dis(gen)*popSize;
+            while ((rightNeighbour[i] == curr) || (rightNeighbour[i] == leftNeighbour[i]))
+                rightNeighbour[i] = int(dis(gen)*popSize);
         }
-        
-        rightNeighbour = dis(gen)*popSize;
-        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour))
-            rightNeighbour = int(dis(gen)*popSize);
     }
-    
 }
 
 // overloaded funtion to assign neighbours either using ring topology or at random which also stores the information locally into each Fly
@@ -273,45 +276,42 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
     
     if (type == RING) // RING
     {
-        leftNeighbour = curr - 1;
-        flyref.leftNindex = curr - 1;
-        flyref.pLeftNeighbour = swarm[popSize - 1];
-        
-        rightNeighbour = curr + 1;
-        flyref.rightNindex = curr + 1;
-        flyref.pRightNeighbour = swarm[popSize + 1];
-        
-        if (curr == 0){ // deal with low extreme
-            leftNeighbour = popSize - 1;
-            flyref.leftNindex = curr - 1;
-            flyref.pLeftNeighbour = swarm[popSize - 1];
-        }
-        
-        if (curr == popSize - 1){ // deal with high extreme
-            rightNeighbour = 0;
-            flyref.rightNindex = 0;
-            flyref.pRightNeighbour = swarm[0];
+        for(int i = 0; i<numNeighbours; ++i){
+            leftNeighbour[i] = curr - i;
+            flyref.leftNindex[i] = curr - i;
+            
+            rightNeighbour[i] = curr + i;
+            flyref.rightNindex[i] = curr + i;
+            
+            if (rightNeighbour[i] < 0){ // deal with low extreme
+                rightNeighbour[i] = popSize - i;
+                flyref.leftNindex[i] = curr - i;
+            }
+            
+            if (rightNeighbour[i] > popSize - 1){ // deal with high extreme
+                rightNeighbour[i] = i;
+                flyref.rightNindex[i] = i;
+            }
         }
     }
     else // RANDOM
     {
-        leftNeighbour = int(dis(gen)*popSize);
-        while (leftNeighbour == curr){
-            int r = int(dis(gen)*popSize);
-            leftNeighbour = r;
-            flyref.leftNindex = r;
-            flyref.pLeftNeighbour = swarm[r];
-        }
-        
-        rightNeighbour = dis(gen)*popSize;
-        while ((rightNeighbour == curr) || (rightNeighbour == leftNeighbour)){
-            int r = int(dis(gen)*popSize);
-            rightNeighbour = r;
-            flyref.rightNindex = r;
-            flyref.pRightNeighbour = swarm[r];
+        for(int i = 0; i<numNeighbours; ++i){
+            leftNeighbour[i] = int(dis(gen)*popSize);
+            while (leftNeighbour[i] == curr){
+                int r = int(dis(gen)*popSize);
+                leftNeighbour[i] = r;
+                flyref.leftNindex[i] = r;
+            }
+            
+            rightNeighbour[i] = dis(gen)*popSize;
+            while ((rightNeighbour[i] == curr) || (rightNeighbour[i] == leftNeighbour[i])){
+                int r = int(dis(gen)*popSize);
+                rightNeighbour[i] = r;
+                flyref.rightNindex[i] = r;
+            }
         }
     }
-    
 }
 
 //------------------------------------------------------------------------------------

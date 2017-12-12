@@ -117,7 +117,15 @@ There are "setter" and "getter" methods  you can use to change these and other p
 
 -- set the type of randomness governing the disturbance (defaults is DFO::UNI = uniform), but can be set to DFO::GAUSS
 
+`setLeader(std::vector<double> newLeaderPos)`
+
+-- set the leader of the swarm externally using a vector of doubles
+
  - - -
+ 
+ `void setNumNeighbours(int num);`
+ 
+ -- set number of fly's neighbours to be checked per side (defaults is 1 => 1 Left & 1 Right)
  
  `std::vector<std::shared_ptr<Fly>> getSwarm();`
  
@@ -137,7 +145,11 @@ There are "setter" and "getter" methods  you can use to change these and other p
  
  `int getDim()`
  
-  -- return the number of dimensions
+ -- return the number of dimensions
+ 
+  `int GlobalParam::getNumNeighbours() `
+ 
+  -- return number of neighbours that each fly checks to find the best neighbour
  
  `std::string getEvalFuncName()`
  
