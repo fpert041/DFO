@@ -16,18 +16,28 @@ class DFOvisual {
 private:
     static const long serialVersionUID = 1L;
     
-    // variable that will hold the DFO algorithm components
-    unique_ptr<DFO> dfo = unique_ptr<DFO>(new DFO());
-    
     // draw - sub-methods
     void background();
     
-public:
+    int img_width;
+    int img_height;
     
-    // is the problem being visualised across a 2d surface space? (TRUE) Or just as 1D lines? (FALSE)
-    bool mod_2d = false;  
+    double bestFitnessOverall = 10E8;
+    int bestX, bestY;
+    
+    int rad = 10; // coverage radius for patch of pixels to test
+    int symRange = 200; // maximum pixel range (left/right) to check for symmetry
+    int margin = 20;
+    
+    ofPixels imgPix;
+    
+public:
+    // variable that will hold the DFO algorithm components
+    unique_ptr<DFO> dfo = unique_ptr<DFO>(new DFO());
     
     int visualisationHeight;
+    int wrapTorus( int n, int threshold );
+    double brightness(array<int, 2> p);
     
     DFOvisual();
     ~DFOvisual();
@@ -35,13 +45,19 @@ public:
     static const int scaleF = 5;
     
     // DFO & visulaisation environment setup (openFrameworks)
-    void setup();
+    void setup(string s = "1.png");
+    void setupVerti(string s = "1.png");
+    void setupHori(string s = "1.png");
+    
+    void dfoSet();
     
     // visualisation (openFrameworks) method
     void draw();
 
     // run DFO algorithm (update it to + 1 cycle)
     void update();
+    
+    ofImage img;
     
 };
 

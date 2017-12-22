@@ -103,7 +103,7 @@ public:
     
     // -- getters --
     
-    std::vector<std::shared_ptr<Fly>> getSwarm();
+    std::vector<std::shared_ptr<Fly>>& getSwarm();
     
     std::shared_ptr<Fly> getBestFly();
     
@@ -125,7 +125,7 @@ public:
     
     int getFEAllowed();
     
-    float getDt();
+    double getDt();
     
     int getNumNeighbours();
     

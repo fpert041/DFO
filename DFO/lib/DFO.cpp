@@ -85,6 +85,7 @@ void const DFO::generateSwarmPositiveAxis(){
  *********************************************************************************/
 
 void const DFO::updateSwarm(){
+    vector<double> temp(dim);
     
     if (evalCount > FE_allowed)
         return void();
@@ -93,13 +94,13 @@ void const DFO::updateSwarm(){
     for (int i = 0; i < popSize; ++i)
     {
         // evaluate the fitness of each Fly in the swarm, then leave a record of the fitness value into each fly
-        swarm[i]->setFitness( evaluate(swarm[i]->getPos()) );
+        swarm[i]->setFitness( evaluate( swarm[i]->getPos() ) );
     }
     
     // now that each fly knows its fitness, we can check and record which one is the best
     findBestFly();
     // ========= INTERACTION Phase =========
-    for (int k = 0; k < popSize; k++) {
+    for (int k = 0; k < popSize; ++k) {
         // Elitist approach:
         // ignore the fly with the best index (we keep it as it is)
         if (k == bestIndex)
@@ -114,7 +115,7 @@ void const DFO::updateSwarm(){
         // cout << to_string(rightNeighbour) + " :: " + to_string(i) + " :: " + to_string(rightNeighbour) << endl;
         
         // NEIGHBOURS
-        double leftP = 10E8, rightP = 10E8;
+        double leftP = 10E15, rightP = 10E15;
         int leftInd = -1, rightInd = -1, chosen = -1;
         
         if (/* DISABLES CODE */ (true)) {
@@ -154,8 +155,7 @@ void const DFO::updateSwarm(){
         // ================== Apply the update equation ========================
         // =====================================================================
         
-        vector<double> temp(dim);
-        for (int d = 0; d < dim; d++) {
+        for (int d = 0; d < dim; ++d) {
             
             if(!democracy){
             /* ELITIST (easier to find one solution but that's all you get) */
@@ -171,7 +171,6 @@ void const DFO::updateSwarm(){
                          (swarm[chosen]->getPos(d) - swarm[k]->getPos(d));
                          // FINAL
             }
-            
             
             // disturbance mechanism
             if(true){
@@ -192,8 +191,8 @@ void const DFO::updateSwarm(){
             
             // <<<<<<<<<<<<<<<<<   constrain dimensions to fit the range specified (bouncing off the edges)
             if (constrainPositions) {
-                if ( temp[d] > searchSpaceWidth[d] ) temp[d] = /*searchSpaceWidth[d];*/   searchSpaceWidth[d]-fmod(temp[d], searchSpaceWidth[d])*std::min(abs(genGaussian(0, 1)), 1.0);
-                if (temp[d] < 0.) temp[d] =  /*0;*/fmod(abs(temp[d]), searchSpaceWidth[d])*std::min(abs(genGaussian(0, 1)), 1.0);
+                if ( temp[d] > searchSpaceWidth[d] ) temp[d] = searchSpaceWidth[d];//   searchSpaceWidth[d]-fmod(temp[d], searchSpaceWidth[d])*std::min(abs(genGaussian(0, 1)), 1.0);
+                if (temp[d] < 0.) temp[d] =  0;//fmod(abs(temp[d]), searchSpaceWidth[d])*std::min(abs(genGaussian(0, 1)), 1.0);
             }
             
             //cout << "Disturbances in Fly  #" + to_sring(i) + ": \t" + to_sring(dCounter) << endl;

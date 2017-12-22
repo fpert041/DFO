@@ -25,25 +25,25 @@ Fly::Fly(std::vector<double> inPos, GlobalParam* p_context){ // CONSTRUCTOR_2
 //------------------------------------------------------------------------------------
 //------------------------------------------------------------------------------------
 
-const std::vector<double>& Fly::getPos(){ // get the vector ("of coordinates") of the fly's position (in the search space)
+std::vector<double>& Fly::getPos(){ // get the vector ("of coordinates") of the fly's position (in the search space)
     return pos;
 }
 
 //------------------------------------------------------------------------------------
 
-const double Fly::getPos(int n) { //overloaded function to get the value of a single dimension from the fly's position
+double Fly::getPos(int n) { //overloaded function to get the value of a single dimension from the fly's position
     return pos[n];
 }
 
 //------------------------------------------------------------------------------------
 
-const std::vector<double> Fly::getExPos() { // get the vector of the previous position ("coordinates")
+std::vector<double>& Fly::getExPos() { // get the vector of the previous position ("coordinates")
     return exPos;
 }
 
 //------------------------------------------------------------------------------------
 
-const double Fly::getExPos(int n) { // get the value of dimension "n" in the previous position ("coordinates")
+double Fly::getExPos(int n) { // get the value of dimension "n" in the previous position ("coordinates")
     return exPos[n];
 }
 
@@ -74,7 +74,7 @@ void Fly::setFitness(double t) { // set fitness value
 //------------------------------------------------------------------------------------
 
 
-const double Fly::getFitness() { // return fitness value
+const double& Fly::getFitness() { // return fitness value
     return fitness;
 }
 

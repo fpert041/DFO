@@ -39,13 +39,13 @@ public:
     Fly(std::vector<double> inPos, GlobalParam& context);
     Fly(std::vector<double> inPos, GlobalParam* context);
     
-    const std::vector<double>& getPos(); // get the vector ("of coordinates") of the fly's position (in the search space)
+    std::vector<double>& getPos(); // get the vector ("of coordinates") of the fly's position (in the search space)
     
-    const double getPos(int n); //overloaded function to get the value of a single dimension from the fly's position
+    double getPos(int n); //overloaded function to get the value of a single dimension from the fly's position
     
-    const std::vector<double> getExPos(); // get the vector of the previous position ("coordinates")
+    std::vector<double>& getExPos(); // get the vector of the previous position ("coordinates")
     
-    const double getExPos(int n); //overloaded function to get the value of a single dimension from the fly's old position
+    double getExPos(int n); //overloaded function to get the value of a single dimension from the fly's old position
     
     void setPos(std::vector<double> position); // set the position of the fly with a vector supplied as argument
  
@@ -53,7 +53,7 @@ public:
     
     void setFitness(double t); // set fitness value
     
-    const double getFitness(); // return fitness value
+    const double& getFitness(); // return fitness value
     
     // take in the reference of a swarm of flies (vector) and an int 'n'
     // then return the distance between

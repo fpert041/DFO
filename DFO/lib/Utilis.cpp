@@ -24,7 +24,7 @@ Utilis::Utilis(){
     ntt = RING; // defaults the way neighbours are linked with to RING TOPOLOGY (ntt = neighbour topology type)
 }
 
-Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
+Utilis::Utilis(std::function<double(std::vector<double>&)> fitness_func){
     gen = std::mt19937(rd());
     dis = std::uniform_real_distribution<>(0., 1.); // Each call to dis(gen) generates a new random double
     ran = dis(gen);
@@ -36,7 +36,7 @@ Utilis::Utilis(std::function<double(std::vector<double>)> fitness_func){
 
 //------------------------------------------------------------------------------------
 
-void Utilis::setFitnessFunc(std::function<double(std::vector<double>)> fitness_func){
+void Utilis::setFitnessFunc(std::function<double(std::vector<double>&)> fitness_func){
     eval_custom_fitness_func.operator=(fitness_func); // store provided fitness funciton into a variable
     em = CUSTOM; // defaults the evaluation method to CUSTOM
 }
@@ -53,7 +53,7 @@ void Utilis::setNeighbourTopology(NeighbouringTopologyType nt){
 
 /* Evaluate fly with position vector 'flyPos' using the DEFAULT fitness function (as indicated by the value of the 'em' varable (enum: EvaluationMethod) */
 
-double Utilis::evaluate(vector<double> flyPos){
+double Utilis::evaluate(vector<double>& flyPos){
     switch (em) {
         case CUSTOM:
             evaluationFunctionName = "Custom Fitness Function";
@@ -72,7 +72,7 @@ double Utilis::evaluate(vector<double> flyPos){
 
 // Overridden method: Evaluate the fitness of a certain Fly using the PROVIDED fitness function
 
-double Utilis::evaluate(vector<double> flyPos, EvaluationMethod fit_func_id){
+double Utilis::evaluate(vector<double>& flyPos, EvaluationMethod fit_func_id){
     EvaluationMethod oldEm = em;
     em = fit_func_id;
     double e = evaluate(flyPos);
@@ -170,12 +170,12 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr) {
     if (ntt == RING) // RING
     {
         for(int i = 0; i<numNeighbours; ++i){
-            leftNeighbour[i] = curr - i;
-            rightNeighbour[i] = curr + i;
+            leftNeighbour[i] = curr - i-1;
+            rightNeighbour[i] = curr + i+1;
             
             if (leftNeighbour[i] < 0)
-                leftNeighbour[i] = popSize - i;
-            if (rightNeighbour[i] > popSize - i)
+                leftNeighbour[i] = popSize - i-1;
+            if (rightNeighbour[i] >= popSize)
                 rightNeighbour[i] = i;
         }
     }
@@ -202,18 +202,18 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, Fly& flyref) {
     if (ntt == RING) // RING
     {
         for(int i = 0; i<numNeighbours; ++i){
-            leftNeighbour[i] = curr - i;
-            flyref.leftNindex[i] = curr - i;
+            leftNeighbour[i] = curr - i-1;
+            flyref.leftNindex[i] = curr - i-1;
             
-            rightNeighbour[i] = curr + i;
-            flyref.rightNindex[i] = curr + i;
+            rightNeighbour[i] = curr + i+1;
+            flyref.rightNindex[i] = curr + i+1;
             
             if (leftNeighbour[i] < 0){ // deal with low extreme
-                leftNeighbour[i] = popSize - i;
-                flyref.leftNindex[i] = curr - i;
+                leftNeighbour[i] = popSize - i-1;
+                flyref.leftNindex[i] = curr - i-1;
             }
             
-            if (rightNeighbour[i] > popSize - i){ // deal with high extreme
+            if (rightNeighbour[i] >= popSize){ // deal with high extreme
                 rightNeighbour[i] = i;
                 flyref.rightNindex[i] = i;
             }
@@ -246,12 +246,12 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
     if (type == RING) // RING
     {
         for(int i = 0; i<numNeighbours; ++i){
-        leftNeighbour[i] = curr - i;
-        rightNeighbour[i] = curr + i;
+        leftNeighbour[i] = curr - i-1;
+        rightNeighbour[i] = curr + i+1;
         
         if (leftNeighbour[i] < 0)
-            leftNeighbour[i] = popSize - i;
-        if (rightNeighbour[i] > popSize - 1)
+            leftNeighbour[i] = popSize - i-1;
+        if (rightNeighbour[i] >= popSize)
             rightNeighbour[i] = i;
         }
     }
@@ -277,18 +277,18 @@ void Utilis::getRandF_or_RingT_Neighbours(int curr, NeighbouringTopologyType typ
     if (type == RING) // RING
     {
         for(int i = 0; i<numNeighbours; ++i){
-            leftNeighbour[i] = curr - i;
-            flyref.leftNindex[i] = curr - i;
+            leftNeighbour[i] = curr - i-1;
+            flyref.leftNindex[i] = curr - i-1;
             
-            rightNeighbour[i] = curr + i;
-            flyref.rightNindex[i] = curr + i;
+            rightNeighbour[i] = curr + i+1;
+            flyref.rightNindex[i] = curr + i+1;
             
             if (rightNeighbour[i] < 0){ // deal with low extreme
-                rightNeighbour[i] = popSize - i;
-                flyref.leftNindex[i] = curr - i;
+                rightNeighbour[i] = popSize - i-1;
+                flyref.leftNindex[i] = popSize - i-1;
             }
             
-            if (rightNeighbour[i] > popSize - 1){ // deal with high extreme
+            if (rightNeighbour[i] >= popSize){ // deal with high extreme
                 rightNeighbour[i] = i;
                 flyref.rightNindex[i] = i;
             }

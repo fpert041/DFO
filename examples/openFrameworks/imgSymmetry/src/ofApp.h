@@ -23,4 +23,11 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
     DFOvisual vis;
+    int switcher = 0;
+    int imgNum = 1;
+    string s = "1.png";
+    string end = ".png";
+    string o = "2 Ways Symmetry";
+    bool lock = false;
+    bool lock2 = false;
 };

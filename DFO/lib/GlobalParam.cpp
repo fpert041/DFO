@@ -15,7 +15,7 @@ GlobalParam::GlobalParam(){
     // popSize: the size of the population of 'flys'
     popSize = 20;
     // disturbance threshold
-    dt = 0.001;
+    dt = 0.01;
     // Constant to set the maximum number of Fly Evaluations allowed to the program
     FE_allowed = 300000;
     // Parameter for the type of randomness governing the disturbance
@@ -92,7 +92,7 @@ void GlobalParam::setSwarm(std::vector<std::shared_ptr<Fly>> newS){
 
 // ----- getters ----
 
-std::vector<std::shared_ptr<Fly>> GlobalParam::getSwarm(){
+std::vector<std::shared_ptr<Fly>>& GlobalParam::getSwarm(){
     return swarm;
 }
 
@@ -136,8 +136,8 @@ int GlobalParam::getFEAllowed() {
     return FE_allowed;
 }
 
-float GlobalParam::getDt() {
-    return float(dt);
+double GlobalParam::getDt() {
+    return dt;
 }
 
 int GlobalParam::getNumNeighbours() {

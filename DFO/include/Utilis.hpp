@@ -25,7 +25,7 @@ private:
     
     double offset = -0;
     
-    std::function<double(std::vector<double>)> eval_custom_fitness_func; // empty function storage variable -> it will be used if a fitness function is provided externally
+    std::function<double(std::vector<double>&)> eval_custom_fitness_func; // empty function storage variable -> it will be used if a fitness function is provided externally
     
     double eval_sphere(std::vector<double>&); // evaluate the fitness of a fly using the Sphere "benchmark function"
     
@@ -44,9 +44,9 @@ public:
     // ===================== functions =====================
     
     Utilis(); // CONSTRUCTOR (defined in cpp) -> default evaluation function ==> 'sphere' eval. func is the default method of fitness evaluation
-    Utilis(std::function<double(std::vector<double>)> fitness_func); // OVERRIDDEN CONSTRUCTOR -- If we pass in a fitness function as an argument, this will become the default evaluation method for a Fly's fitness
+    Utilis(std::function<double(std::vector<double>&)> fitness_func); // OVERRIDDEN CONSTRUCTOR -- If we pass in a fitness function as an argument, this will become the default evaluation method for a Fly's fitness
     
-    void setFitnessFunc(std::function<double(std::vector<double>)>); // set custom fitness function
+    void setFitnessFunc(std::function<double(std::vector<double>&)>); // set custom fitness function
     
     void resetFitnessFunc(); // reset fitness function to "sphere" benchmark test
     
@@ -62,8 +62,8 @@ protected:
     
     NeighbouringTopologyType ntt; // (ntt = neighbour topology type)
     
-    double evaluate(vector<double> flyPos); // Evaluate the fitness of a certain Fly using the DEFAULT fitness function (indicated by the value of the 'em' varable (enum: EvaluationMethod)
-    double evaluate(vector<double> flyPos, EvaluationMethod fit_func_id); // Overridden method: Evaluate the fitness of a certain Fly using the PROVIDED fitness function
+    double evaluate(vector<double>& flyPos); // Evaluate the fitness of a certain Fly using the DEFAULT fitness function (indicated by the value of the 'em' varable (enum: EvaluationMethod)
+    double evaluate(vector<double>& flyPos, EvaluationMethod fit_func_id); // Overridden method: Evaluate the fitness of a certain Fly using the PROVIDED fitness function
     
     void findClosestNeighbours(int flyIndex); // find the 2 closest neighbours for the fly at the index supplied
     void findClosestNeighbours(int flyIndex, Fly& flyRef); // overloaded function that stores neighbours' information into each fly
