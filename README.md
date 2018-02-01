@@ -8,6 +8,7 @@ Dispersive Flies Optimisation implementation in C++
 
 [link to the original paper](http://doc.gold.ac.uk/mohammad/DFO/)
 
+
 ## What is DFO?
 
 Dispersive Flies Optimisation Research (DFO) [1] is a swarm intelligence algorithm. That is, it is an algorithm where individual agents follow simple instructions to search for a solution in in a matrix representing an N-dimensional search space [2]. The agents are set up so that they can communicate with one another and adapt their search trajectory based on the behaviour of their neighbours.
