@@ -23,6 +23,7 @@ class ofApp : public ofBaseApp{
 		void gotMessage(ofMessage msg);
 		
     DFOvisual vis;
+    
     int switcher = 0;
     int imgNum = 1;
     string s = "1.png";

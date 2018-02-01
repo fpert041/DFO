@@ -25,6 +25,8 @@ private:
     double bestFitnessOverall = 10E8;
     int bestX, bestY;
     
+    int randXbest, randYbest;
+    
     int rad = 10; // coverage radius for patch of pixels to test
     int symRange = 200; // maximum pixel range (left/right) to check for symmetry
     int margin = 20;

@@ -14,8 +14,8 @@ DFOvisual::DFOvisual(){
     
     /* FIND SYMMETRY IN AN IMG */
     /* Uses BRIGHNTESS FINDING FUNCTION () */
-    dfo->setDim(2);
-    dfo->setConstrainPos(true);
+    dfo->setDim(2); // searching through an imge ==> 2D space = 2 dimensions
+    dfo->setConstrainPos(true); // only search for positive values
 }
 
 DFOvisual::~DFOvisual(){
